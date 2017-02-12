@@ -5,6 +5,7 @@
  */
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,21 @@ import java.util.List;
  *
  * @author Lars
  */
-public class CustomerTrachs {
+public class CustomerTrachs implements Serializable{
     private List customeritems = new ArrayList<TrackedTimeItem>() ;
     private String customername;
+
+    public CustomerTrachs(String customername) {
+        this.customername = customername;
+    }
+
+    public List getCustomeritems() {
+        return customeritems;
+    }
+
+    public String getCustomername() {
+        return customername;
+    }
     
     
 }

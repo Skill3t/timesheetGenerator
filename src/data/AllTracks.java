@@ -5,6 +5,7 @@
  */
 package data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,13 +14,13 @@ import java.util.List;
  */
 public class AllTracks {
 
-    private AllTracks exempla;
-    private List allCustomers;
+    private static AllTracks exempla;
+    private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
 
     private AllTracks() {
     }
 
-    public AllTracks getInstance() {
+    public static AllTracks getInstance() {
         if (exempla == null) {
             exempla = new AllTracks();
             return exempla;
@@ -28,11 +29,11 @@ public class AllTracks {
         }
     }
 
-    public List getAllCustomers() {
+    public ArrayList<CustomerTrachs> getAllCustomers() {
         return allCustomers;
     }
 
-    public void setAllCustomers(List allCustomers) {
+    public void setAllCustomers(ArrayList<CustomerTrachs> allCustomers) {
         this.allCustomers = allCustomers;
     }
     
