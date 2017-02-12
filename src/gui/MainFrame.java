@@ -18,17 +18,21 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 
 /**
  *
  * @author Lars
  */
 public class MainFrame extends javax.swing.JFrame {
+
+    private Date createdDate;
 
     /**
      * Creates new form MainFrame
@@ -58,7 +62,17 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTreeCustomer = new javax.swing.JTree();
-        jPCustomor = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPCustomorMenue = new javax.swing.JPanel();
+        jLKlient = new javax.swing.JLabel();
+        jBStartTimeTrack = new javax.swing.JButton();
+        jBStopTimeTrack = new javax.swing.JButton();
+        jLTime = new javax.swing.JLabel();
+        jPTrackItem = new javax.swing.JPanel();
+        jTAction = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLStartTime = new javax.swing.JLabel();
+        jStopTime = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Clienten Time Sheet Generator");
@@ -101,7 +115,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeperatorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))
         );
         jPSeperatorLayout.setVerticalGroup(
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,26 +130,87 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Klienten"));
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(23, 40));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(120, 384));
+
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Klient");
         jTreeCustomer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTreeCustomer.setMaximumSize(new java.awt.Dimension(100, 30));
+        jTreeCustomer.setPreferredSize(new java.awt.Dimension(150, 19));
+        jTreeCustomer.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jTreeCustomerValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTreeCustomer);
 
         jPCustomers.add(jScrollPane1);
 
-        jPCustomor.setMinimumSize(new java.awt.Dimension(300, 200));
+        jPCustomorMenue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPCustomorMenue.setMinimumSize(new java.awt.Dimension(450, 41));
+        jPCustomorMenue.setPreferredSize(new java.awt.Dimension(450, 50));
 
-        javax.swing.GroupLayout jPCustomorLayout = new javax.swing.GroupLayout(jPCustomor);
-        jPCustomor.setLayout(jPCustomorLayout);
-        jPCustomorLayout.setHorizontalGroup(
-            jPCustomorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jLKlient.setText("Klient: X");
+        jPCustomorMenue.add(jLKlient);
+
+        jBStartTimeTrack.setText("Start");
+        jBStartTimeTrack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBStartTimeTrackActionPerformed(evt);
+            }
+        });
+        jPCustomorMenue.add(jBStartTimeTrack);
+
+        jBStopTimeTrack.setText("Stopp");
+        jBStopTimeTrack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBStopTimeTrackActionPerformed(evt);
+            }
+        });
+        jPCustomorMenue.add(jBStopTimeTrack);
+
+        jLTime.setText("Zeit: ");
+        jPCustomorMenue.add(jLTime);
+
+        jTAction.setMinimumSize(new java.awt.Dimension(100, 26));
+        jTAction.setPreferredSize(new java.awt.Dimension(200, 26));
+        jTAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTActionActionPerformed(evt);
+            }
+        });
+        jPTrackItem.add(jTAction);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Büroorga", "Bonny" }));
+        jPTrackItem.add(jComboBox1);
+
+        jLStartTime.setText("StartTime");
+        jPTrackItem.add(jLStartTime);
+
+        jStopTime.setText("Endtime");
+        jPTrackItem.add(jStopTime);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPCustomorMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPTrackItem, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        jPCustomorLayout.setVerticalGroup(
-            jPCustomorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jPCustomorMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jPTrackItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPCustomers.add(jPCustomor);
+        jPCustomers.add(jPanel1);
 
         getContentPane().add(jPCustomers);
 
@@ -149,7 +224,7 @@ public class MainFrame extends javax.swing.JFrame {
         instance.getAllCustomers().add(ct);
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        model.insertNodeInto(new DefaultMutableTreeNode(S), root, root.getChildCount());
+        model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
@@ -159,9 +234,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println(System.getProperty("user.dir") + "/saveState");
             ObjectOutputStream o = new ObjectOutputStream(fos);
             AllTracks instance = AllTracks.getInstance();
-
             o.writeObject(instance.getAllCustomers());
-
             JOptionPane.showMessageDialog(this, "Der Zustand wurde gespeichert.");
         } catch (FileNotFoundException e) {
         } catch (IOException ex) {
@@ -173,6 +246,46 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jBSaveActionPerformed
+
+    private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+        CustomerTrachs userObject = (CustomerTrachs) selectedNode.getUserObject();
+        jLKlient.setText("Klient: " + userObject.getCustomername());
+
+    }//GEN-LAST:event_jTreeCustomerValueChanged
+
+    private void jBStopTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStopTimeTrackActionPerformed
+        if (createdDate == null) {
+            return;
+        } else {
+            System.out.println(getAgeInSeconds());
+            jLTime.setText("Zeit in Sekunden: " + getAgeInSeconds() + "s");
+
+            jStopTime.setText("Endtime" + createdDate.getTime());
+
+            java.util.Date now = new java.util.Date();
+            TrackedTimeItem TTI = new TrackedTimeItem(createdDate, now, jTAction.getText());
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            CustomerTrachs CT = (CustomerTrachs) selectedNode.getUserObject();
+            CT.getCustomeritems().add(TTI);
+        }
+
+
+    }//GEN-LAST:event_jBStopTimeTrackActionPerformed
+
+    private void jBStartTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStartTimeTrackActionPerformed
+        createdDate = new java.util.Date();
+
+    }//GEN-LAST:event_jBStartTimeTrackActionPerformed
+
+    private void jTActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTActionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTActionActionPerformed
+    public int getAgeInSeconds() {
+
+        java.util.Date now = new java.util.Date();
+        return (int) ((now.getTime() - this.createdDate.getTime()) / 1000);
+    }
 
     /**
      * @param args the command line arguments
@@ -212,13 +325,23 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBExport;
     private javax.swing.JButton jBSave;
+    private javax.swing.JButton jBStartTimeTrack;
+    private javax.swing.JButton jBStopTimeTrack;
     private javax.swing.JButton jBnewCustomer;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLKlient;
+    private javax.swing.JLabel jLStartTime;
+    private javax.swing.JLabel jLTime;
     private javax.swing.JPanel jPCustomers;
-    private javax.swing.JPanel jPCustomor;
+    private javax.swing.JPanel jPCustomorMenue;
     private javax.swing.JPanel jPMenue;
     private javax.swing.JPanel jPSeperator;
+    private javax.swing.JPanel jPTrackItem;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jStopTime;
+    private javax.swing.JTextField jTAction;
     private javax.swing.JTree jTreeCustomer;
     // End of variables declaration//GEN-END:variables
 
@@ -244,10 +367,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                     allCustomers = (ArrayList<CustomerTrachs>) confObjekt;
                     instance.setAllCustomers(allCustomers);
-
-                } catch (IOException e) {
-                    System.err.println(e);
-                } catch (ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     System.err.println(e);
                 } finally {
                     try {
@@ -265,10 +385,20 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         for (CustomerTrachs cusomer : instance.getAllCustomers()) {
             DefaultMutableTreeNode first = (DefaultMutableTreeNode) model.getRoot();
-            model.insertNodeInto(new DefaultMutableTreeNode(cusomer.getCustomername()), root, root.getChildCount());
-            for (TrackedTimeItem ti : cusomer.getCustomeritems()){
-                 model.insertNodeInto(new DefaultMutableTreeNode(ti.getStartTime()), first, first.getChildCount());    
+            model.insertNodeInto(new DefaultMutableTreeNode(cusomer), root, root.getChildCount());
+            for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
+                model.insertNodeInto(new DefaultMutableTreeNode(ti.getStartTime()), first, first.getChildCount());
             }
         }
+
+        /*
+          for (CustomerTrachs cusomer : instance.getAllCustomers()) {
+            DefaultMutableTreeNode first = (DefaultMutableTreeNode) model.getRoot();
+            model.insertNodeInto(new DefaultMutableTreeNode(cusomer.getCustomername()), root, root.getChildCount());
+            for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
+                model.insertNodeInto(new DefaultMutableTreeNode(ti.getStartTime()), first, first.getChildCount());
+            }
+        }
+         */
     }
 }
