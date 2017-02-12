@@ -5,13 +5,15 @@
  */
 package data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Lars
  */
-public class TrackedTimeItem {
+public class TrackedTimeItem implements Serializable{
+
     private Date startTime;
     private Date endTime;
     private String kommand;
@@ -25,6 +27,11 @@ public class TrackedTimeItem {
         this.endTime = endTime;
         this.kommand = kommand;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        // then you can avoid using toString
+        return kommand;
+    }
+
 }

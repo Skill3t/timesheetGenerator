@@ -29,5 +29,10 @@ public class CustomerTrachs implements Serializable{
         return customername;
     }
     
+    @Override
+    public String toString() {
+        // then you can avoid using toString
+        return customername;
+    }
     
 }
