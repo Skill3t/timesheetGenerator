@@ -5,6 +5,25 @@
  */
 package gui;
 
+import data.AllTracks;
+import data.CustomerTrachs;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
 /**
  *
  * @author Lars
@@ -16,6 +35,9 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        readSaveState();
+        buildTree();
+
     }
 
     /**
@@ -27,21 +49,130 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPMenue = new javax.swing.JPanel();
+        jBnewCustomer = new javax.swing.JButton();
+        jBSave = new javax.swing.JButton();
+        jBExport = new javax.swing.JButton();
+        jPSeperator = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPCustomers = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTreeCustomer = new javax.swing.JTree();
+        jPCustomor = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Clienten Time Sheet Generator");
+        setMinimumSize(new java.awt.Dimension(480, 280));
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPMenue.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPMenue.setMaximumSize(new java.awt.Dimension(32767, 42));
+        jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jBnewCustomer.setText("neuer Kunde");
+        jBnewCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBnewCustomerActionPerformed(evt);
+            }
+        });
+        jPMenue.add(jBnewCustomer);
+
+        jBSave.setText("Speichern");
+        jBSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSaveActionPerformed(evt);
+            }
+        });
+        jPMenue.add(jBSave);
+
+        jBExport.setText("Export");
+        jPMenue.add(jBExport);
+
+        getContentPane().add(jPMenue);
+
+        jPSeperator.setMaximumSize(new java.awt.Dimension(32767, 10));
+
+        jSeparator1.setMaximumSize(new java.awt.Dimension(32767, 2));
+        jSeparator1.setMinimumSize(new java.awt.Dimension(2, 2));
+
+        javax.swing.GroupLayout jPSeperatorLayout = new javax.swing.GroupLayout(jPSeperator);
+        jPSeperator.setLayout(jPSeperatorLayout);
+        jPSeperatorLayout.setHorizontalGroup(
+            jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPSeperatorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPSeperatorLayout.setVerticalGroup(
+            jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPSeperatorLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+        );
+
+        getContentPane().add(jPSeperator);
+
+        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Klienten"));
+        jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Klient");
+        jTreeCustomer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane1.setViewportView(jTreeCustomer);
+
+        jPCustomers.add(jScrollPane1);
+
+        jPCustomor.setMinimumSize(new java.awt.Dimension(300, 200));
+
+        javax.swing.GroupLayout jPCustomorLayout = new javax.swing.GroupLayout(jPCustomor);
+        jPCustomor.setLayout(jPCustomorLayout);
+        jPCustomorLayout.setHorizontalGroup(
+            jPCustomorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
+        jPCustomorLayout.setVerticalGroup(
+            jPCustomorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+
+        jPCustomers.add(jPCustomor);
+
+        getContentPane().add(jPCustomers);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
+        String S = JOptionPane.showInputDialog("Bitte neuen Klienten Eingeben!");
+        CustomerTrachs ct = new CustomerTrachs(S);
+        AllTracks instance = AllTracks.getInstance();
+        instance.getAllCustomers().add(ct);
+        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        model.insertNodeInto(new DefaultMutableTreeNode(S), root, root.getChildCount());
+    }//GEN-LAST:event_jBnewCustomerActionPerformed
+
+    private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
+        OutputStream fos = null;
+        try {
+            fos = new FileOutputStream(System.getProperty("user.dir") + "/saveState");
+            System.out.println(System.getProperty("user.dir") + "/saveState");
+            ObjectOutputStream o = new ObjectOutputStream(fos);
+            AllTracks instance = AllTracks.getInstance();
+
+            o.writeObject(instance.getAllCustomers());
+
+            JOptionPane.showMessageDialog(this, "Der Zustand wurde gespeichert.");
+        } catch (FileNotFoundException e) {
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fos.close();
+            } catch (Exception e) {
+            }
+        }
+    }//GEN-LAST:event_jBSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +210,63 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBExport;
+    private javax.swing.JButton jBSave;
+    private javax.swing.JButton jBnewCustomer;
+    private javax.swing.JPanel jPCustomers;
+    private javax.swing.JPanel jPCustomor;
+    private javax.swing.JPanel jPMenue;
+    private javax.swing.JPanel jPSeperator;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTree jTreeCustomer;
     // End of variables declaration//GEN-END:variables
+
+    private void readSaveState() {
+        File state = new File(System.getProperty("user.dir") + "/saveState");
+        if (state.isFile()) {
+            String[] optionen = {"Ja", "Nein"};
+            int n = JOptionPane.showOptionDialog(null,
+                    "Das Programm wurde bei einem Nutzung unterbrochen."
+                    + " Möchten Sie den Zustand wiederherstellen?", // question
+                    "Zustand wiederherstellen", // title
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, // icon
+                    null, optionen, optionen[0]);
+            if (n == JOptionPane.YES_OPTION) {
+                InputStream fis = null;
+                try {
+                    fis = new FileInputStream(System.getProperty("user.dir") + "/saveState");
+                    ObjectInputStream o = new ObjectInputStream(fis);
+                    AllTracks instance = AllTracks.getInstance();
+                    ArrayList<CustomerTrachs> allCustomers = null;
+                    Object confObjekt = o.readObject();
+
+                    allCustomers = (ArrayList<CustomerTrachs>) confObjekt;
+                    instance.setAllCustomers(allCustomers);
+
+                } catch (IOException e) {
+                    System.err.println(e);
+                } catch (ClassNotFoundException e) {
+                    System.err.println(e);
+                } finally {
+                    try {
+                        fis.close();
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+    }
+
+    private void buildTree() {
+        AllTracks instance = AllTracks.getInstance();
+        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        for (CustomerTrachs cusomer : instance.getAllCustomers()) {
+            model.insertNodeInto(new DefaultMutableTreeNode(cusomer.getCustomername()), root, root.getChildCount());
+
+        }
+
+    }
 }
