@@ -14,14 +14,14 @@ import java.util.List;
  * @author Lars
  */
 public class CustomerTrachs implements Serializable{
-    private List customeritems = new ArrayList<TrackedTimeItem>() ;
+    private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
     private String customername;
 
     public CustomerTrachs(String customername) {
         this.customername = customername;
     }
 
-    public List getCustomeritems() {
+    public ArrayList<TrackedTimeItem> getCustomeritems() {
         return customeritems;
     }
 
