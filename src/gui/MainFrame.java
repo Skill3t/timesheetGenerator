@@ -7,6 +7,7 @@ package gui;
 
 import data.AllTracks;
 import data.CustomerTrachs;
+import data.TrackedTimeItem;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,7 +18,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -264,9 +264,11 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         for (CustomerTrachs cusomer : instance.getAllCustomers()) {
+            DefaultMutableTreeNode first = (DefaultMutableTreeNode) model.getRoot();
             model.insertNodeInto(new DefaultMutableTreeNode(cusomer.getCustomername()), root, root.getChildCount());
-
+            for (TrackedTimeItem ti : cusomer.getCustomeritems()){
+                 model.insertNodeInto(new DefaultMutableTreeNode(ti.getStartTime()), first, first.getChildCount());    
+            }
         }
-
     }
 }

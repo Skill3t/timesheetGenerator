@@ -15,5 +15,9 @@ public class TrackedTimeItem {
     private Date startTime;
     private Date endTime;
     private String kommand;
+
+    public Date getStartTime() {
+        return startTime;
+    }
     
 }
