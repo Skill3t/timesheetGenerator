@@ -19,5 +19,12 @@ public class TrackedTimeItem {
     public Date getStartTime() {
         return startTime;
     }
+
+    public TrackedTimeItem(Date startTime, Date endTime, String kommand) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.kommand = kommand;
+    }
+    
     
 }
