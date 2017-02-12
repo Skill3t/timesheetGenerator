@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -100,6 +99,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue.add(jBSave);
 
         jBExport.setText("Export");
+        jBExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBExportActionPerformed(evt);
+            }
+        });
         jPMenue.add(jBExport);
 
         getContentPane().add(jPMenue);
@@ -249,8 +253,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        CustomerTrachs userObject = (CustomerTrachs) selectedNode.getUserObject();
-        jLKlient.setText("Klient: " + userObject.getCustomername());
+        try {
+            CustomerTrachs userObject = (CustomerTrachs) selectedNode.getUserObject();
+            jLKlient.setText("Klient: " + userObject.getCustomername());
+        } catch (ClassCastException e) {
+
+        }
 
     }//GEN-LAST:event_jTreeCustomerValueChanged
 
@@ -267,6 +275,10 @@ public class MainFrame extends javax.swing.JFrame {
             TrackedTimeItem TTI = new TrackedTimeItem(createdDate, now, jTAction.getText());
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
             CustomerTrachs CT = (CustomerTrachs) selectedNode.getUserObject();
+
+            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+            model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
+
             CT.getCustomeritems().add(TTI);
         }
 
@@ -281,6 +293,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void jTActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTActionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTActionActionPerformed
+
+    private void jBExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExportActionPerformed
+        JOptionPane.showMessageDialog(this, "Leider noch nicht fertig Sorry for that");
+    }//GEN-LAST:event_jBExportActionPerformed
     public int getAgeInSeconds() {
 
         java.util.Date now = new java.util.Date();
@@ -384,21 +400,14 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         for (CustomerTrachs cusomer : instance.getAllCustomers()) {
-            DefaultMutableTreeNode first = (DefaultMutableTreeNode) model.getRoot();
-            model.insertNodeInto(new DefaultMutableTreeNode(cusomer), root, root.getChildCount());
+            DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
+            model.insertNodeInto(first, root, root.getChildCount());
             for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
-                model.insertNodeInto(new DefaultMutableTreeNode(ti.getStartTime()), first, first.getChildCount());
+                model.insertNodeInto(new DefaultMutableTreeNode(ti), first, first.getChildCount());
+                 
             }
         }
 
-        /*
-          for (CustomerTrachs cusomer : instance.getAllCustomers()) {
-            DefaultMutableTreeNode first = (DefaultMutableTreeNode) model.getRoot();
-            model.insertNodeInto(new DefaultMutableTreeNode(cusomer.getCustomername()), root, root.getChildCount());
-            for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
-                model.insertNodeInto(new DefaultMutableTreeNode(ti.getStartTime()), first, first.getChildCount());
-            }
-        }
-         */
+      
     }
 }
