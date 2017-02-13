@@ -22,7 +22,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-18,0,0,2,-113"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-14,0,0,2,-33"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
@@ -31,6 +31,9 @@
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPMenue">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="7e" green="64" red="19" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder/>
@@ -47,6 +50,9 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jBnewCustomer">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fc" green="fc" red="fc" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="neuer Kunde"/>
           </Properties>
           <Events>
@@ -55,6 +61,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jBSave">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fc" green="fc" red="fc" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Speichern"/>
           </Properties>
           <Events>
@@ -63,6 +72,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jBExport">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fc" green="fc" red="fc" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Export"/>
           </Properties>
           <Events>
@@ -73,6 +85,9 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPSeperator">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="8d" green="8b" red="f" type="rgb"/>
+        </Property>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[32767, 10]"/>
         </Property>
@@ -83,7 +98,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jSeparator1" pref="649" max="32767" attributes="0"/>
+                  <Component id="jSeparator1" pref="729" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -112,6 +127,9 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPCustomers">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="8d" green="8b" red="f" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Klienten"/>
@@ -140,6 +158,9 @@
           <SubComponents>
             <Component class="javax.swing.JTree" name="jTreeCustomer">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="fc" green="fc" red="fc" type="rgb"/>
+                </Property>
                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
                   <TreeModel code="Klient&#xa; "/>
                 </Property>
@@ -157,17 +178,20 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="8d" green="8b" red="f" type="rgb"/>
+            </Property>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jPCustomorMenue" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jPTrackItem" min="-2" pref="450" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jPCustomorMenue" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPTrackItem" pref="561" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -176,8 +200,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jPCustomorMenue" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="30" max="32767" attributes="0"/>
+                      <EmptySpace pref="42" max="32767" attributes="0"/>
                       <Component id="jPTrackItem" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -185,6 +210,9 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="jPCustomorMenue">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="8d" green="8b" red="f" type="rgb"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder/>
@@ -207,6 +235,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jBStartTimeTrack">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="fc" green="fc" red="fc" type="rgb"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Start"/>
                   </Properties>
                   <Events>
@@ -215,6 +246,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jBStopTimeTrack">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="fc" green="fc" red="fc" type="rgb"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Stopp"/>
                   </Properties>
                   <Events>
@@ -229,8 +263,20 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPTrackItem">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="8d" green="8b" red="f" type="rgb"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder/>
+                  </Border>
+                </Property>
+              </Properties>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                <Property name="alignment" type="int" value="0"/>
+              </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jTAction">
                   <Properties>
@@ -245,12 +291,25 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTActionActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox1">
+                <Component class="javax.swing.JComboBox" name="jcbKindOfAction">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="fc" green="fc" red="fc" type="rgb"/>
+                    </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="2">
+                      <StringArray count="12">
                         <StringItem index="0" value="B&#xfc;roorga"/>
-                        <StringItem index="1" value="Bonny"/>
+                        <StringItem index="1" value="Telefonat"/>
+                        <StringItem index="2" value="Email"/>
+                        <StringItem index="3" value="diverse Korrespondenz"/>
+                        <StringItem index="4" value="Besprechung"/>
+                        <StringItem index="5" value="Marketing"/>
+                        <StringItem index="6" value="Akquise"/>
+                        <StringItem index="7" value="Review"/>
+                        <StringItem index="8" value="Entwurf"/>
+                        <StringItem index="9" value="Review und Entwurf"/>
+                        <StringItem index="10" value="Recherche"/>
+                        <StringItem index="11" value="Verf&#xfc;gung"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -263,7 +322,7 @@
                     <Property name="text" type="java.lang.String" value="StartTime"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jStopTime">
+                <Component class="javax.swing.JLabel" name="jLStopTime">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Endtime"/>
                   </Properties>
