@@ -17,15 +17,30 @@ public class TrackedTimeItem implements Serializable{
     private Date startTime;
     private Date endTime;
     private String kommand;
+    private String kindOfAction;
 
     public Date getStartTime() {
         return startTime;
     }
 
-    public TrackedTimeItem(Date startTime, Date endTime, String kommand) {
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public String getKommand() {
+        return kommand;
+    }
+
+    public String getKindOfAction() {
+        return kindOfAction;
+    }
+    
+
+    public TrackedTimeItem(Date startTime, Date endTime, String kommand, String kindOfAction) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.kommand = kommand;
+        this.kindOfAction = kindOfAction;
     }
 
     @Override
