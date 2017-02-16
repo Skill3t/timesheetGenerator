@@ -75,12 +75,10 @@ public class Export {
                 cell.setCellValue(cd.sheetnames.get(i));
                 ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
                 for (int Row = 0; Row < convert.size(); Row++) {
-
                     for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
                         cell = sheet.getRow(9 + Row).getCell(Cell + 1);
                         cell.setCellValue(convert.get(Row)[Cell]);
                     }
-
                 }
             }
 
