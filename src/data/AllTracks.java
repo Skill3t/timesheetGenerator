@@ -6,6 +6,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,8 +16,8 @@ import java.util.List;
 public class AllTracks {
 
     private static AllTracks exempla;
-    private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
-
+    //private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
+    private  HashMap<String, CustomerTrachs> allCustomers = new HashMap<String, CustomerTrachs>();
     private AllTracks() {
     }
 
@@ -29,14 +30,14 @@ public class AllTracks {
         }
     }
 
-    public ArrayList<CustomerTrachs> getAllCustomers() {
+    public HashMap<String, CustomerTrachs> getAllCustomers() {
         return allCustomers;
     }
 
-    public void setAllCustomers(ArrayList<CustomerTrachs> allCustomers) {
+    public void setAllCustomers(HashMap<String, CustomerTrachs> allCustomers) {
         this.allCustomers = allCustomers;
     }
-    
-    
 
+ 
+    
 }
