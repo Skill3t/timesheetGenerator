@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -53,12 +54,29 @@ public class ConvertData {
             retline[1] = "" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
             cal.setTime(tti.getEndTime());
             retline[2] = "" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-            retline[3] = "";
-            retline[4] = "";
+
+            long diff = tti.getEndTime().getTime() - tti.getStartTime().getTime();
+
+            retline[3] = "" + TimeUnit.MILLISECONDS.toMinutes(diff);
+            String curTime = String.format("%01d,%02d",
+                    TimeUnit.MILLISECONDS.toHours(diff) % 24,
+                    ((TimeUnit.MILLISECONDS.toMinutes(diff)* 100L )/ 60L) % 100L);
+   
+            //System.out.println(((TimeUnit.MILLISECONDS.toMinutes(diff)* 100L )/ 60L) % 100L);
+            retline[4] = curTime;
             retline[5] = ti.getCustomername();
             retline[6] = tti.getKindOfAction();
             retline[7] = tti.getKommand();
             allreturn.add(retline);
+
+            /*
+                  Calendar cal = Calendar.getInstance();
+        java.util.Date now = new java.util.Date();
+        cal.setTime(now);
+        long diff = now.getTime() - createdDate.getTime();//as given
+        String curTime = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(diff) % 24, TimeUnit.MILLISECONDS.toMinutes(diff) % 60, TimeUnit.MILLISECONDS.toSeconds(diff) % 60);
+        return curTime;
+             */
         }
         return allreturn;
     }

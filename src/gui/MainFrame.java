@@ -443,7 +443,6 @@ public class MainFrame extends javax.swing.JFrame {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
         cal.setTime(now);
-
         long diff = now.getTime() - createdDate.getTime();//as given
         String curTime = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(diff) % 24, TimeUnit.MILLISECONDS.toMinutes(diff) % 60, TimeUnit.MILLISECONDS.toSeconds(diff) % 60);
         return curTime;

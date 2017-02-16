@@ -70,7 +70,9 @@ public class Export {
             ConvertData cd = new ConvertData();
             for (int i = 0; i < cd.getSheetnames().size(); i++) {
                 workbook.cloneSheet(0, cd.sheetnames.get(i));
-                sheet = workbook.getSheetAt(i+1);
+                sheet = workbook.getSheetAt(i + 1);
+                cell = sheet.getRow(0).getCell(1);
+                cell.setCellValue(cd.sheetnames.get(i));
                 ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
                 for (int Row = 0; Row < convert.size(); Row++) {
 
