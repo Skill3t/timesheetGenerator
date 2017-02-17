@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,7 +32,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import logic.ConvertData;
 import logic.Export;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
@@ -57,11 +55,14 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         readSaveState();
         buildTree();
-
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (JOptionPane.showConfirmDialog(null, "Wollen sie Speicher und Schließen?", "Wirklich schließen?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                if (JOptionPane.showConfirmDialog(null, 
+                        "Wollen sie Speicher und Schließen?", 
+                        "Wirklich schließen?", 
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     if (save()) {
 
                         JOptionPane.showMessageDialog(null, "Der Zustand wurde gespeichert.", "Speichern", JOptionPane.INFORMATION_MESSAGE);
@@ -69,6 +70,8 @@ public class MainFrame extends javax.swing.JFrame {
                     } else {
                         JOptionPane.showMessageDialog(null, "Fehler beim Speichern", "Speichern", JOptionPane.ERROR_MESSAGE);
                     }
+                } else {
+                    System.exit(0);
                 }
             }
         });
@@ -316,8 +319,8 @@ public class MainFrame extends javax.swing.JFrame {
                 o.writeObject(instance.getAllCustomers());
                 o.writeObject(jLTemplatePath);
                 return true;
-
             } catch (FileNotFoundException e) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, e);
             } catch (IOException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
@@ -328,7 +331,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         return false;
-
     }
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
@@ -338,35 +340,38 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (ClassCastException e) {
 
         }
-
     }//GEN-LAST:event_jTreeCustomerValueChanged
 
     private void jBStopTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStopTimeTrackActionPerformed
-        if (jTAction.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
+        if (createdDate == null) {
+            JOptionPane.showMessageDialog(this, "Erst eine Track starten dann stoppen");
             return;
         }
-        if (createdDate == null) {
+        if (jTAction.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
             return;
         } else {
             jLTime.setText("Zeit in Sekunden: " + getAgeInSeconds() + "s");
             java.util.Date now = new java.util.Date();
             TrackedTimeItem TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
             jTAction.setText("");
-            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-//Achtung !!!!!!!
-            CustomerTrachs CT = (CustomerTrachs) selectedNode.getUserObject();
-            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-            model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
-            CT.getCustomeritems().add(TTI);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(TTI.getEndTime());
-            String curTime = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-            jLStopTime.setText("Ende: " + curTime);
-            jLTime.setText("Zeit");
-            jLTime.setForeground(Color.BLACK);
-            timer.cancel();
-            timer = null;
+            try {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+                CustomerTrachs CT = (CustomerTrachs) selectedNode.getUserObject();
+                DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+                model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
+                CT.getCustomeritems().add(TTI);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(TTI.getEndTime());
+                String curTime = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+                jLStopTime.setText("Ende: " + curTime);
+                jLTime.setText("Zeit");
+                jLTime.setForeground(Color.BLACK);
+                timer.cancel();
+                timer = null;
+            } catch (ClassCastException e) {
+                JOptionPane.showMessageDialog(this, "Bitte im Baum den Klienten auswählen.");
+            }
         }
     }//GEN-LAST:event_jBStopTimeTrackActionPerformed
 
@@ -382,7 +387,6 @@ public class MainFrame extends javax.swing.JFrame {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
                 jLTime.setText("Zeit " + getAgeInSeconds());
             }
         }, 1000, 1000);
@@ -394,26 +398,26 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTActionActionPerformed
 
     private void jBExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExportActionPerformed
-
+        if (jLTemplatePath.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Fehler kein Tamplate gefunden", "Export", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         JFileChooser directoryChooser = new JFileChooser();
         directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         directoryChooser.showOpenDialog(this);
         if (directoryChooser.getSelectedFile() != null) {
             Export exp = new Export(directoryChooser.getSelectedFile().toString(), jLTemplatePath.getText());
-
-            //  ConvertData cd = new ConvertData();
             try {
                 if (exp.convertXls()) {
                     JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + directoryChooser.getSelectedFile().toString());
                     //export entity delete
-
                 } else {
                     JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
                 }
             } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }//GEN-LAST:event_jBExportActionPerformed
 
@@ -526,16 +530,12 @@ public class MainFrame extends javax.swing.JFrame {
                     ObjectInputStream o = new ObjectInputStream(fis);
                     AllTracks instance = AllTracks.getInstance();
                     HashMap<String, CustomerTrachs> allCustomers = null;
-
                     Object confObjekt = o.readObject();
-
                     allCustomers = (HashMap<String, CustomerTrachs>) confObjekt;
                     confObjekt = o.readObject();
                     jLTemplatePath = (JLabel) confObjekt;
                     jPMenue.add(jLTemplatePath);
-
                     SwingUtilities.updateComponentTreeUI(this);
-
                     instance.setAllCustomers(allCustomers);
                 } catch (IOException | ClassNotFoundException e) {
                     System.err.println(e);
@@ -552,10 +552,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void buildTree() {
         AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
-
         Set set = instance.getAllCustomers().entrySet();
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
@@ -565,10 +563,8 @@ public class MainFrame extends javax.swing.JFrame {
             model.insertNodeInto(first, root, root.getChildCount());
             for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
                 model.insertNodeInto(new DefaultMutableTreeNode(ti), first, first.getChildCount());
-
             }
         }
         SwingUtilities.updateComponentTreeUI(this);
     }
-
 }
