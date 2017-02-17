@@ -60,40 +60,33 @@ public class Export {
         }
     }
 
-    public boolean convertXls() throws IOException {
-        try {
-            FileInputStream file = new FileInputStream(templatePath);
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
+    public boolean convertXls() throws IOException, FileNotFoundException {
+        FileInputStream file = new FileInputStream(templatePath);
+        XSSFWorkbook workbook = new XSSFWorkbook(file);
 
-            XSSFSheet sheet;
-            Cell cell = null;
-            ConvertData cd = new ConvertData();
-            for (int i = 0; i < cd.getSheetnames().size(); i++) {
-                workbook.cloneSheet(0, cd.sheetnames.get(i));
-                sheet = workbook.getSheetAt(i + 1);
-                cell = sheet.getRow(0).getCell(1);
-                cell.setCellValue(cd.sheetnames.get(i));
-                ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
-                for (int Row = 0; Row < convert.size(); Row++) {
-                    for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
-                        cell = sheet.getRow(9 + Row).getCell(Cell + 1);
-                        cell.setCellValue(convert.get(Row)[Cell]);
-                    }
+        XSSFSheet sheet;
+        Cell cell = null;
+        ConvertData cd = new ConvertData();
+        for (int i = 0; i < cd.getSheetnames().size(); i++) {
+            workbook.cloneSheet(0, cd.sheetnames.get(i));
+            sheet = workbook.getSheetAt(i + 1);
+            cell = sheet.getRow(0).getCell(1);
+            cell.setCellValue(cd.sheetnames.get(i));
+            ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
+            for (int Row = 0; Row < convert.size(); Row++) {
+                for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
+                    cell = sheet.getRow(9 + Row).getCell(Cell + 1);
+                    cell.setCellValue(convert.get(Row)[Cell]);
                 }
             }
-            file.close();
-
-            FileOutputStream outFile = new FileOutputStream(new File(newPath + "/TimeSheetExport.xlsx"));
-            workbook.write(outFile);
-            outFile.close();
-            file.close();
-
-        } catch (FileNotFoundException e) {
-
-        } catch (IOException e) {
-
         }
+        file.close();
 
+        FileOutputStream outFile = new FileOutputStream(new File(newPath + "/TimeSheetExport.xlsx"));
+        workbook.write(outFile);
+        outFile.close();
+        file.close();
         return true;
+
     }
 }
