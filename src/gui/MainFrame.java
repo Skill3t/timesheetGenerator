@@ -112,6 +112,7 @@ public class MainFrame extends javax.swing.JFrame {
         jSStartTime = new javax.swing.JSpinner();
         jSStopTime = new javax.swing.JSpinner();
         jBSaveTaskChange = new javax.swing.JButton();
+        jBDublicateTask = new javax.swing.JButton();
         jBDeleteTrack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -119,7 +120,7 @@ public class MainFrame extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(740, 580));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPMenue.setBackground(new java.awt.Color(25, 100, 126));
+        jPMenue.setBackground(new java.awt.Color(169, 1, 0));
         jPMenue.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPMenue.setMaximumSize(new java.awt.Dimension(32767, 42));
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
@@ -151,6 +152,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBExport);
 
+        jBTamplate.setBackground(new java.awt.Color(252, 252, 252));
         jBTamplate.setText("Template");
         jBTamplate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,7 +161,8 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBTamplate);
 
-        jBDeleteTreeleafs.setText("Lösche Tasks");
+        jBDeleteTreeleafs.setBackground(new java.awt.Color(252, 252, 252));
+        jBDeleteTreeleafs.setText("Formular leeren");
         jBDeleteTreeleafs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBDeleteTreeleafsActionPerformed(evt);
@@ -169,7 +172,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPMenue);
 
-        jPSeperator.setBackground(new java.awt.Color(15, 139, 141));
+        jPSeperator.setBackground(new java.awt.Color(169, 1, 0));
         jPSeperator.setMaximumSize(new java.awt.Dimension(32767, 10));
 
         jSeparator1.setMaximumSize(new java.awt.Dimension(32767, 2));
@@ -181,7 +184,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeperatorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1109, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE))
         );
         jPSeperatorLayout.setVerticalGroup(
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,12 +196,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPSeperator);
 
-        jPCustomers.setBackground(new java.awt.Color(15, 139, 141));
-        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Klienten"));
+        jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
+        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Mandant"));
+        jPCustomers.setPreferredSize(new java.awt.Dimension(760, 560));
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(23, 40));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(240, 384));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(440, 380));
 
         jTreeCustomer.setBackground(new java.awt.Color(252, 252, 252));
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mandanten");
@@ -214,14 +218,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPCustomers.add(jScrollPane1);
 
-        jPanel1.setBackground(new java.awt.Color(15, 139, 141));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
-        jPCustomorMenue.setBackground(new java.awt.Color(15, 139, 141));
+        jPCustomorMenue.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomorMenue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPCustomorMenue.setMinimumSize(new java.awt.Dimension(450, 41));
         jPCustomorMenue.setPreferredSize(new java.awt.Dimension(450, 50));
 
-        jLKlient.setText("Klient: X");
+        jLKlient.setText("Mandant: X");
         jPCustomorMenue.add(jLKlient);
 
         jBStartTimeTrack.setBackground(new java.awt.Color(252, 252, 252));
@@ -247,6 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLTime.setText("Zeit: ");
         jPCustomorMenue.add(jLTime);
 
+        jBDeleteCustomer.setBackground(new java.awt.Color(252, 252, 252));
         jBDeleteCustomer.setText("Lösche Mandanten");
         jBDeleteCustomer.setEnabled(false);
         jBDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
@@ -256,7 +261,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPCustomorMenue.add(jBDeleteCustomer);
 
-        jPTrackItem.setBackground(new java.awt.Color(15, 139, 141));
+        jPTrackItem.setBackground(new java.awt.Color(204, 204, 204));
         jPTrackItem.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPTrackItem.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -280,6 +285,7 @@ public class MainFrame extends javax.swing.JFrame {
         jSStopTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
         jPTrackItem.add(jSStopTime);
 
+        jBSaveTaskChange.setBackground(new java.awt.Color(252, 252, 252));
         jBSaveTaskChange.setText("speichern");
         jBSaveTaskChange.setEnabled(false);
         jBSaveTaskChange.setMaximumSize(new java.awt.Dimension(80, 29));
@@ -292,6 +298,17 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPTrackItem.add(jBSaveTaskChange);
 
+        jBDublicateTask.setBackground(new java.awt.Color(252, 252, 252));
+        jBDublicateTask.setText("duplizieren");
+        jBDublicateTask.setEnabled(false);
+        jBDublicateTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDublicateTaskActionPerformed(evt);
+            }
+        });
+        jPTrackItem.add(jBDublicateTask);
+
+        jBDeleteTrack.setBackground(new java.awt.Color(252, 252, 252));
         jBDeleteTrack.setText("löschen");
         jBDeleteTrack.setEnabled(false);
         jBDeleteTrack.setMaximumSize(new java.awt.Dimension(90, 29));
@@ -309,9 +326,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -331,7 +348,7 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
-        String S = JOptionPane.showInputDialog("Bitte neuen Klienten Eingeben!");
+        String S = JOptionPane.showInputDialog("Bitte neuen Mandanten Eingeben!");
         if (S != null) {
             CustomerTracks ct = new CustomerTracks(S);
             AllTracks instance = AllTracks.getInstance();
@@ -376,21 +393,23 @@ public class MainFrame extends javax.swing.JFrame {
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         String s = selectedNode.getUserObject().getClass().getName();
+        Date now;
         try {
             switch (s) {
                 case "data.CustomerTracks":
                     CustomerTracks userObject = (CustomerTracks) selectedNode.getUserObject();
-                    jLKlient.setText("Klient: " + userObject.getCustomername());
+                    jLKlient.setText("Mandant: " + userObject.getCustomername());
                     jTAction.setText("");
                     jcbKindOfAction.setSelectedIndex(0);
-                    Date now = new java.util.Date();
+                    now = new java.util.Date();
                     jSStartTime.setValue(now);
                     jSStopTime.setValue(now);
                     jBDeleteTrack.setEnabled(false);
                     jBSaveTaskChange.setEnabled(false);
                     jBStartTimeTrack.setEnabled(true);
-                    //  jBStopTimeTrack.setEnabled(true);
                     jBDeleteCustomer.setEnabled(true);
+                    jBDublicateTask.setEnabled(false);
+
                     break;
                 case "data.TrackedTimeItem":
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
@@ -403,7 +422,23 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDeleteCustomer.setEnabled(false);
                     jBStartTimeTrack.setEnabled(false);
                     jBStopTimeTrack.setEnabled(false);
+                    jBDublicateTask.setEnabled(true);
                     break;
+                case "java.lang.String":
+                    jLKlient.setText("Mandant: ");
+                    jTAction.setText("");
+                    jcbKindOfAction.setSelectedIndex(0);
+                    now = new java.util.Date();
+                    jSStartTime.setValue(now);
+                    jSStopTime.setValue(now);
+                    jBDeleteTrack.setEnabled(false);
+                    jBSaveTaskChange.setEnabled(false);
+                    jBDeleteCustomer.setEnabled(false);
+                    jBStartTimeTrack.setEnabled(false);
+                    jBStopTimeTrack.setEnabled(false);
+                    jBDublicateTask.setEnabled(false);
+                    break;
+
             }
 
         } catch (ClassCastException e) {
@@ -414,29 +449,44 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBStopTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStopTimeTrackActionPerformed
         jBStartTimeTrack.setEnabled(true);
         jBStopTimeTrack.setEnabled(false);
+        jTreeCustomer.setEnabled(true);
         if (jTAction.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
             return;
         } else {
-            jLTime.setText("Zeit in Sekunden: " + getAgeInSeconds() + "s");
             java.util.Date now = new java.util.Date();
             jSStopTime.setValue(now);
-            TrackedTimeItem TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
-            jTAction.setText("");
+            TrackedTimeItem TTI;
             try {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-                CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
-                DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
-                CT.getCustomeritems().add(TTI);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(TTI.getEndTime());
+                String name = selectedNode.getUserObject().getClass().getName();
+                if (name.equals("data.CustomerTracks")) {
+                    CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
+                    DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
+                    model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
+                    CT.getCustomeritems().add(TTI);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(TTI.getEndTime());
+
+                } else if (name.equals("data.TrackedTimeItem")) {
+                    DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
+                    CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
+                    DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
+                    model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
+                    CT.getCustomeritems().add(TTI);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(TTI.getEndTime());
+                }
+                jTAction.setText("");
                 jLTime.setText("Zeit");
                 jLTime.setForeground(Color.BLACK);
                 timer.cancel();
                 timer = null;
+
             } catch (ClassCastException e) {
-                JOptionPane.showMessageDialog(this, "Bitte im Baum den Klienten auswählen.");
+                JOptionPane.showMessageDialog(this, "Fehler bitte an Programmierer wenden");
             }
         }
     }//GEN-LAST:event_jBStopTimeTrackActionPerformed
@@ -444,7 +494,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBStartTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStartTimeTrackActionPerformed
         jBStartTimeTrack.setEnabled(false);
         jBStopTimeTrack.setEnabled(true);
-
+        jTreeCustomer.setEnabled(false);
         createdDate = new java.util.Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(createdDate);
@@ -498,7 +548,7 @@ public class MainFrame extends javax.swing.JFrame {
             instance.getAllCustomers().remove(CT.getCustomername());
             buildTree();
         } catch (ClassCastException ex) {
-            JOptionPane.showMessageDialog(null, "Fehler bitte einen Klienten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBDeleteCustomerActionPerformed
 
@@ -521,15 +571,12 @@ public class MainFrame extends javax.swing.JFrame {
         Set set = instance.getAllCustomers().entrySet();
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
-
             Map.Entry mentry = (Map.Entry) iterator.next();
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>();
             cusomer.setCustomeritems(customeritems);
-
         }
         buildTree();
-
     }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
 
     private void jBSaveTaskChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveTaskChangeActionPerformed
@@ -558,6 +605,27 @@ public class MainFrame extends javax.swing.JFrame {
         get.getCustomeritems().remove(TI);
         buildTree();
     }//GEN-LAST:event_jBDeleteTrackActionPerformed
+
+    private void jBDublicateTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDublicateTaskActionPerformed
+        jBStopTimeTrack.setEnabled(true);
+        jTreeCustomer.setEnabled(false);
+
+        createdDate = new java.util.Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(createdDate);
+        jSStartTime.setValue(createdDate);
+        jLTime.setText("Zeit ");
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                jLTime.setText("Zeit " + getAgeInSeconds());
+            }
+        }, 1000, 1000);
+        jLTime.setForeground(Color.red);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBDublicateTaskActionPerformed
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -606,6 +674,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBDeleteCustomer;
     private javax.swing.JButton jBDeleteTrack;
     private javax.swing.JButton jBDeleteTreeleafs;
+    private javax.swing.JButton jBDublicateTask;
     private javax.swing.JButton jBExport;
     private javax.swing.JButton jBSave;
     private javax.swing.JButton jBSaveTaskChange;
@@ -688,6 +757,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBStartTimeTrack.setEnabled(false);
         jBStopTimeTrack.setEnabled(false);
         jBDeleteCustomer.setEnabled(false);
+        jBDublicateTask.setEnabled(false);
         SwingUtilities.updateComponentTreeUI(this);
     }
 }

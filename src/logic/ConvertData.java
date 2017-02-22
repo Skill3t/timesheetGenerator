@@ -51,19 +51,22 @@ public class ConvertData {
             Calendar cal = Calendar.getInstance();
             cal.setTime(tti.getStartTime());
             retline[0] = "" + cal.get(Calendar.DAY_OF_MONTH) + "." + cal.get(Calendar.MONTH) + "." + cal.get(Calendar.YEAR);
-            retline[1] = "" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-            cal.setTime(tti.getEndTime());
-            retline[2] = "" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+            retline[1] =String.format("%01d:%02d",  cal.get(Calendar.HOUR_OF_DAY) , + cal.get(Calendar.MINUTE));
+            Calendar calolder = Calendar.getInstance();
+            calolder.setTime(tti.getEndTime());
+            retline[2] = String.format("%01d:%02d", calolder.get(Calendar.HOUR_OF_DAY) , + calolder.get(Calendar.MINUTE));
 
             long diff = tti.getEndTime().getTime() - tti.getStartTime().getTime();
 
-            retline[3] = "" + TimeUnit.MILLISECONDS.toMinutes(diff);
-            String curTime = String.format("%01d,%02d",
-                    TimeUnit.MILLISECONDS.toHours(diff) % 24,
-                    ((TimeUnit.MILLISECONDS.toMinutes(diff)* 100L )/ 60L) % 100L);
+            retline[3] =String.format("%02d", (((calolder.get(Calendar.HOUR_OF_DAY) - cal.get(Calendar.HOUR_OF_DAY))*60)+ (calolder.get(Calendar.MINUTE)-cal.get(Calendar.MINUTE))));
+            //Fehler 
+            
+            String houers = String.format("%01d,%02d",
+                    (calolder.get(Calendar.HOUR_OF_DAY) - cal.get(Calendar.HOUR_OF_DAY)),
+                    ((((calolder.get(Calendar.MINUTE)-cal.get(Calendar.MINUTE))* 100L)/ 60L) % 100L));
    
             //System.out.println(((TimeUnit.MILLISECONDS.toMinutes(diff)* 100L )/ 60L) % 100L);
-            retline[4] = curTime;
+            retline[4] = houers;
             retline[5] = ti.getCustomername();
             retline[6] = tti.getKindOfAction();
             retline[7] = tti.getKommand();
