@@ -43,6 +43,22 @@ public class TrackedTimeItem implements Serializable{
         this.kindOfAction = kindOfAction;
     }
 
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setKommand(String kommand) {
+        this.kommand = kommand;
+    }
+
+    public void setKindOfAction(String kindOfAction) {
+        this.kindOfAction = kindOfAction;
+    }
+
     @Override
     public String toString() {
         // then you can avoid using toString

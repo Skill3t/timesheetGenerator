@@ -205,8 +205,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jPCustomorMenue" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jPTrackItem" pref="773" max="32767" attributes="0"/>
+                          <Component id="jPTrackItem" max="32767" attributes="0"/>
+                          <Component id="jPCustomorMenue" pref="842" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -217,7 +217,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jPCustomorMenue" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jPTrackItem" min="-2" max="-2" attributes="0"/>
+                      <Component id="jPTrackItem" min="-2" pref="57" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -255,6 +255,7 @@
                       <Color blue="fc" green="fc" red="fc" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Start"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBStartTimeTrackActionPerformed"/>
@@ -266,6 +267,7 @@
                       <Color blue="fc" green="fc" red="fc" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Stopp"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBStopTimeTrackActionPerformed"/>
@@ -279,6 +281,7 @@
                 <Component class="javax.swing.JButton" name="jBDeleteCustomer">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="L&#xf6;sche Mandanten"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBDeleteCustomerActionPerformed"/>
@@ -322,19 +325,20 @@
                     </Property>
                     <Property name="editable" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="12">
-                        <StringItem index="0" value="B&#xfc;roorga"/>
-                        <StringItem index="1" value="Telefonat"/>
-                        <StringItem index="2" value="Email"/>
-                        <StringItem index="3" value="diverse Korrespondenz"/>
-                        <StringItem index="4" value="Besprechung"/>
-                        <StringItem index="5" value="Marketing"/>
-                        <StringItem index="6" value="Akquise"/>
-                        <StringItem index="7" value="Review"/>
-                        <StringItem index="8" value="Entwurf"/>
-                        <StringItem index="9" value="Review und Entwurf"/>
-                        <StringItem index="10" value="Recherche"/>
-                        <StringItem index="11" value="Verf&#xfc;gung"/>
+                      <StringArray count="13">
+                        <StringItem index="0" value=" "/>
+                        <StringItem index="1" value="B&#xfc;roorga"/>
+                        <StringItem index="2" value="Telefonat"/>
+                        <StringItem index="3" value="Email"/>
+                        <StringItem index="4" value="diverse Korrespondenz"/>
+                        <StringItem index="5" value="Besprechung"/>
+                        <StringItem index="6" value="Marketing"/>
+                        <StringItem index="7" value="Akquise"/>
+                        <StringItem index="8" value="Review"/>
+                        <StringItem index="9" value="Entwurf"/>
+                        <StringItem index="10" value="Review und Entwurf"/>
+                        <StringItem index="11" value="Recherche"/>
+                        <StringItem index="12" value="Verf&#xfc;gung"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -355,6 +359,42 @@
                       <SpinnerModel initial="now" stepSize="12" type="date"/>
                     </Property>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="jBSaveTaskChange">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="speichern"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[80, 29]"/>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[80, 29]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[90, 29]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBSaveTaskChangeActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="jBDeleteTrack">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="l&#xf6;schen"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[90, 29]"/>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[90, 29]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[90, 29]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBDeleteTrackActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
