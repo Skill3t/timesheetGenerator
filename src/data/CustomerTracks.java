@@ -13,11 +13,11 @@ import java.util.List;
  *
  * @author Lars
  */
-public class CustomerTrachs implements Serializable{
+public class CustomerTracks implements Serializable{
     private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
     private String customername;
 
-    public CustomerTrachs(String customername) {
+    public CustomerTracks(String customername) {
         this.customername = customername;
     }
 
@@ -28,6 +28,11 @@ public class CustomerTrachs implements Serializable{
     public String getCustomername() {
         return customername;
     }
+
+    public void setCustomeritems(ArrayList<TrackedTimeItem> customeritems) {
+        this.customeritems = customeritems;
+    }
+    
     
     @Override
     public String toString() {

@@ -6,7 +6,7 @@
 package gui;
 
 import data.AllTracks;
-import data.CustomerTrachs;
+import data.CustomerTracks;
 import data.TrackedTimeItem;
 import java.awt.Color;
 import java.io.File;
@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private Date createdDate;
+    private Date createdDate = new Date();
     private Timer timer;
     private JLabel jLTemplatePath = new JLabel();
 
@@ -58,10 +59,10 @@ public class MainFrame extends javax.swing.JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (JOptionPane.showConfirmDialog(null, 
-                        "Wollen sie Speicher und Schließen?", 
-                        "Wirklich schließen?", 
-                        JOptionPane.YES_NO_OPTION, 
+                if (JOptionPane.showConfirmDialog(null,
+                        "Wollen sie Speicher und Schließen?",
+                        "Wirklich schließen?",
+                        JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     if (save()) {
 
@@ -91,6 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBSave = new javax.swing.JButton();
         jBExport = new javax.swing.JButton();
         jBTamplate = new javax.swing.JButton();
+        jBDeleteTreeleafs = new javax.swing.JButton();
         jPSeperator = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jPCustomers = new javax.swing.JPanel();
@@ -106,8 +108,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPTrackItem = new javax.swing.JPanel();
         jTAction = new javax.swing.JTextField();
         jcbKindOfAction = new javax.swing.JComboBox<>();
-        jLStartTime = new javax.swing.JLabel();
-        jLStopTime = new javax.swing.JLabel();
+        jSStartTime = new javax.swing.JSpinner();
+        jSStopTime = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Clienten Time Sheet Generator");
@@ -120,7 +122,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jBnewCustomer.setBackground(new java.awt.Color(252, 252, 252));
-        jBnewCustomer.setText("neuer Kunde");
+        jBnewCustomer.setText("neuer Mandant");
         jBnewCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBnewCustomerActionPerformed(evt);
@@ -154,6 +156,14 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBTamplate);
 
+        jBDeleteTreeleafs.setText("Lösche Tasks");
+        jBDeleteTreeleafs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDeleteTreeleafsActionPerformed(evt);
+            }
+        });
+        jPMenue.add(jBDeleteTreeleafs);
+
         getContentPane().add(jPMenue);
 
         jPSeperator.setBackground(new java.awt.Color(15, 139, 141));
@@ -168,7 +178,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeperatorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1109, Short.MAX_VALUE))
         );
         jPSeperatorLayout.setVerticalGroup(
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,10 +195,10 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(23, 40));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(120, 384));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(240, 384));
 
         jTreeCustomer.setBackground(new java.awt.Color(252, 252, 252));
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Klienten");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mandanten");
         jTreeCustomer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jTreeCustomer.setMaximumSize(new java.awt.Dimension(100, 30));
         jTreeCustomer.setPreferredSize(new java.awt.Dimension(150, 19));
@@ -232,7 +242,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLTime.setText("Zeit: ");
         jPCustomorMenue.add(jLTime);
 
-        jBDeleteCustomer.setText("Lösche Klient");
+        jBDeleteCustomer.setText("Lösche Mandanten");
         jBDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBDeleteCustomerActionPerformed(evt);
@@ -254,14 +264,15 @@ public class MainFrame extends javax.swing.JFrame {
         jPTrackItem.add(jTAction);
 
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
+        jcbKindOfAction.setEditable(true);
         jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Büroorga", "Telefonat", "Email", "diverse Korrespondenz", "Besprechung", "Marketing", "Akquise", "Review", "Entwurf", "Review und Entwurf", "Recherche", "Verfügung" }));
         jPTrackItem.add(jcbKindOfAction);
 
-        jLStartTime.setText("StartTime");
-        jPTrackItem.add(jLStartTime);
+        jSStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        jPTrackItem.add(jSStartTime);
 
-        jLStopTime.setText("Endtime");
-        jPTrackItem.add(jLStopTime);
+        jSStopTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        jPTrackItem.add(jSStopTime);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -270,14 +281,14 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPCustomorMenue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
+                    .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPCustomorMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPTrackItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -292,7 +303,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Klienten Eingeben!");
         if (S != null) {
-            CustomerTrachs ct = new CustomerTrachs(S);
+            CustomerTracks ct = new CustomerTracks(S);
             AllTracks instance = AllTracks.getInstance();
             instance.getAllCustomers().put(ct.getCustomername(), ct);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
@@ -334,8 +345,26 @@ public class MainFrame extends javax.swing.JFrame {
     }
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+        System.out.println(selectedNode.getUserObject().getClass().getName());
+        String s = selectedNode.getUserObject().getClass().getName();
         try {
-            CustomerTrachs userObject = (CustomerTrachs) selectedNode.getUserObject();
+            switch (s) {
+                case "data.CustomerTracks":
+                    System.out.println(1);
+                    break;
+                case "data.TrackedTimeItem":
+                    System.out.println(2);
+
+                    break;
+            }
+            
+            /*
+                String s = conf.getClass().getName();
+        switch (s) {
+            case "fachlogik.konfigurator.CSVConfigurator":
+            */
+         
+            CustomerTracks userObject = (CustomerTracks) selectedNode.getUserObject();
             jLKlient.setText("Klient: " + userObject.getCustomername());
         } catch (ClassCastException e) {
 
@@ -353,18 +382,17 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             jLTime.setText("Zeit in Sekunden: " + getAgeInSeconds() + "s");
             java.util.Date now = new java.util.Date();
+            jSStopTime.setValue(now);
             TrackedTimeItem TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
             jTAction.setText("");
             try {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-                CustomerTrachs CT = (CustomerTrachs) selectedNode.getUserObject();
+                CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
                 DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
                 model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
                 CT.getCustomeritems().add(TTI);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(TTI.getEndTime());
-                String curTime = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-                jLStopTime.setText("Ende: " + curTime);
                 jLTime.setText("Zeit");
                 jLTime.setForeground(Color.BLACK);
                 timer.cancel();
@@ -376,21 +404,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBStopTimeTrackActionPerformed
 
     private void jBStartTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStartTimeTrackActionPerformed
-        createdDate = new java.util.Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(createdDate);
-        String curTime = String.format("%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
-        jLStartTime.setText("Start: " + curTime);
-        jLStopTime.setText("Zeit");
-        jLTime.setText("Zeit ");
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                jLTime.setText("Zeit " + getAgeInSeconds());
-            }
-        }, 1000, 1000);
-        jLTime.setForeground(Color.red);
+        if (true) { //bedingung für zwei mal starten ka wie kommt noch 
+            createdDate = new java.util.Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(createdDate);
+            jSStartTime.setValue(createdDate);
+            jLTime.setText("Zeit ");
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    jLTime.setText("Zeit " + getAgeInSeconds());
+                }
+            }, 1000, 1000);
+            jLTime.setForeground(Color.red);
+        } else {
+            JOptionPane.showMessageDialog(null, "Fehler 2* Start betätigt", "Fehler", JOptionPane.ERROR_MESSAGE);
+
+        }
+
     }//GEN-LAST:event_jBStartTimeTrackActionPerformed
 
     private void jTActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTActionActionPerformed
@@ -423,11 +455,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jBDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteCustomerActionPerformed
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        CustomerTrachs CT = (CustomerTrachs) selectedNode.getUserObject();
-        AllTracks instance = AllTracks.getInstance();
-        instance.getAllCustomers().remove(CT);
-        buildTree();
-
+        try {
+            CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
+            AllTracks instance = AllTracks.getInstance();
+            instance.getAllCustomers().remove(CT.getCustomername());
+            buildTree();
+        } catch (ClassCastException ex) {
+            JOptionPane.showMessageDialog(null, "Fehler bitte einen Klienten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jBDeleteCustomerActionPerformed
 
     private void jBTamplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBTamplateActionPerformed
@@ -443,6 +478,22 @@ public class MainFrame extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jBTamplateActionPerformed
+
+    private void jBDeleteTreeleafsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteTreeleafsActionPerformed
+        AllTracks instance = AllTracks.getInstance();
+        Set set = instance.getAllCustomers().entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
+            ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>();
+            cusomer.setCustomeritems(customeritems);
+
+        }
+        buildTree();
+
+    }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -489,6 +540,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBDeleteCustomer;
+    private javax.swing.JButton jBDeleteTreeleafs;
     private javax.swing.JButton jBExport;
     private javax.swing.JButton jBSave;
     private javax.swing.JButton jBStartTimeTrack;
@@ -496,8 +548,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBTamplate;
     private javax.swing.JButton jBnewCustomer;
     private javax.swing.JLabel jLKlient;
-    private javax.swing.JLabel jLStartTime;
-    private javax.swing.JLabel jLStopTime;
     private javax.swing.JLabel jLTime;
     private javax.swing.JPanel jPCustomers;
     private javax.swing.JPanel jPCustomorMenue;
@@ -505,6 +555,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPSeperator;
     private javax.swing.JPanel jPTrackItem;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner jSStartTime;
+    private javax.swing.JSpinner jSStopTime;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTAction;
@@ -517,8 +569,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (state.isFile()) {
             String[] optionen = {"Ja", "Nein"};
             int n = JOptionPane.showOptionDialog(null,
-                    "Das Programm wurde bei einem Nutzung unterbrochen."
-                    + " Möchten Sie den Zustand wiederherstellen?", // question
+                    "Das Programm wurde bei einem Nutzung unterbrochen." + " Möchten Sie den Zustand wiederherstellen?",
                     "Zustand wiederherstellen", // title
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE, // icon
@@ -529,9 +580,9 @@ public class MainFrame extends javax.swing.JFrame {
                     fis = new FileInputStream(System.getProperty("user.dir") + "/saveState");
                     ObjectInputStream o = new ObjectInputStream(fis);
                     AllTracks instance = AllTracks.getInstance();
-                    HashMap<String, CustomerTrachs> allCustomers = null;
+                    HashMap<String, CustomerTracks> allCustomers = null;
                     Object confObjekt = o.readObject();
-                    allCustomers = (HashMap<String, CustomerTrachs>) confObjekt;
+                    allCustomers = (HashMap<String, CustomerTracks>) confObjekt;
                     confObjekt = o.readObject();
                     jLTemplatePath = (JLabel) confObjekt;
                     jPMenue.add(jLTemplatePath);
@@ -542,7 +593,7 @@ public class MainFrame extends javax.swing.JFrame {
                 } finally {
                     try {
                         fis.close();
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                     }
                 }
             }
@@ -558,7 +609,7 @@ public class MainFrame extends javax.swing.JFrame {
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
-            CustomerTrachs cusomer = (CustomerTrachs) mentry.getValue();
+            CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
             model.insertNodeInto(first, root, root.getChildCount());
             for (TrackedTimeItem ti : cusomer.getCustomeritems()) {

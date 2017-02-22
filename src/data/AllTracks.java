@@ -17,7 +17,7 @@ public class AllTracks {
 
     private static AllTracks exempla;
     //private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
-    private  HashMap<String, CustomerTrachs> allCustomers = new HashMap<String, CustomerTrachs>();
+    private  HashMap<String, CustomerTracks> allCustomers = new HashMap<String, CustomerTracks>();
     private AllTracks() {
     }
 
@@ -30,11 +30,11 @@ public class AllTracks {
         }
     }
 
-    public HashMap<String, CustomerTrachs> getAllCustomers() {
+    public HashMap<String, CustomerTracks> getAllCustomers() {
         return allCustomers;
     }
 
-    public void setAllCustomers(HashMap<String, CustomerTrachs> allCustomers) {
+    public void setAllCustomers(HashMap<String, CustomerTracks> allCustomers) {
         this.allCustomers = allCustomers;
     }
 
