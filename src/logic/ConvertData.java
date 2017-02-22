@@ -6,7 +6,7 @@
 package logic;
 
 import data.AllTracks;
-import data.CustomerTrachs;
+import data.CustomerTracks;
 import data.TrackedTimeItem;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +29,7 @@ public class ConvertData {
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
-            CustomerTrachs cusomer = (CustomerTrachs) mentry.getValue();
+            CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             sheetnames.add(cusomer.getCustomername());
         }
 
@@ -41,7 +41,7 @@ public class ConvertData {
 
     public ArrayList<String[]> convert(String customername) {
         AllTracks instance = AllTracks.getInstance();
-        CustomerTrachs ti = instance.getAllCustomers().get(customername);
+        CustomerTracks ti = instance.getAllCustomers().get(customername);
         String[] retline;
         ArrayList<String[]> allreturn = new ArrayList();
 
