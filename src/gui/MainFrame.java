@@ -198,17 +198,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Mandant"));
+        jPCustomers.setAutoscrolls(true);
         jPCustomers.setPreferredSize(new java.awt.Dimension(760, 560));
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(23, 40));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(440, 380));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(19, 150));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(550, 350));
 
         jTreeCustomer.setBackground(new java.awt.Color(252, 252, 252));
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mandanten");
         jTreeCustomer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jTreeCustomer.setMaximumSize(new java.awt.Dimension(100, 30));
-        jTreeCustomer.setPreferredSize(new java.awt.Dimension(150, 19));
+        jTreeCustomer.setVisibleRowCount(500);
         jTreeCustomer.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 jTreeCustomerValueChanged(evt);
@@ -738,7 +738,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void buildTree() {
         AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
         Set set = instance.getAllCustomers().entrySet();
@@ -747,11 +746,13 @@ public class MainFrame extends javax.swing.JFrame {
             Map.Entry mentry = (Map.Entry) iterator.next();
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
+
             model.insertNodeInto(first, root, root.getChildCount());
             for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
                 model.insertNodeInto(new DefaultMutableTreeNode(ti), first, first.getChildCount());
             }
         }
+
         jBDeleteTrack.setEnabled(false);
         jBSaveTaskChange.setEnabled(false);
         jBStartTimeTrack.setEnabled(false);
