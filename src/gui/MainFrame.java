@@ -9,6 +9,7 @@ import data.AllTracks;
 import data.CustomerTracks;
 import data.TrackedTimeItem;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -349,13 +350,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten Eingeben!");
-        if (S != null) {
+        AllTracks instance = AllTracks.getInstance();
+        CustomerTracks get = instance.getAllCustomers().get(S);
+        if (get == null) {
             CustomerTracks ct = new CustomerTracks(S);
-            AllTracks instance = AllTracks.getInstance();
+
             instance.getAllCustomers().put(ct.getCustomername(), ct);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
+        } else {
+            JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
         }
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 
@@ -527,13 +532,15 @@ public class MainFrame extends javax.swing.JFrame {
         if (directoryChooser.getSelectedFile() != null) {
             Export exp = new Export(directoryChooser.getSelectedFile().toString(), jLTemplatePath.getText());
             try {
-                if (exp.convertXls()) {
+                boolean convertXls = exp.convertXls();
+
+                if (convertXls) {
                     JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + directoryChooser.getSelectedFile().toString());
                     //export entity delete
                 } else {
                     JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
                 }
-            } catch (IOException ex) {
+            } catch (HeadlessException | IOException | IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -701,28 +708,28 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void readSaveState() {
         File state = new File(System.getProperty("user.dir") + "/saveState");
-        if (state.isFile()) { 
-                InputStream fis = null;
+        if (state.isFile()) {
+            InputStream fis = null;
+            try {
+                fis = new FileInputStream(System.getProperty("user.dir") + "/saveState");
+                ObjectInputStream o = new ObjectInputStream(fis);
+                AllTracks instance = AllTracks.getInstance();
+                HashMap<String, CustomerTracks> allCustomers = null;
+                Object confObjekt = o.readObject();
+                allCustomers = (HashMap<String, CustomerTracks>) confObjekt;
+                confObjekt = o.readObject();
+                jLTemplatePath = (JLabel) confObjekt;
+                jPMenue.add(jLTemplatePath);
+                SwingUtilities.updateComponentTreeUI(this);
+                instance.setAllCustomers(allCustomers);
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println(e);
+            } finally {
                 try {
-                    fis = new FileInputStream(System.getProperty("user.dir") + "/saveState");
-                    ObjectInputStream o = new ObjectInputStream(fis);
-                    AllTracks instance = AllTracks.getInstance();
-                    HashMap<String, CustomerTracks> allCustomers = null;
-                    Object confObjekt = o.readObject();
-                    allCustomers = (HashMap<String, CustomerTracks>) confObjekt;
-                    confObjekt = o.readObject();
-                    jLTemplatePath = (JLabel) confObjekt;
-                    jPMenue.add(jLTemplatePath);
-                    SwingUtilities.updateComponentTreeUI(this);
-                    instance.setAllCustomers(allCustomers);
-                } catch (IOException | ClassNotFoundException e) {
-                    System.err.println(e);
-                } finally {
-                    try {
-                        fis.close();
-                    } catch (IOException e) {
-                    }
+                    fis.close();
+                } catch (IOException e) {
                 }
+            }
         }
     }
 
