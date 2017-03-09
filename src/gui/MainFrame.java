@@ -67,8 +67,6 @@ public class MainFrame extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     if (save()) {
-
-                        JOptionPane.showMessageDialog(null, "Der Zustand wurde gespeichert.", "Speichern", JOptionPane.INFORMATION_MESSAGE);
                         System.exit(0);
                     } else {
                         JOptionPane.showMessageDialog(null, "Fehler beim Speichern", "Speichern", JOptionPane.ERROR_MESSAGE);
