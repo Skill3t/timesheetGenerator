@@ -701,15 +701,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void readSaveState() {
         File state = new File(System.getProperty("user.dir") + "/saveState");
-        if (state.isFile()) {
-            String[] optionen = {"Ja", "Nein"};
-            int n = JOptionPane.showOptionDialog(null,
-                    "Das Programm wurde bei einem Nutzung unterbrochen." + " Möchten Sie den Zustand wiederherstellen?",
-                    "Zustand wiederherstellen", // title
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, // icon
-                    null, optionen, optionen[0]);
-            if (n == JOptionPane.YES_OPTION) {
+        if (state.isFile()) { 
                 InputStream fis = null;
                 try {
                     fis = new FileInputStream(System.getProperty("user.dir") + "/saveState");
@@ -731,7 +723,6 @@ public class MainFrame extends javax.swing.JFrame {
                     } catch (IOException e) {
                     }
                 }
-            }
         }
     }
 
