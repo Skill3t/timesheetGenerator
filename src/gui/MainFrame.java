@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -207,7 +208,7 @@ public class MainFrame extends javax.swing.JFrame {
         jTreeCustomer.setBackground(new java.awt.Color(252, 252, 252));
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mandanten");
         jTreeCustomer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jTreeCustomer.setVisibleRowCount(500);
+        jTreeCustomer.setVisibleRowCount(2000);
         jTreeCustomer.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 jTreeCustomerValueChanged(evt);
@@ -394,8 +395,9 @@ public class MainFrame extends javax.swing.JFrame {
         return false;
     }
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
+
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        String s = selectedNode.getUserObject().getClass().getName();
+        String s = selectedNode.getUserObject().getClass().getName();// data.TrackedTimeItem
         Date now;
         try {
             switch (s) {
@@ -412,7 +414,6 @@ public class MainFrame extends javax.swing.JFrame {
                     jBStartTimeTrack.setEnabled(true);
                     jBDeleteCustomer.setEnabled(true);
                     jBDublicateTask.setEnabled(false);
-
                     break;
                 case "data.TrackedTimeItem":
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
@@ -441,12 +442,12 @@ public class MainFrame extends javax.swing.JFrame {
                     jBStopTimeTrack.setEnabled(false);
                     jBDublicateTask.setEnabled(false);
                     break;
-
             }
-
         } catch (ClassCastException e) {
-
+            JOptionPane.showMessageDialog(null, "Fehler:" + e.getMessage());
         }
+
+
     }//GEN-LAST:event_jTreeCustomerValueChanged
 
     private void jBStopTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStopTimeTrackActionPerformed
@@ -585,19 +586,18 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
 
     private void jBSaveTaskChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveTaskChangeActionPerformed
-        AllTracks instance = AllTracks.getInstance();
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
-        CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
-        CustomerTracks get = instance.getAllCustomers().get(CT.getCustomername());
         TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
-        get.getCustomeritems().remove(TI);
         TI.setKommand(jTAction.getText());
         TI.setKindOfAction(jcbKindOfAction.getSelectedItem().toString());
         TI.setStartTime((Date) jSStartTime.getModel().getValue());
         TI.setEndTime((Date) jSStopTime.getModel().getValue());
-        get.getCustomeritems().add(TI);
-        buildTree();
+        selectedNode.setUserObject(TI);
+        DefaultMutableTreeNode selectedNode2 = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+        String s = selectedNode2.getUserObject().getClass().getName();
+        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+        model.reload((TreeNode) selectedNode2);
+
     }//GEN-LAST:event_jBSaveTaskChangeActionPerformed
 
     private void jBDeleteTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteTrackActionPerformed
@@ -735,6 +735,7 @@ public class MainFrame extends javax.swing.JFrame {
         AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+
         root.removeAllChildren();
         Set set = instance.getAllCustomers().entrySet();
         Iterator iterator = set.iterator();
@@ -742,12 +743,18 @@ public class MainFrame extends javax.swing.JFrame {
             Map.Entry mentry = (Map.Entry) iterator.next();
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
+            //root.add(first);
 
             model.insertNodeInto(first, root, root.getChildCount());
+            jTreeCustomer.expandRow(0);
+            jTreeCustomer.setRootVisible(false);
+            jTreeCustomer.collapseRow(0);
+
             for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
                 model.insertNodeInto(new DefaultMutableTreeNode(ti), first, first.getChildCount());
             }
         }
+        // jTreeCustomer.setRootVisible(false);
 
         jBDeleteTrack.setEnabled(false);
         jBSaveTaskChange.setEnabled(false);
