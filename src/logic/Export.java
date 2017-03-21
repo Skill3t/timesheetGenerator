@@ -5,14 +5,11 @@
  */
 package logic;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import org.apache.poi.ss.usermodel.Cell;
 
@@ -33,17 +30,16 @@ public class Export {
         this.templatePath = templatePath;
     }
 
-
-    public boolean convertXls() throws IOException, FileNotFoundException,IllegalArgumentException {
+    public boolean convertXls() throws IOException, FileNotFoundException, IllegalArgumentException {
         FileInputStream file = new FileInputStream(templatePath);
         XSSFWorkbook workbook = new XSSFWorkbook(file);
 
         XSSFSheet sheet;
-         XSSFSheet sheet2;
+        XSSFSheet sheet2;
         Cell cell = null;
         ConvertData cd = new ConvertData();
         for (int i = 0; i < cd.getSheetnames().size(); i++) {
-           sheet2 =  workbook.cloneSheet(0, cd.sheetnames.get(i));
+            sheet2 = workbook.cloneSheet(0, cd.sheetnames.get(i));
             System.out.println(sheet2.getSheetName());
             sheet = workbook.getSheetAt(i + 1);
             cell = sheet.getRow(0).getCell(1);
@@ -51,6 +47,9 @@ public class Export {
             ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
             for (int Row = 0; Row < convert.size(); Row++) {
                 for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
+                    if (Cell == 3 || Cell == 4){
+                        continue;
+                    }
                     cell = sheet.getRow(9 + Row).getCell(Cell + 1);
                     cell.setCellValue(convert.get(Row)[Cell]);
                 }
@@ -59,7 +58,7 @@ public class Export {
         workbook.removeSheetAt(0);
         file.close();
 
-        FileOutputStream outFile = new FileOutputStream(new File(newPath + "/TimeSheetExport.xlsx"));
+        FileOutputStream outFile = new FileOutputStream(new File(newPath));
         workbook.write(outFile);
         outFile.close();
         file.close();
