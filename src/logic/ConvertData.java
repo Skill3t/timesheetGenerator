@@ -56,7 +56,7 @@ public class ConvertData {
             calolder.setTime(tti.getEndTime());
             retline[2] = String.format("%01d:%02d", calolder.get(Calendar.HOUR_OF_DAY), +calolder.get(Calendar.MINUTE));
 
-            retline[3] = String.format("%02d", (((calolder.get(Calendar.HOUR_OF_DAY) - cal.get(Calendar.HOUR_OF_DAY)) * 60) + (calolder.get(Calendar.MINUTE) - cal.get(Calendar.MINUTE))));
+           // retline[3] = String.format("%02d", (((calolder.get(Calendar.HOUR_OF_DAY) - cal.get(Calendar.HOUR_OF_DAY)) * 60) + (calolder.get(Calendar.MINUTE) - cal.get(Calendar.MINUTE))));
    
 
             calolder.set(calolder.get(0), calolder.get(1), calolder.get(2), calolder.get(3), calolder.get(4), 0);
@@ -68,7 +68,7 @@ public class ConvertData {
                     (TimeUnit.MILLISECONDS.toHours(diff)),
                     (((TimeUnit.MILLISECONDS.toMinutes(diff) * 100L) / 60L) % 100L));
 
-            retline[4] = houers;
+            //retline[4] = houers;
             retline[5] = ti.getCustomername();
             retline[6] = tti.getKindOfAction();
             retline[7] = tti.getKommand();
