@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 /**
@@ -57,8 +56,10 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        readSaveState();
-        buildTree();
+        boolean readSaveState = readSaveState();
+        if (readSaveState) {
+            buildTree();
+        }
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -203,7 +204,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(19, 150));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(550, 350));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(960, 350));
 
         jTreeCustomer.setBackground(new java.awt.Color(252, 252, 252));
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mandanten");
@@ -360,6 +361,12 @@ public class MainFrame extends javax.swing.JFrame {
             model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
         } else {
             JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
+        } 
+        int bevor = instance.getAllCustomers().size();
+        if (bevor == 0) {
+            jTreeCustomer.expandRow(0);
+            jTreeCustomer.setRootVisible(false);
+            jTreeCustomer.collapseRow(0);
         }
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 
@@ -512,8 +519,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }, 1000, 1000);
         jLTime.setForeground(Color.red);
-
-
     }//GEN-LAST:event_jBStartTimeTrackActionPerformed
 
     private void jTActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTActionActionPerformed
@@ -532,7 +537,6 @@ public class MainFrame extends javax.swing.JFrame {
             Export exp = new Export(directoryChooser.getSelectedFile().toString(), jLTemplatePath.getText());
             try {
                 boolean convertXls = exp.convertXls();
-
                 if (convertXls) {
                     JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + directoryChooser.getSelectedFile().toString());
                     //export entity delete
@@ -541,7 +545,6 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             } catch (HeadlessException | IOException | IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jBExportActionPerformed
@@ -568,7 +571,6 @@ public class MainFrame extends javax.swing.JFrame {
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue.add(jLTemplatePath);
             SwingUtilities.updateComponentTreeUI(this);
-
         }
     }//GEN-LAST:event_jBTamplateActionPerformed
 
@@ -704,7 +706,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcbKindOfAction;
     // End of variables declaration//GEN-END:variables
 
-    private void readSaveState() {
+    private boolean readSaveState() {
         File state = new File(System.getProperty("user.dir") + "/saveState");
         if (state.isFile()) {
             InputStream fis = null;
@@ -720,8 +722,9 @@ public class MainFrame extends javax.swing.JFrame {
                 jPMenue.add(jLTemplatePath);
                 SwingUtilities.updateComponentTreeUI(this);
                 instance.setAllCustomers(allCustomers);
+                return true;
             } catch (IOException | ClassNotFoundException e) {
-                System.err.println(e);
+                JOptionPane.showMessageDialog(null, "Fehler beim Laden der saveState Datei: \n" + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
             } finally {
                 try {
                     fis.close();
@@ -729,33 +732,31 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         }
+        return false;
     }
 
     private void buildTree() {
         AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-
         root.removeAllChildren();
         Set set = instance.getAllCustomers().entrySet();
+
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
-            //root.add(first);
-
             model.insertNodeInto(first, root, root.getChildCount());
-            jTreeCustomer.expandRow(0);
-            jTreeCustomer.setRootVisible(false);
-            jTreeCustomer.collapseRow(0);
-
             for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
                 model.insertNodeInto(new DefaultMutableTreeNode(ti), first, first.getChildCount());
             }
         }
-        // jTreeCustomer.setRootVisible(false);
-
+        if (instance.getAllCustomers().size() != 0) {
+            jTreeCustomer.expandRow(0);
+            jTreeCustomer.setRootVisible(false);
+            jTreeCustomer.collapseRow(0);
+        }
         jBDeleteTrack.setEnabled(false);
         jBSaveTaskChange.setEnabled(false);
         jBStartTimeTrack.setEnabled(false);
