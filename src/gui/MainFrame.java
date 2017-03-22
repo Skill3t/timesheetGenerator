@@ -352,6 +352,7 @@ public class MainFrame extends javax.swing.JFrame {
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten Eingeben!");
         AllTracks instance = AllTracks.getInstance();
         CustomerTracks get = instance.getAllCustomers().get(S);
+        int bevor = instance.getAllCustomers().size();
         if (get == null) {
             CustomerTracks ct = new CustomerTracks(S);
 
@@ -361,8 +362,7 @@ public class MainFrame extends javax.swing.JFrame {
             model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
         } else {
             JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
-        } 
-        int bevor = instance.getAllCustomers().size();
+        }
         if (bevor == 0) {
             jTreeCustomer.expandRow(0);
             jTreeCustomer.setRootVisible(false);
@@ -530,15 +530,22 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Fehler kein Tamplate gefunden", "Export", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        JFileChooser directoryChooser = new JFileChooser();
-        directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        directoryChooser.showOpenDialog(this);
-        if (directoryChooser.getSelectedFile() != null) {
-            Export exp = new Export(directoryChooser.getSelectedFile().toString(), jLTemplatePath.getText());
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        FileNameExtensionFilter xlsxfilter = new FileNameExtensionFilter(
+     "xlsx files (*.xlsx)", "xlsx");
+        fileChooser.setFileFilter(xlsxfilter);
+        fileChooser.setDialogTitle("Speicherort");
+        fileChooser.showOpenDialog(this);
+        
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        
+        if (fileChooser.getSelectedFile() != null) {
+            Export exp = new Export(fileChooser, jLTemplatePath.getText());
             try {
                 boolean convertXls = exp.convertXls();
                 if (convertXls) {
-                    JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + directoryChooser.getSelectedFile().toString());
+                    JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + fileChooser.getSelectedFile().toString());
                     //export entity delete
                 } else {
                     JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
