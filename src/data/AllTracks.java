@@ -6,6 +6,7 @@
 package data;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  *
@@ -15,7 +16,10 @@ public class AllTracks {
 
     private static AllTracks exempla;
     //private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
-    private  HashMap<String, CustomerTracks> allCustomers = new HashMap<String, CustomerTracks>();
+    //private  HashMap<String, CustomerTracks> allCustomers = new HashMap<String, CustomerTracks>();
+    
+    private TreeMap<String, CustomerTracks> allCustomers = new TreeMap<String, CustomerTracks>(String.CASE_INSENSITIVE_ORDER);
+    
     private AllTracks() {
     }
 
@@ -27,7 +31,7 @@ public class AllTracks {
             return exempla;
         }
     }
-
+/*
     public HashMap<String, CustomerTracks> getAllCustomers() {
         return allCustomers;
     }
@@ -35,7 +39,18 @@ public class AllTracks {
     public void setAllCustomers(HashMap<String, CustomerTracks> allCustomers) {
         this.allCustomers = allCustomers;
     }
+*/
 
+    public TreeMap<String, CustomerTracks> getAllCustomers() {
+        return allCustomers;
+    }
+
+    public void setAllCustomers(TreeMap<String, CustomerTracks> allCustomers) {
+        this.allCustomers = allCustomers;
+    }
+ 
+    
+    
  
     
 }
