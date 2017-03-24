@@ -56,25 +56,37 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        boolean readSaveState = readSaveState();
-        if (readSaveState) {
+        if (readSaveState()) {
             buildTree();
         }
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (JOptionPane.showConfirmDialog(null,
-                        "Wollen sie Speicher und Schließen?",
-                        "Wirklich schließen?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    if (save()) {
+
+                Object[] options = {"Nicht speichern",
+                    "Abbrechen",
+                    "Sichern.."};
+                int n = JOptionPane.showOptionDialog(null,
+                        "Möchtest du die Änderungen sichern? ",
+                        "Speichern",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[2]);
+                switch (n) {
+                    case 0: //Nicht speichern
                         System.exit(0);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Fehler beim Speichern", "Speichern", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    System.exit(0);
+                        break;
+                    case 1: //Abbrechen
+                        break;
+                    case 2: //Sichern..
+                        if (save()) {
+                            System.exit(0);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Fehler beim Speichern", "Speichern", JOptionPane.ERROR_MESSAGE);
+                        }
+                        break;
                 }
             }
         });
@@ -119,7 +131,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBDeleteTrack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Clienten Time Sheet Generator");
+        setTitle("Timesheet Generator");
         setMinimumSize(new java.awt.Dimension(990, 640));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -207,12 +219,18 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers.setPreferredSize(new java.awt.Dimension(960, 560));
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane1.setAlignmentX(0.0F);
+        jScrollPane1.setAlignmentY(0.0F);
         jScrollPane1.setMinimumSize(new java.awt.Dimension(19, 150));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(960, 350));
 
         jTreeCustomer.setBackground(new java.awt.Color(252, 252, 252));
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mandanten");
         jTreeCustomer.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTreeCustomer.setAlignmentX(0.0F);
+        jTreeCustomer.setAlignmentY(0.0F);
+        jTreeCustomer.setAutoscrolls(true);
         jTreeCustomer.setVisibleRowCount(2000);
         jTreeCustomer.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
@@ -273,7 +291,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomorMenue.add(jBDeleteCustomer);
 
         jPTrackItem.setBackground(new java.awt.Color(204, 204, 204));
-        jPTrackItem.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPTrackItem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPTrackItem.setAlignmentX(0.0F);
         jPTrackItem.setAlignmentY(0.0F);
         jPTrackItem.setMinimumSize(new java.awt.Dimension(14, 80));
@@ -295,7 +313,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 956, Short.MAX_VALUE)
+            .addGap(0, 958, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -304,10 +322,10 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 33, Short.MAX_VALUE)
+            .addGap(0, 34, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 3, Short.MAX_VALUE)
+                    .addGap(0, 4, Short.MAX_VALUE)
                     .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 4, Short.MAX_VALUE)))
         );
@@ -399,7 +417,6 @@ public class MainFrame extends javax.swing.JFrame {
         int bevor = instance.getAllCustomers().size();
         if (get == null) {
             CustomerTracks ct = new CustomerTracks(S);
-
             instance.getAllCustomers().put(ct.getCustomername(), ct);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
