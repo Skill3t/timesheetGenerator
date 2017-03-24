@@ -108,7 +108,9 @@ public class MainFrame extends javax.swing.JFrame {
         jLTime = new javax.swing.JLabel();
         jBDeleteCustomer = new javax.swing.JButton();
         jPTrackItem = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jTAction = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
         jcbKindOfAction = new javax.swing.JComboBox<>();
         jSStartTime = new javax.swing.JSpinner();
         jSStopTime = new javax.swing.JSpinner();
@@ -118,12 +120,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Clienten Time Sheet Generator");
-        setMinimumSize(new java.awt.Dimension(740, 580));
+        setMinimumSize(new java.awt.Dimension(990, 640));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         jPMenue.setBackground(new java.awt.Color(169, 1, 0));
         jPMenue.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPMenue.setMaximumSize(new java.awt.Dimension(32767, 42));
+        jPMenue.setMaximumSize(new java.awt.Dimension(32767, 82));
+        jPMenue.setPreferredSize(new java.awt.Dimension(960, 63));
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jBnewCustomer.setBackground(new java.awt.Color(252, 252, 252));
@@ -185,7 +188,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPSeperatorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 984, Short.MAX_VALUE))
         );
         jPSeperatorLayout.setVerticalGroup(
             jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +203,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Mandant"));
         jPCustomers.setAutoscrolls(true);
-        jPCustomers.setPreferredSize(new java.awt.Dimension(760, 560));
+        jPCustomers.setMinimumSize(new java.awt.Dimension(960, 540));
+        jPCustomers.setPreferredSize(new java.awt.Dimension(960, 560));
         jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(19, 150));
@@ -220,11 +224,17 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomers.add(jScrollPane1);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setAlignmentX(0.0F);
+        jPanel1.setAlignmentY(0.0F);
+        jPanel1.setPreferredSize(new java.awt.Dimension(960, 140));
 
         jPCustomorMenue.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomorMenue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPCustomorMenue.setMinimumSize(new java.awt.Dimension(450, 41));
-        jPCustomorMenue.setPreferredSize(new java.awt.Dimension(450, 50));
+        jPCustomorMenue.setToolTipText("");
+        jPCustomorMenue.setAlignmentX(0.0F);
+        jPCustomorMenue.setAlignmentY(0.0F);
+        jPCustomorMenue.setMinimumSize(new java.awt.Dimension(960, 41));
+        jPCustomorMenue.setPreferredSize(new java.awt.Dimension(960, 50));
 
         jLKlient.setText("Mandant: X");
         jPCustomorMenue.add(jLKlient);
@@ -264,7 +274,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPTrackItem.setBackground(new java.awt.Color(204, 204, 204));
         jPTrackItem.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPTrackItem.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPTrackItem.setAlignmentX(0.0F);
+        jPTrackItem.setAlignmentY(0.0F);
+        jPTrackItem.setMinimumSize(new java.awt.Dimension(14, 80));
+        jPTrackItem.setPreferredSize(new java.awt.Dimension(960, 100));
+        jPTrackItem.setLayout(new javax.swing.BoxLayout(jPTrackItem, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setPreferredSize(new java.awt.Dimension(960, 50));
 
         jTAction.setMinimumSize(new java.awt.Dimension(100, 26));
         jTAction.setPreferredSize(new java.awt.Dimension(200, 26));
@@ -273,18 +290,44 @@ public class MainFrame extends javax.swing.JFrame {
                 jTActionActionPerformed(evt);
             }
         });
-        jPTrackItem.add(jTAction);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 956, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, 956, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 33, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(0, 3, Short.MAX_VALUE)
+                    .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 4, Short.MAX_VALUE)))
+        );
+
+        jPTrackItem.add(jPanel2);
+
+        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel3.setPreferredSize(new java.awt.Dimension(960, 50));
 
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
         jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Büroorga", "Telefonat", "Email", "diverse Korrespondenz", "Besprechung", "Marketing", "Akquise", "Review", "Entwurf", "Review und Entwurf", "Recherche", "Verfügung" }));
-        jPTrackItem.add(jcbKindOfAction);
+        jcbKindOfAction.setPreferredSize(new java.awt.Dimension(200, 26));
+        jPanel3.add(jcbKindOfAction);
 
         jSStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
-        jPTrackItem.add(jSStartTime);
+        jPanel3.add(jSStartTime);
 
         jSStopTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
-        jPTrackItem.add(jSStopTime);
+        jPanel3.add(jSStopTime);
 
         jBSaveTaskChange.setBackground(new java.awt.Color(252, 252, 252));
         jBSaveTaskChange.setText("speichern");
@@ -297,7 +340,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jBSaveTaskChangeActionPerformed(evt);
             }
         });
-        jPTrackItem.add(jBSaveTaskChange);
+        jPanel3.add(jBSaveTaskChange);
 
         jBDublicateTask.setBackground(new java.awt.Color(252, 252, 252));
         jBDublicateTask.setText("duplizieren");
@@ -307,7 +350,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jBDublicateTaskActionPerformed(evt);
             }
         });
-        jPTrackItem.add(jBDublicateTask);
+        jPanel3.add(jBDublicateTask);
 
         jBDeleteTrack.setBackground(new java.awt.Color(252, 252, 252));
         jBDeleteTrack.setText("löschen");
@@ -320,24 +363,25 @@ public class MainFrame extends javax.swing.JFrame {
                 jBDeleteTrackActionPerformed(evt);
             }
         });
-        jPTrackItem.add(jBDeleteTrack);
+        jPanel3.add(jBDeleteTrack);
+
+        jPTrackItem.add(jPanel3);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPCustomorMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPTrackItem, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -458,13 +502,14 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTreeCustomerValueChanged
 
     private void jBStopTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStopTimeTrackActionPerformed
-        jBStartTimeTrack.setEnabled(true);
-        jBStopTimeTrack.setEnabled(false);
-        jTreeCustomer.setEnabled(true);
+
         if (jTAction.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
             return;
         } else {
+            jBStartTimeTrack.setEnabled(true);
+            jBStopTimeTrack.setEnabled(false);
+            jTreeCustomer.setEnabled(true);
             java.util.Date now = new java.util.Date();
             jSStopTime.setValue(now);
             TrackedTimeItem TTI;
@@ -533,13 +578,13 @@ public class MainFrame extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         FileNameExtensionFilter xlsxfilter = new FileNameExtensionFilter(
-     "xlsx files (*.xlsx)", "xlsx");
+                "xlsx files (*.xlsx)", "xlsx");
         fileChooser.setFileFilter(xlsxfilter);
         fileChooser.setDialogTitle("Speicherort");
         fileChooser.showOpenDialog(this);
-        
+
         fileChooser.setAcceptAllFileFilterUsed(false);
-        
+
         if (fileChooser.getSelectedFile() != null) {
             Export exp = new Export(fileChooser, jLTemplatePath.getText());
             try {
@@ -704,6 +749,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPSeperator;
     private javax.swing.JPanel jPTrackItem;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JSpinner jSStartTime;
     private javax.swing.JSpinner jSStopTime;
     private javax.swing.JScrollPane jScrollPane1;
