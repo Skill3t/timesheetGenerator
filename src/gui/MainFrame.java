@@ -527,6 +527,7 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             jBStartTimeTrack.setEnabled(true);
             jBStopTimeTrack.setEnabled(false);
+            jBDeleteCustomer.setEnabled(true);
             jTreeCustomer.setEnabled(true);
             java.util.Date now = new java.util.Date();
             jSStopTime.setValue(now);
@@ -567,6 +568,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jBStartTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStartTimeTrackActionPerformed
         jBStartTimeTrack.setEnabled(false);
+        jBDeleteCustomer.setEnabled(false);
         jBStopTimeTrack.setEnabled(true);
         jTreeCustomer.setEnabled(false);
         createdDate = new java.util.Date();
