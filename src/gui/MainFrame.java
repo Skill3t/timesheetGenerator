@@ -9,6 +9,7 @@ import data.AllTracks;
 import data.CustomerTracks;
 import data.TrackedTimeItem;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +20,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -108,8 +111,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBExport = new javax.swing.JButton();
         jBTamplate = new javax.swing.JButton();
         jBDeleteTreeleafs = new javax.swing.JButton();
-        jPSeperator = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
+        jBMail = new javax.swing.JButton();
         jPCustomers = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTreeCustomer = new javax.swing.JTree();
@@ -137,8 +139,9 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         jPMenue.setBackground(new java.awt.Color(169, 1, 0));
-        jPMenue.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPMenue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPMenue.setMaximumSize(new java.awt.Dimension(32767, 82));
+        jPMenue.setMinimumSize(new java.awt.Dimension(960, 41));
         jPMenue.setPreferredSize(new java.awt.Dimension(960, 63));
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -187,34 +190,19 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBDeleteTreeleafs);
 
+        jBMail.setBackground(new java.awt.Color(252, 252, 252));
+        jBMail.setText("Bug");
+        jBMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBMailActionPerformed(evt);
+            }
+        });
+        jPMenue.add(jBMail);
+
         getContentPane().add(jPMenue);
 
-        jPSeperator.setBackground(new java.awt.Color(169, 1, 0));
-        jPSeperator.setMaximumSize(new java.awt.Dimension(32767, 10));
-
-        jSeparator1.setMaximumSize(new java.awt.Dimension(32767, 2));
-        jSeparator1.setMinimumSize(new java.awt.Dimension(2, 2));
-
-        javax.swing.GroupLayout jPSeperatorLayout = new javax.swing.GroupLayout(jPSeperator);
-        jPSeperator.setLayout(jPSeperatorLayout);
-        jPSeperatorLayout.setHorizontalGroup(
-            jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPSeperatorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 984, Short.MAX_VALUE))
-        );
-        jPSeperatorLayout.setVerticalGroup(
-            jPSeperatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPSeperatorLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
-        );
-
-        getContentPane().add(jPSeperator);
-
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
-        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder("Mandant"));
+        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mandant"));
         jPCustomers.setAutoscrolls(true);
         jPCustomers.setMinimumSize(new java.awt.Dimension(960, 540));
         jPCustomers.setPreferredSize(new java.awt.Dimension(960, 560));
@@ -705,6 +693,27 @@ public class MainFrame extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jBDublicateTaskActionPerformed
+
+    private void jBMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBMailActionPerformed
+        Desktop desktop;
+        if (Desktop.isDesktopSupported()
+                && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+            URI mailto = null;
+            try {
+                mailto = new URI("mailto:larslengersdorf@gmail.com?subject=Bug%20Timesheet");
+            } catch (URISyntaxException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                desktop.mail(mailto);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            // TODO fallback to some Runtime.exec(..) voodoo?
+            throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+        }
+    }//GEN-LAST:event_jBMailActionPerformed
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -755,6 +764,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBDeleteTreeleafs;
     private javax.swing.JButton jBDublicateTask;
     private javax.swing.JButton jBExport;
+    private javax.swing.JButton jBMail;
     private javax.swing.JButton jBSave;
     private javax.swing.JButton jBSaveTaskChange;
     private javax.swing.JButton jBStartTimeTrack;
@@ -766,7 +776,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPCustomers;
     private javax.swing.JPanel jPCustomorMenue;
     private javax.swing.JPanel jPMenue;
-    private javax.swing.JPanel jPSeperator;
     private javax.swing.JPanel jPTrackItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -774,7 +783,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner jSStartTime;
     private javax.swing.JSpinner jSStopTime;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTAction;
     private javax.swing.JTree jTreeCustomer;
     private javax.swing.JComboBox<String> jcbKindOfAction;
