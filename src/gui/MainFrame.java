@@ -202,7 +202,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().add(jPMenue);
 
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
-        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mandant"));
+        jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mandanten"));
         jPCustomers.setAutoscrolls(true);
         jPCustomers.setMinimumSize(new java.awt.Dimension(960, 540));
         jPCustomers.setPreferredSize(new java.awt.Dimension(960, 560));
@@ -418,6 +418,7 @@ public class MainFrame extends javax.swing.JFrame {
             jTreeCustomer.setRootVisible(false);
             jTreeCustomer.collapseRow(0);
         }
+        buildTree();
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
