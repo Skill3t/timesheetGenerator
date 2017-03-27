@@ -69,7 +69,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 Object[] options = {"Nicht speichern",
                     "Abbrechen",
-                    "Sichern.."};
+                    "Speichern"};
                 int n = JOptionPane.showOptionDialog(null,
                         "Möchtest du die Änderungen sichern? ",
                         "Speichern",
@@ -585,13 +585,12 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         }
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileNameExtensionFilter xlsxfilter = new FileNameExtensionFilter(
                 "xlsx files (*.xlsx)", "xlsx");
         fileChooser.setFileFilter(xlsxfilter);
         fileChooser.setDialogTitle("Speicherort");
-        fileChooser.showOpenDialog(this);
-
+        fileChooser.showSaveDialog(this);
         fileChooser.setAcceptAllFileFilterUsed(false);
 
         if (fileChooser.getSelectedFile() != null) {
