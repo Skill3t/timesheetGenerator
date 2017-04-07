@@ -71,7 +71,7 @@ public class MainFrame extends javax.swing.JFrame {
                     "Abbrechen",
                     "Speichern"};
                 int n = JOptionPane.showOptionDialog(null,
-                        "Möchtest du die Änderungen sichern? ",
+                        "Möchtest du die Änderungen speichern? ",
                         "Speichern",
                         JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
@@ -514,9 +514,7 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
             return;
         } else {
-            jBStartTimeTrack.setEnabled(true);
-            jBStopTimeTrack.setEnabled(false);
-            jBDeleteCustomer.setEnabled(true);
+
             jTreeCustomer.setEnabled(true);
             java.util.Date now = new java.util.Date();
             jSStopTime.setValue(now);
@@ -532,6 +530,13 @@ public class MainFrame extends javax.swing.JFrame {
                     CT.getCustomeritems().add(TTI);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(TTI.getEndTime());
+                    jBDeleteCustomer.setEnabled(true);
+                    jBStartTimeTrack.setEnabled(true);
+                    jBStopTimeTrack.setEnabled(false);
+
+                    jBDeleteTrack.setEnabled(false);
+                    jBSaveTaskChange.setEnabled(false);
+                    jBDublicateTask.setEnabled(false);
 
                 } else if (name.equals("data.TrackedTimeItem")) {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
@@ -542,6 +547,13 @@ public class MainFrame extends javax.swing.JFrame {
                     CT.getCustomeritems().add(TTI);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(TTI.getEndTime());
+                    jBDeleteCustomer.setEnabled(false);
+                    jBStartTimeTrack.setEnabled(false);
+                    jBStopTimeTrack.setEnabled(false);
+
+                    jBDeleteTrack.setEnabled(true);
+                    jBSaveTaskChange.setEnabled(true);
+                    jBDublicateTask.setEnabled(true);
                 }
                 jTAction.setText("");
                 jLTime.setText("Zeit");
@@ -674,6 +686,14 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBDeleteTrackActionPerformed
 
     private void jBDublicateTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDublicateTaskActionPerformed
+
+        jBDeleteTrack.setEnabled(false);
+        jBSaveTaskChange.setEnabled(false);
+        jBStartTimeTrack.setEnabled(false);
+        jBStopTimeTrack.setEnabled(false);
+        jBDeleteCustomer.setEnabled(false);
+        jBDublicateTask.setEnabled(false);
+
         jBStopTimeTrack.setEnabled(true);
         jTreeCustomer.setEnabled(false);
 
@@ -807,7 +827,7 @@ public class MainFrame extends javax.swing.JFrame {
                 instance.setAllCustomers(allCustomers);
                 return true;
             } catch (IOException | ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "Fehler beim Laden der saveState Datei: \n" + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Fehler beim Laden der saveState Datei: \n" + e.getMessage() + "\n Version nicht kompatibel", "Fehler", JOptionPane.ERROR_MESSAGE);
             } finally {
                 try {
                     fis.close();
