@@ -22,6 +22,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -615,7 +616,7 @@ public class MainFrame extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
                 }
-            } catch (HeadlessException | IOException | IllegalArgumentException ex) {
+            } catch (HeadlessException | IOException | IllegalArgumentException | ParseException ex ) {
                 JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
             }
         }

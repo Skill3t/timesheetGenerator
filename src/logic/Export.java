@@ -17,6 +17,8 @@ import java.util.Locale;
 import javax.swing.JFileChooser;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -40,6 +42,12 @@ public class Export {
         FileInputStream tamplateFile = new FileInputStream(templatePath);
         XSSFWorkbook workbook = new XSSFWorkbook(tamplateFile);
 
+        // Do this only once per file
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("#,##"));
+        double hours = 0.0;
+        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+        Number number;
         XSSFSheet sheet;
         XSSFSheet sheet2;
         Cell cell = null;
@@ -53,12 +61,28 @@ public class Export {
             for (int Row = 0; Row < convert.size(); Row++) {
                 for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
                     cell = sheet.getRow(9 + Row).getCell(Cell + 1);
-                    cell.setCellValue(convert.get(Row)[Cell]);
+                    String name;
+                    switch (Cell) {
+                        case 3:
+                            name = convert.get(Row)[Cell];
+                            int parseInt = Integer.parseInt(name);
+                            cell.setCellValue(parseInt);
+                            cell.setCellType(CellType.NUMERIC);
+                            break;
+                        case 4:
+                            number = format.parse(convert.get(Row)[Cell]);
+                            cell.setCellValue(number.doubleValue());
+                          //  cell.setCellStyle(cellStyle);
+                            cell.setCellType(CellType.NUMERIC);
+
+                            break;
+                        default:
+                            cell.setCellValue(convert.get(Row)[Cell]);
+                            break;
+                    }
                 }
             }
-            double hours = 0.0;
-            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
-            Number number;
+
             for (String[] sa : convert) {
                 number = format.parse(sa[4]);
                 hours = hours + number.doubleValue();
