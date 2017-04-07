@@ -49,39 +49,34 @@ public class ConvertData {
             retline = new String[8];
 
             Calendar cal = Calendar.getInstance();
-            cal.setTime(tti.getStartTime());
-            retline[0] = "" + cal.get(Calendar.DAY_OF_MONTH) + "." + (cal.get(Calendar.MONTH)+1) + "." + cal.get(Calendar.YEAR);
+            long time = tti.getStartTime().getTime();
+            int itoMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(time);
+            cal.setTimeInMillis((long) itoMinutes * 60 * 1000);
+
+            retline[0] = "" + cal.get(Calendar.DAY_OF_MONTH) + "." + (cal.get(Calendar.MONTH) + 1) + "." + cal.get(Calendar.YEAR);
             retline[1] = String.format("%01d:%02d", cal.get(Calendar.HOUR_OF_DAY), +cal.get(Calendar.MINUTE));
             Calendar calolder = Calendar.getInstance();
-            calolder.setTime(tti.getEndTime());
+
+            time = tti.getEndTime().getTime();
+            itoMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(time);
+            calolder.setTimeInMillis((long) itoMinutes * 60 * 1000);
+
             retline[2] = String.format("%01d:%02d", calolder.get(Calendar.HOUR_OF_DAY), +calolder.get(Calendar.MINUTE));
-
-           // retline[3] = String.format("%02d", (((calolder.get(Calendar.HOUR_OF_DAY) - cal.get(Calendar.HOUR_OF_DAY)) * 60) + (calolder.get(Calendar.MINUTE) - cal.get(Calendar.MINUTE))));
-   
-
-            calolder.set(calolder.get(0), calolder.get(1), calolder.get(2), calolder.get(3), calolder.get(4), 0);
-            cal.set(cal.get(0), cal.get(1), cal.get(2), cal.get(3), cal.get(4), 0);
-
-            long diff = tti.getEndTime().getTime() - tti.getStartTime().getTime();
-
+            long diff  =  calolder.getTimeInMillis()-cal.getTimeInMillis();
+            retline[3] = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(diff));
+            long toMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+            long toHours = TimeUnit.MILLISECONDS.toHours(diff);
+            long round = Math.round(((toMinutes / 60.0) - toHours) * 100);
             String houers = String.format("%01d,%02d",
-                    (TimeUnit.MILLISECONDS.toHours(diff)),
-                    (((TimeUnit.MILLISECONDS.toMinutes(diff) * 100L) / 60L) % 100L));
+                    toHours,
+                    round);
 
-            //retline[4] = houers;
+            retline[4] = houers;
             retline[5] = ti.getCustomername();
             retline[6] = tti.getKindOfAction();
             retline[7] = tti.getKommand();
             allreturn.add(retline);
 
-            /*
-                  Calendar cal = Calendar.getInstance();
-        java.util.Date now = new java.util.Date();
-        cal.setTime(now);
-        long diff = now.getTime() - createdDate.getTime();//as given
-        String curTime = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(diff) % 24, TimeUnit.MILLISECONDS.toMinutes(diff) % 60, TimeUnit.MILLISECONDS.toSeconds(diff) % 60);
-        return curTime;
-             */
         }
         return allreturn;
     }
