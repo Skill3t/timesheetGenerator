@@ -62,7 +62,9 @@ public class ConvertData {
             calolder.setTimeInMillis((long) itoMinutes * 60 * 1000);
 
             retline[2] = String.format("%01d:%02d", calolder.get(Calendar.HOUR_OF_DAY), +calolder.get(Calendar.MINUTE));
-            long diff  =  calolder.getTimeInMillis()-cal.getTimeInMillis();
+            /*
+            long diff = calolder.getTimeInMillis() - cal.getTimeInMillis();
+            
             retline[3] = String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(diff));
             long toMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
             long toHours = TimeUnit.MILLISECONDS.toHours(diff);
@@ -72,6 +74,9 @@ public class ConvertData {
                     round);
 
             retline[4] = houers;
+             */
+            retline[3] = "";
+            retline[4] = "";
             retline[5] = ti.getCustomername();
             retline[6] = tti.getKindOfAction();
             retline[7] = tti.getKommand();
