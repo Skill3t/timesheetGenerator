@@ -42,7 +42,49 @@ public class Export {
         FileInputStream tamplateFile = new FileInputStream(templatePath);
         XSSFWorkbook workbook = new XSSFWorkbook(tamplateFile);
 
-        // Do this only once per file
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("#,##"));
+        double hours = 0.0;
+        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+        Number number;
+        XSSFSheet sheet;
+        XSSFSheet sheet2;
+        Cell cell = null;
+        ConvertData cd = new ConvertData();
+        for (int i = 0; i < cd.getSheetnames().size(); i++) {
+            sheet2 = workbook.cloneSheet(0, cd.sheetnames.get(i));
+            sheet = workbook.getSheetAt(i + 1);
+            cell = sheet.getRow(0).getCell(1);
+            cell.setCellValue(cd.sheetnames.get(i));
+            ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
+            for (int Row = 0; Row < convert.size(); Row++) {
+                for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
+                    cell = sheet.getRow(9 + Row).getCell(Cell + 1);
+                    cell.setCellValue(convert.get(Row)[Cell]);
+                }
+            }
+        }
+        workbook.removeSheetAt(0);
+        tamplateFile.close();
+        File exportFile = newPath.getSelectedFile();
+        if (FilenameUtils.getExtension(exportFile.getName()).equalsIgnoreCase("xlsx")) {
+
+        } else {
+            exportFile = new File(exportFile.getParentFile(), FilenameUtils.getBaseName(exportFile.getName()) + ".xlsx");
+        }
+
+        FileOutputStream outFile = new FileOutputStream(exportFile);
+        workbook.write(outFile);
+        outFile.close();
+        tamplateFile.close();
+        return true;
+
+    }
+
+    public boolean convertXls2() throws IOException, FileNotFoundException, IllegalArgumentException, ParseException {
+        FileInputStream tamplateFile = new FileInputStream(templatePath);
+        XSSFWorkbook workbook = new XSSFWorkbook(tamplateFile);
+
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("#,##"));
         double hours = 0.0;
@@ -72,7 +114,7 @@ public class Export {
                         case 4:
                             number = format.parse(convert.get(Row)[Cell]);
                             cell.setCellValue(number.doubleValue());
-                          //  cell.setCellStyle(cellStyle);
+                            //  cell.setCellStyle(cellStyle);
                             cell.setCellType(CellType.NUMERIC);
 
                             break;

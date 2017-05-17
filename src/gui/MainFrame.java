@@ -60,6 +60,8 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
+
         initComponents();
         if (readSaveState()) {
             buildTree();
@@ -419,6 +421,7 @@ public class MainFrame extends javax.swing.JFrame {
             jTreeCustomer.setRootVisible(false);
             jTreeCustomer.collapseRow(0);
         }
+        setTieleUnsaved(true);
         buildTree();
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 
@@ -439,6 +442,7 @@ public class MainFrame extends javax.swing.JFrame {
                 AllTracks instance = AllTracks.getInstance();
                 o.writeObject(instance.getAllCustomers());
                 o.writeObject(jLTemplatePath);
+                setTieleUnsaved(false);
                 return true;
             } catch (FileNotFoundException e) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, e);
@@ -616,7 +620,7 @@ public class MainFrame extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
                 }
-            } catch (HeadlessException | IOException | IllegalArgumentException | ParseException ex ) {
+            } catch (HeadlessException | IOException | IllegalArgumentException | ParseException ex) {
                 JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -644,6 +648,7 @@ public class MainFrame extends javax.swing.JFrame {
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue.add(jLTemplatePath);
             SwingUtilities.updateComponentTreeUI(this);
+            setTieleUnsaved(true);
         }
     }//GEN-LAST:event_jBTamplateActionPerformed
 
@@ -657,6 +662,7 @@ public class MainFrame extends javax.swing.JFrame {
             ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>();
             cusomer.setCustomeritems(customeritems);
         }
+        setTieleUnsaved(true);
         buildTree();
     }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
 
@@ -672,6 +678,7 @@ public class MainFrame extends javax.swing.JFrame {
         String s = selectedNode2.getUserObject().getClass().getName();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         model.reload((TreeNode) selectedNode2);
+        setTieleUnsaved(true);
 
     }//GEN-LAST:event_jBSaveTaskChangeActionPerformed
 
@@ -683,7 +690,8 @@ public class MainFrame extends javax.swing.JFrame {
         CustomerTracks get = instance.getAllCustomers().get(CT.getCustomername());
         TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
         get.getCustomeritems().remove(TI);
-        buildTree();
+        setTieleUnsaved(true);
+        //buildTree();
     }//GEN-LAST:event_jBDeleteTrackActionPerformed
 
     private void jBDublicateTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDublicateTaskActionPerformed
@@ -868,5 +876,15 @@ public class MainFrame extends javax.swing.JFrame {
         jBDeleteCustomer.setEnabled(false);
         jBDublicateTask.setEnabled(false);
         SwingUtilities.updateComponentTreeUI(this);
+    }
+
+    private void setTieleUnsaved(boolean b) {
+        String title = this.getTitle();
+        title = title.replace("unsaved", "");
+        this.setTitle(title);
+
+        if (b) {
+            this.setTitle(title + " unsaved");
+        }
     }
 }
