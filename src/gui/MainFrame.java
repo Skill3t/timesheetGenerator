@@ -67,6 +67,15 @@ public class MainFrame extends javax.swing.JFrame {
         if (readSaveState()) {
             buildTree();
         }
+        //Save the Status every 100 seconds
+        Timer timerautosave = new Timer();
+        timerautosave.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                save();
+            }
+        }, 100, 100000);
+
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -402,7 +411,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+     /**
+     * Creakte new Custemor when the name is unique
+     *
+     * @param evt
+     */
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten Eingeben!");
         AllTracks instance = AllTracks.getInstance();
@@ -434,6 +447,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jBSaveActionPerformed
+    /**
+     * Save the current status
+     *
+     * @return true = saved false = unsaved
+     */
     private boolean save() {
         if (timer == null) {
             OutputStream fos = null;
@@ -446,20 +464,23 @@ public class MainFrame extends javax.swing.JFrame {
                 setTieleUnsaved(false);
                 return true;
             } catch (FileNotFoundException e) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, e);
+                System.out.println(e.getMessage());
             } catch (IOException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.getMessage());
             } finally {
                 try {
                     fos.close();
-                } catch (Exception e) {
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+
                 }
             }
         }
         return false;
     }
-    private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
 
+
+    private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         try {
             String s = selectedNode.getUserObject().getClass().getName();// data.TrackedTimeItem
@@ -520,7 +541,6 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
             return;
         } else {
-
             jTreeCustomer.setEnabled(true);
             java.util.Date now = new java.util.Date();
             jSStopTime.setValue(now);
@@ -633,6 +653,7 @@ public class MainFrame extends javax.swing.JFrame {
             CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
             AllTracks instance = AllTracks.getInstance();
             instance.getAllCustomers().remove(CT.getCustomername());
+            setTieleUnsaved(true);
             buildTree();
         } catch (ClassCastException ex) {
             JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
