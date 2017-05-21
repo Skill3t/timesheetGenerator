@@ -26,7 +26,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import logic.AutoSave;
 
 /**
  *
@@ -56,6 +55,8 @@ public class MainFrame extends javax.swing.JFrame {
     private Date createdDate = new Date();
     private Timer timer;
     private JLabel jLTemplatePath = new JLabel();
+    private String title = ("Timesheet Generator");
+    private final AutoSave as;
 
     /**
      * Creates new form MainFrame
@@ -64,17 +65,11 @@ public class MainFrame extends javax.swing.JFrame {
         System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
 
         initComponents();
+
         if (readSaveState()) {
             buildTree();
         }
         //Save the Status every 100 seconds
-        Timer timerautosave = new Timer();
-        timerautosave.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                save();
-            }
-        }, 100, 100000);
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -107,6 +102,10 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         });
+
+        as = new AutoSave();
+        as.save();
+
     }
 
     /**
@@ -158,8 +157,21 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue.setPreferredSize(new java.awt.Dimension(960, 63));
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jBnewCustomer.setBackground(new java.awt.Color(252, 252, 252));
-        jBnewCustomer.setText("neuer Mandant");
+        jBnewCustomer.setBackground(new java.awt.Color(169, 1, 0));
+        jBnewCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/plus.png"))); // NOI18N
+        jBnewCustomer.setToolTipText("neuer Mandant anlegen");
+        jBnewCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jBnewCustomer.setBorderPainted(false);
+        jBnewCustomer.setContentAreaFilled(false);
+        jBnewCustomer.setMargin(new java.awt.Insets(0, 100, 0, 100));
+        jBnewCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jBnewCustomerMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jBnewCustomerMouseEntered(evt);
+            }
+        });
         jBnewCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBnewCustomerActionPerformed(evt);
@@ -167,8 +179,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBnewCustomer);
 
-        jBSave.setBackground(new java.awt.Color(252, 252, 252));
-        jBSave.setText("Speichern");
+        jBSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/floppydisk.png"))); // NOI18N
+        jBSave.setToolTipText("Save ");
+        jBSave.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jBSave.setBorderPainted(false);
+        jBSave.setMargin(new java.awt.Insets(0, 10, 0, 10));
         jBSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBSaveActionPerformed(evt);
@@ -203,8 +218,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBDeleteTreeleafs);
 
-        jBMail.setBackground(new java.awt.Color(252, 252, 252));
-        jBMail.setText("Bug");
+        jBMail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/bug.png"))); // NOI18N
+        jBMail.setToolTipText("Report Bug");
+        jBMail.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jBMail.setBorderPainted(false);
+        jBMail.setContentAreaFilled(false);
         jBMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBMailActionPerformed(evt);
@@ -411,7 +429,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-     /**
+
+    /**
      * Creakte new Custemor when the name is unique
      *
      * @param evt
@@ -445,7 +464,6 @@ public class MainFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Fehler beim Speichern");
         }
-
     }//GEN-LAST:event_jBSaveActionPerformed
     /**
      * Save the current status
@@ -563,6 +581,7 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDeleteTrack.setEnabled(false);
                     jBSaveTaskChange.setEnabled(false);
                     jBDublicateTask.setEnabled(false);
+                    setTieleUnsaved(true);
 
                 } else if (name.equals("data.TrackedTimeItem")) {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
@@ -604,12 +623,24 @@ public class MainFrame extends javax.swing.JFrame {
         jSStartTime.setValue(createdDate);
         jLTime.setText("Zeit ");
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        /*timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                
+                jLTime.setText("Zeit " + getAgeInSeconds());
+            }
+        }, 1000, 1000);
+        
+         */
+
+        TimerTask tt = new TimerTask() {
             @Override
             public void run() {
                 jLTime.setText("Zeit " + getAgeInSeconds());
             }
-        }, 1000, 1000);
+        };
+        timer.scheduleAtFixedRate(tt, 10, 1000);
+
         jLTime.setForeground(Color.red);
     }//GEN-LAST:event_jBStartTimeTrackActionPerformed
 
@@ -741,7 +772,7 @@ public class MainFrame extends javax.swing.JFrame {
             public void run() {
                 jLTime.setText("Zeit " + getAgeInSeconds());
             }
-        }, 1000, 1000);
+        }, 10, 1000);
         jLTime.setForeground(Color.red);
 
         // TODO add your handling code here:
@@ -767,6 +798,15 @@ public class MainFrame extends javax.swing.JFrame {
             throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
         }
     }//GEN-LAST:event_jBMailActionPerformed
+
+    private void jBnewCustomerMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBnewCustomerMouseExited
+        jBnewCustomer.setBorderPainted(false);
+
+    }//GEN-LAST:event_jBnewCustomerMouseExited
+
+    private void jBnewCustomerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBnewCustomerMouseEntered
+        jBnewCustomer.setBorderPainted(true);
+    }//GEN-LAST:event_jBnewCustomerMouseEntered
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -807,6 +847,7 @@ public class MainFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainFrame().setVisible(true);
+
             }
         });
     }
@@ -854,7 +895,8 @@ public class MainFrame extends javax.swing.JFrame {
                 Object confObjekt = o.readObject();
                 allCustomers = (TreeMap<String, CustomerTracks>) confObjekt;
                 confObjekt = o.readObject();
-                jLTemplatePath = (JLabel) confObjekt;
+                jLTemplatePath.setText((String) confObjekt);
+                //  jLTemplatePath = (JLabel) confObjekt;
                 jPMenue.add(jLTemplatePath);
                 SwingUtilities.updateComponentTreeUI(this);
                 instance.setAllCustomers(allCustomers);
@@ -902,7 +944,7 @@ public class MainFrame extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    private void setTieleUnsaved(boolean b) {
+    public  void setTieleUnsaved(boolean b) {
         String title = this.getTitle();
         title = title.replace("unsaved", "");
         this.setTitle(title);
