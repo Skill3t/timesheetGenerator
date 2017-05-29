@@ -93,7 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
                     case 1: //Abbrechen
                         break;
                     case 2: //Sichern..
-                        if (save()) {
+                        if (as.save()) {
                             System.exit(0);
                         } else {
                             JOptionPane.showMessageDialog(null, "Fehler beim Speichern", "Speichern", JOptionPane.ERROR_MESSAGE);
@@ -104,7 +104,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         as = new AutoSave();
-        as.save();
+        as.autoSave();
 
     }
 
@@ -459,43 +459,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
-        if (save()) {
+        if (as.save()) {
             JOptionPane.showMessageDialog(null, "Der Zustand wurde gespeichert.");
         } else {
             JOptionPane.showMessageDialog(null, "Fehler beim Speichern");
         }
     }//GEN-LAST:event_jBSaveActionPerformed
-    /**
-     * Save the current status
-     *
-     * @return true = saved false = unsaved
-     */
-    private boolean save() {
-        if (timer == null) {
-            OutputStream fos = null;
-            try {
-                fos = new FileOutputStream(System.getProperty("user.dir") + "/saveState");
-                ObjectOutputStream o = new ObjectOutputStream(fos);
-                AllTracks instance = AllTracks.getInstance();
-                o.writeObject(instance.getAllCustomers());
-                o.writeObject(jLTemplatePath);
-                setTieleUnsaved(false);
-                return true;
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            } finally {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
 
-                }
-            }
-        }
-        return false;
-    }
 
 
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged

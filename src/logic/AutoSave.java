@@ -20,43 +20,51 @@ import static java.util.concurrent.TimeUnit.*;
  *
  * @author Lars
  */
-public class AutoSave  {
+public class AutoSave {
+
     public boolean saved;
-    
+
     private final ScheduledExecutorService scheduler
             = Executors.newScheduledThreadPool(1);
 
-    public void save() {
+    public boolean autoSave() {    
         final Runnable saver = new Runnable() {
             @Override
             public void run() {
                 System.out.println("saved");
-                OutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(System.getProperty("user.dir") + "/saveState");
-                    ObjectOutputStream o = new ObjectOutputStream(fos);
-                    AllTracks instance = AllTracks.getInstance();
-                    o.writeObject(instance.getAllCustomers());
-                    o.writeObject("" + System.getProperty("user.dir") + "/saveState");
+                 save();
 
-                } catch (FileNotFoundException e) {
-                    System.out.println(e.getMessage());
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                } finally {
-                    try {
-                        fos.close();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-
-                    }
-                }
             }
         };
-        
+
         final ScheduledFuture<?> saverHandle
                 = scheduler.scheduleAtFixedRate(saver, 10, 10, SECONDS);
+        return true;
     }
-    
+
+    public boolean save() {
+        OutputStream fos = null;
+        try {
+            fos = new FileOutputStream(System.getProperty("user.dir") + "/saveState");
+            ObjectOutputStream o = new ObjectOutputStream(fos);
+            AllTracks instance = AllTracks.getInstance();
+            o.writeObject(instance.getAllCustomers());
+            o.writeObject("" + System.getProperty("user.dir") + "/saveState");
+            //o.writeObject(jLTemplatePath);
+            return true;
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+
+            }
+        }
+        return false;
+    }
 
 }
