@@ -962,6 +962,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jPMenue.add(jLTemplatePath);
                 SwingUtilities.updateComponentTreeUI(this);
                 instance.setAllCustomers(allCustomers);
+                instance.setTamplatePath((String)confObjekt);
                 return true;
             } catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "Fehler beim Laden der saveState Datei: \n" + e.getMessage() + "\n Version nicht kompatibel", "Fehler", JOptionPane.ERROR_MESSAGE);
