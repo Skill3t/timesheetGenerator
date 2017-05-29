@@ -49,7 +49,7 @@ public class AutoSave {
             ObjectOutputStream o = new ObjectOutputStream(fos);
             AllTracks instance = AllTracks.getInstance();
             o.writeObject(instance.getAllCustomers());
-            o.writeObject("" + System.getProperty("user.dir") + "/saveState");
+            o.writeObject(instance.getTamplatePath());
             //o.writeObject(jLTemplatePath);
             return true;
         } catch (FileNotFoundException e) {
