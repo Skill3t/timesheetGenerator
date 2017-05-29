@@ -5,7 +5,6 @@
  */
 package data;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
@@ -13,7 +12,7 @@ import java.util.TreeMap;
  * @author Lars
  */
 public class AllTracks {
-
+    private String tamplatePath;
     private static AllTracks exempla;
     //private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
     //private  HashMap<String, CustomerTracks> allCustomers = new HashMap<String, CustomerTracks>();
@@ -47,6 +46,14 @@ public class AllTracks {
 
     public void setAllCustomers(TreeMap<String, CustomerTracks> allCustomers) {
         this.allCustomers = allCustomers;
+    }
+
+    public String getTamplatePath() {
+        return tamplatePath;
+    }
+
+    public void setTamplatePath(String tamplatePath) {
+        this.tamplatePath = tamplatePath;
     }
  
     

@@ -667,6 +667,8 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(this);
         if (fileChooser.getSelectedFile() != null) {
+             AllTracks instance = AllTracks.getInstance();
+             instance.setTamplatePath(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setText(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue.add(jLTemplatePath);
