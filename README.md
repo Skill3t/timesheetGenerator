@@ -6,15 +6,15 @@
 - Auto save
 - No internet or cloude service needed
 
-# Requirements
+## Requirements
 - Java
 - Export template
 
-# License
+## License
 
 - MIT
 
-# resources
+## Resources
 “Creative Commons GLYPHICONS FREE ” by GLYPHICONS.com is licensed under CC BY 3.0
 Apache POI - the Java API for Microsoft Documents https://poi.apache.org/
 
