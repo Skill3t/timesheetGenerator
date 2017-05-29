@@ -155,7 +155,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue.setMaximumSize(new java.awt.Dimension(32767, 82));
         jPMenue.setMinimumSize(new java.awt.Dimension(960, 41));
         jPMenue.setPreferredSize(new java.awt.Dimension(960, 63));
-        jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 25, 15));
 
         jBnewCustomer.setBackground(new java.awt.Color(169, 1, 0));
         jBnewCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/plus.png"))); // NOI18N
@@ -163,7 +163,6 @@ public class MainFrame extends javax.swing.JFrame {
         jBnewCustomer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jBnewCustomer.setBorderPainted(false);
         jBnewCustomer.setContentAreaFilled(false);
-        jBnewCustomer.setMargin(new java.awt.Insets(0, 100, 0, 100));
         jBnewCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jBnewCustomerMouseExited(evt);
@@ -181,9 +180,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         jBSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/floppydisk.png"))); // NOI18N
         jBSave.setToolTipText("Save ");
-        jBSave.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jBSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jBSave.setBorderPainted(false);
         jBSave.setMargin(new java.awt.Insets(0, 10, 0, 10));
+        jBSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jBSaveMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jBSaveMouseEntered(evt);
+            }
+        });
         jBSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBSaveActionPerformed(evt);
@@ -191,8 +198,19 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBSave);
 
-        jBExport.setBackground(new java.awt.Color(252, 252, 252));
-        jBExport.setText("Export");
+        jBExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/glyphicons-416-disk-open.png"))); // NOI18N
+        jBExport.setToolTipText("Export to .xls");
+        jBExport.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jBExport.setBorderPainted(false);
+        jBExport.setContentAreaFilled(false);
+        jBExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jBExportMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jBExportMouseEntered(evt);
+            }
+        });
         jBExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBExportActionPerformed(evt);
@@ -201,7 +219,19 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue.add(jBExport);
 
         jBTamplate.setBackground(new java.awt.Color(252, 252, 252));
-        jBTamplate.setText("Template");
+        jBTamplate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/glyphicons-511-duplicate.png"))); // NOI18N
+        jBTamplate.setToolTipText("Template");
+        jBTamplate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jBTamplate.setBorderPainted(false);
+        jBTamplate.setContentAreaFilled(false);
+        jBTamplate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jBTamplateMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jBTamplateMouseEntered(evt);
+            }
+        });
         jBTamplate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBTamplateActionPerformed(evt);
@@ -210,7 +240,19 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue.add(jBTamplate);
 
         jBDeleteTreeleafs.setBackground(new java.awt.Color(252, 252, 252));
-        jBDeleteTreeleafs.setText("Formular leeren");
+        jBDeleteTreeleafs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/glyphicons-17-bin.png"))); // NOI18N
+        jBDeleteTreeleafs.setToolTipText("Formular leeren");
+        jBDeleteTreeleafs.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jBDeleteTreeleafs.setBorderPainted(false);
+        jBDeleteTreeleafs.setContentAreaFilled(false);
+        jBDeleteTreeleafs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jBDeleteTreeleafsMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jBDeleteTreeleafsMouseEntered(evt);
+            }
+        });
         jBDeleteTreeleafs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBDeleteTreeleafsActionPerformed(evt);
@@ -220,9 +262,17 @@ public class MainFrame extends javax.swing.JFrame {
 
         jBMail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/bug.png"))); // NOI18N
         jBMail.setToolTipText("Report Bug");
-        jBMail.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jBMail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jBMail.setBorderPainted(false);
         jBMail.setContentAreaFilled(false);
+        jBMail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jBMailMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jBMailMouseEntered(evt);
+            }
+        });
         jBMail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBMailActionPerformed(evt);
@@ -467,7 +517,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBSaveActionPerformed
 
 
-
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         try {
@@ -667,8 +716,8 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(this);
         if (fileChooser.getSelectedFile() != null) {
-             AllTracks instance = AllTracks.getInstance();
-             instance.setTamplatePath(fileChooser.getSelectedFile().toString());
+            AllTracks instance = AllTracks.getInstance();
+            instance.setTamplatePath(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setText(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue.add(jLTemplatePath);
@@ -779,6 +828,47 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBnewCustomerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBnewCustomerMouseEntered
         jBnewCustomer.setBorderPainted(true);
     }//GEN-LAST:event_jBnewCustomerMouseEntered
+
+    private void jBSaveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBSaveMouseEntered
+        jBSave.setBorderPainted(true);
+    }//GEN-LAST:event_jBSaveMouseEntered
+
+    private void jBSaveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBSaveMouseExited
+        jBSave.setBorderPainted(false);
+    }//GEN-LAST:event_jBSaveMouseExited
+
+    private void jBExportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBExportMouseEntered
+        jBExport.setBorderPainted(true);
+    }//GEN-LAST:event_jBExportMouseEntered
+
+    private void jBExportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBExportMouseExited
+        jBExport.setBorderPainted(false);
+    }//GEN-LAST:event_jBExportMouseExited
+
+    private void jBMailMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBMailMouseEntered
+        jBMail.setBorderPainted(true);
+    }//GEN-LAST:event_jBMailMouseEntered
+
+    private void jBMailMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBMailMouseExited
+        jBMail.setBorderPainted(false);
+    }//GEN-LAST:event_jBMailMouseExited
+
+    private void jBTamplateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBTamplateMouseEntered
+        jBTamplate.setBorderPainted(true);
+    }//GEN-LAST:event_jBTamplateMouseEntered
+
+    private void jBTamplateMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBTamplateMouseExited
+        jBTamplate.setBorderPainted(false);
+    }//GEN-LAST:event_jBTamplateMouseExited
+
+    private void jBDeleteTreeleafsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBDeleteTreeleafsMouseEntered
+        jBDeleteTreeleafs.setBorderPainted(true);
+    }//GEN-LAST:event_jBDeleteTreeleafsMouseEntered
+
+    private void jBDeleteTreeleafsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBDeleteTreeleafsMouseExited
+        jBDeleteTreeleafs.setBorderPainted(false);
+    }//GEN-LAST:event_jBDeleteTreeleafsMouseExited
+
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -916,7 +1006,7 @@ public class MainFrame extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    public  void setTieleUnsaved(boolean b) {
+    public void setTieleUnsaved(boolean b) {
         String title = this.getTitle();
         title = title.replace("unsaved", "");
         this.setTitle(title);
