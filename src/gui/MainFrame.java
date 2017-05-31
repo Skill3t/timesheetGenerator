@@ -522,6 +522,7 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             String s = selectedNode.getUserObject().getClass().getName();// data.TrackedTimeItem
             Date now;
+            //
             switch (s) {
                 case "data.CustomerTracks":
                     CustomerTracks userObject = (CustomerTracks) selectedNode.getUserObject();
