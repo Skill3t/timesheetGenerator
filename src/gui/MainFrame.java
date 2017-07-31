@@ -1039,6 +1039,7 @@ public class MainFrame extends javax.swing.JFrame {
 		
 		//buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
 		
+                
 		jBSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
 		
