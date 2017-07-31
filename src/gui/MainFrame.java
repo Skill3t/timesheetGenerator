@@ -44,6 +44,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
+import logic.AutoCompletion;
 import logic.AutoSave;
 
 /**
@@ -66,6 +67,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         initComponents();
 
+        AutoCompletion.enable(jcbKindOfAction);
         if (readSaveState()) {
             buildTree();
         }
@@ -407,7 +409,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
-        jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Büroorga", "Telefonat", "Email", "diverse Korrespondenz", "Besprechung", "Marketing", "Akquise", "Review", "Entwurf", "Review und Entwurf", "Recherche", "Verfügung" }));
+        jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Akquise", "Besprechung", "Büroorga", "diverse Korrespondenz", "Email", "Entwurf", "Marketing", "Recherche", "Review", "Review und Entwurf", "Telefonat", "Verfügung" }));
         jcbKindOfAction.setPreferredSize(new java.awt.Dimension(200, 26));
         jPanel3.add(jcbKindOfAction);
 
@@ -511,6 +513,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
         if (as.save()) {
             JOptionPane.showMessageDialog(null, "Der Zustand wurde gespeichert.");
+            setTieleUnsaved(false);
         } else {
             JOptionPane.showMessageDialog(null, "Fehler beim Speichern");
         }
@@ -963,7 +966,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jPMenue.add(jLTemplatePath);
                 SwingUtilities.updateComponentTreeUI(this);
                 instance.setAllCustomers(allCustomers);
-                instance.setTamplatePath((String)confObjekt);
+                instance.setTamplatePath((String) confObjekt);
                 return true;
             } catch (IOException | ClassNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "Fehler beim Laden der saveState Datei: \n" + e.getMessage() + "\n Version nicht kompatibel", "Fehler", JOptionPane.ERROR_MESSAGE);

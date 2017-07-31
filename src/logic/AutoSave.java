@@ -38,7 +38,7 @@ public class AutoSave {
         };
 
         final ScheduledFuture<?> saverHandle
-                = scheduler.scheduleAtFixedRate(saver, 10, 10, SECONDS);
+                = scheduler.scheduleAtFixedRate(saver, 100, 100, SECONDS);
         return true;
     }
 

@@ -459,17 +459,17 @@
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="13">
                             <StringItem index="0" value=" "/>
-                            <StringItem index="1" value="B&#xfc;roorga"/>
-                            <StringItem index="2" value="Telefonat"/>
-                            <StringItem index="3" value="Email"/>
+                            <StringItem index="1" value="Akquise"/>
+                            <StringItem index="2" value="Besprechung"/>
+                            <StringItem index="3" value="B&#xfc;roorga"/>
                             <StringItem index="4" value="diverse Korrespondenz"/>
-                            <StringItem index="5" value="Besprechung"/>
-                            <StringItem index="6" value="Marketing"/>
-                            <StringItem index="7" value="Akquise"/>
-                            <StringItem index="8" value="Review"/>
-                            <StringItem index="9" value="Entwurf"/>
+                            <StringItem index="5" value="Email"/>
+                            <StringItem index="6" value="Entwurf"/>
+                            <StringItem index="7" value="Marketing"/>
+                            <StringItem index="8" value="Recherche"/>
+                            <StringItem index="9" value="Review"/>
                             <StringItem index="10" value="Review und Entwurf"/>
-                            <StringItem index="11" value="Recherche"/>
+                            <StringItem index="11" value="Telefonat"/>
                             <StringItem index="12" value="Verf&#xfc;gung"/>
                           </StringArray>
                         </Property>
