@@ -11,15 +11,13 @@ import data.TrackedTimeItem;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -40,7 +38,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import logic.Export;
 import java.util.concurrent.TimeUnit;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
@@ -107,7 +109,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         as = new AutoSave();
         as.autoSave();
-
+        
+        setKeyshortcuts();
     }
 
     /**
@@ -1019,5 +1022,26 @@ public class MainFrame extends javax.swing.JFrame {
         if (b) {
             this.setTitle(title + " unsaved");
         }
+    }
+    
+    public void setKeyshortcuts(){
+        Action buttonAction = new AbstractAction("start") {
+			
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("Refreshing...");
+			}
+		};
+		
+		String key = "start";
+
+		jBSave.setAction(buttonAction);
+		
+		//buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+		
+		jBSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
+		
+		jBSave.getActionMap().put(key, buttonAction);
     }
 }
