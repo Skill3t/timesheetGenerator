@@ -109,7 +109,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         as = new AutoSave();
         as.autoSave();
-        
+
         setKeyshortcuts();
     }
 
@@ -1023,27 +1023,21 @@ public class MainFrame extends javax.swing.JFrame {
             this.setTitle(title + " unsaved");
         }
     }
-    
-    public void setKeyshortcuts(){
-        Action buttonAction = new AbstractAction("start") {
-			
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				System.out.println("Refreshing...");
-			}
-		};
-		
-		String key = "start";
 
-		jBSave.setAction(buttonAction);
-		
-		//buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
-		 
-                
-                
-		jBSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
-		
-		jBSave.getActionMap().put(key, buttonAction);
+    public void setKeyshortcuts() {
+        /*
+        Action buttonAction = new AbstractAction("start") {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                System.out.println("Refreshing...");
+            }
+        };
+        String key = "start";
+        jBSave.setAction(buttonAction);
+        //buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+        jBSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
+        jBSave.getActionMap().put(key, buttonAction);
+*/
     }
 }
