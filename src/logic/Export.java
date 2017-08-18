@@ -21,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFPrintSetup;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -55,18 +56,28 @@ public class Export {
         for (int i = 0; i < cd.getSheetnames().size(); i++) {
             sheet2 = workbook.cloneSheet(0, cd.sheetnames.get(i));
             sheet = workbook.getSheetAt(i + 1);
+            //formate sheets
             sheet.getPrintSetup().setLandscape(true);
-            sheet.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE); 
+            sheet.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
+
             cell = sheet.getRow(0).getCell(1);
             cell.setCellValue(cd.sheetnames.get(i));
             ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
             for (int Row = 0; Row < convert.size(); Row++) {
+                workbook.setPrintArea(
+                        i + 1, //sheet index
+                        0, //start column Spalte
+                        9, //end column
+                        0, //start row zeile
+                        convert.size() + 8 //end row
+                );
                 for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
                     cell = sheet.getRow(9 + Row).getCell(Cell + 1);
                     cell.setCellValue(convert.get(Row)[Cell]);
                 }
             }
         }
+
         workbook.removeSheetAt(0);
         tamplateFile.close();
         File exportFile = newPath.getSelectedFile();
