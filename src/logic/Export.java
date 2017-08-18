@@ -17,6 +17,7 @@ import java.util.Locale;
 import javax.swing.JFileChooser;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -54,6 +55,8 @@ public class Export {
         for (int i = 0; i < cd.getSheetnames().size(); i++) {
             sheet2 = workbook.cloneSheet(0, cd.sheetnames.get(i));
             sheet = workbook.getSheetAt(i + 1);
+            sheet.getPrintSetup().setLandscape(true);
+            sheet.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE); 
             cell = sheet.getRow(0).getCell(1);
             cell.setCellValue(cd.sheetnames.get(i));
             ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
