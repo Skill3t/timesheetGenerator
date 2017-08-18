@@ -9,6 +9,7 @@ import data.AllTracks;
 import data.CustomerTracks;
 import data.TrackedTimeItem;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -41,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -412,8 +414,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
+        jcbKindOfAction.setMaximumRowCount(20);
         jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Akquise", "Besprechung", "Büroorga", "diverse Korrespondenz", "Email", "Entwurf", "Marketing", "Recherche", "Review", "Review und Entwurf", "Telefonat", "Verfügung" }));
+        jcbKindOfAction.setToolTipText("");
         jcbKindOfAction.setPreferredSize(new java.awt.Dimension(200, 26));
+        jcbKindOfAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbKindOfActionActionPerformed(evt);
+            }
+        });
         jPanel3.add(jcbKindOfAction);
 
         jSStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
@@ -687,11 +696,13 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Speicherort");
         fileChooser.showSaveDialog(this);
         fileChooser.setAcceptAllFileFilterUsed(false);
-
-        if (fileChooser.getSelectedFile() != null) {
+            if (fileChooser.getSelectedFile() != null) {
             Export exp = new Export(fileChooser, jLTemplatePath.getText());
             try {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                        
                 boolean convertXls = exp.convertXls();
+                this.setCursor(Cursor.getDefaultCursor());
                 if (convertXls) {
                     JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + fileChooser.getSelectedFile().toString());
                     //export entity delete
@@ -875,6 +886,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBDeleteTreeleafsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBDeleteTreeleafsMouseExited
         jBDeleteTreeleafs.setBorderPainted(false);
     }//GEN-LAST:event_jBDeleteTreeleafsMouseExited
+
+    private void jcbKindOfActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbKindOfActionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbKindOfActionActionPerformed
 
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();

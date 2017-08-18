@@ -456,6 +456,7 @@
                           <Color blue="fc" green="fc" red="fc" type="rgb"/>
                         </Property>
                         <Property name="editable" type="boolean" value="true"/>
+                        <Property name="maximumRowCount" type="int" value="20"/>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="13">
                             <StringItem index="0" value=" "/>
@@ -473,10 +474,14 @@
                             <StringItem index="12" value="Verf&#xfc;gung"/>
                           </StringArray>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value=""/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[200, 26]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcbKindOfActionActionPerformed"/>
+                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
