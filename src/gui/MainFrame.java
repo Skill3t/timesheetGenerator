@@ -415,7 +415,7 @@ public class MainFrame extends javax.swing.JFrame {
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
         jcbKindOfAction.setMaximumRowCount(20);
-        jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Akquise", "Besprechung", "Büroorga", "diverse Korrespondenz", "Email", "Entwurf", "Marketing", "Recherche", "Review", "Review und Entwurf", "Telefonat", "Verfügung" }));
+        jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Besprechung", "Email", "Entwurf","Intern", "Korrespondenz", "Review", "Review und Entwurf", "Telefonat"}));
         jcbKindOfAction.setToolTipText("");
         jcbKindOfAction.setPreferredSize(new java.awt.Dimension(200, 26));
         jcbKindOfAction.addActionListener(new java.awt.event.ActionListener() {
@@ -500,7 +500,7 @@ public class MainFrame extends javax.swing.JFrame {
      * @param evt
      */
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
-        String S = JOptionPane.showInputDialog("Bitte neuen Mandanten Eingeben!");
+        String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
         AllTracks instance = AllTracks.getInstance();
         CustomerTracks get = instance.getAllCustomers().get(S);
         int bevor = instance.getAllCustomers().size();
