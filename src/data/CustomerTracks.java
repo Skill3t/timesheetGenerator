@@ -7,6 +7,7 @@ package data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -32,11 +33,21 @@ public class CustomerTracks implements Serializable{
         this.customeritems = customeritems;
     }
     
-    
     @Override
     public String toString() {
         // then you can avoid using toString
-        return customername;
+        long difftotal = 0;
+        for (TrackedTimeItem items : customeritems) {
+            difftotal = difftotal + items.getEndTime().getTime() - items.getStartTime().getTime();
+
+        }
+        long toMinutes = TimeUnit.MILLISECONDS.toMinutes(difftotal);
+        long toHours = TimeUnit.MILLISECONDS.toHours(difftotal);
+        long round = Math.round(((toMinutes / 60.0) - toHours) * 100);
+        String houers = String.format("%01d,%02d",
+                toHours,
+                round);
+        return customername + "  (" + houers + ")";
     }
-    
+
 }

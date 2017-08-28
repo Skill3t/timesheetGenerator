@@ -6,7 +6,9 @@
 package data;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -61,8 +63,20 @@ public class TrackedTimeItem implements Serializable{
 
     @Override
     public String toString() {
+        Calendar cal = Calendar.getInstance();
+        long time = this.getStartTime().getTime();
+        int itoMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(time);
+        cal.setTimeInMillis((long) itoMinutes * 60 * 1000);
+        String Sdate = "" + cal.get(Calendar.DAY_OF_MONTH) + "." + (cal.get(Calendar.MONTH) + 1) + "." + cal.get(Calendar.YEAR);
+        long diff = this.getEndTime().getTime() - this.getStartTime().getTime();
+        long toMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+        long toHours = TimeUnit.MILLISECONDS.toHours(diff);
+        long round = Math.round(((toMinutes / 60.0) - toHours) * 100);
+        String houers = String.format("%01d,%02d",
+                toHours,
+                round);
         // then you can avoid using toString
-        return kommand;
+        return Sdate + "    " + kommand + "    " + houers;
     }
 
 }
