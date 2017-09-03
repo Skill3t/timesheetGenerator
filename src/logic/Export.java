@@ -75,8 +75,7 @@ public class Export {
                         convert.size() + 8 //end row
                 );
                 for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
-
-                    cell = sheet.getRow(9 + Row).getCell(Cell + 1);
+                    cell = sheet.getRow(9 + Row).getCell(Cell);
                     if (Cell == 3) {
                         if ("true".equals(convert.get(Row)[Cell])) {
                             XSSFCellStyle style1 = workbook.createCellStyle();
@@ -84,11 +83,13 @@ public class Export {
                             style1 = (XSSFCellStyle) style1.clone();
                             style1.setFillBackgroundColor(HSSFColor.RED.index);
                             style1.setFillPattern(XSSFCellStyle.LESS_DOTS);
-                            cell.setCellStyle(style1);
+                            sheet.getRow(9 + Row).getCell(0).setCellStyle(style1);
+                            sheet.getRow(9 + Row).getCell(1).setCellStyle(style1);
+                            sheet.getRow(9 + Row).getCell(2).setCellStyle(style1);
                         }
+                    } else {
+                        cell.setCellValue(convert.get(Row)[Cell]);
                     }
-
-                    cell.setCellValue(convert.get(Row)[Cell]);
                 }
             }
         }

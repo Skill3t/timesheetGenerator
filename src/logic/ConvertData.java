@@ -46,7 +46,7 @@ public class ConvertData {
         ArrayList<String[]> allreturn = new ArrayList();
 
         for (TrackedTimeItem tti : ti.getCustomeritems()) {
-            retline = new String[8];
+            retline = new String[7];
 
             Calendar cal = Calendar.getInstance();
             long time = tti.getStartTime().getTime();
@@ -77,9 +77,8 @@ public class ConvertData {
              */
             retline[3] = ""+tti.getMarkInExport();
             retline[4] = "";
-            retline[5] = ti.getCustomername();
-            retline[6] = tti.getKindOfAction();
-            retline[7] = tti.getKommand();
+            retline[5] = tti.getKindOfAction();
+            retline[6] = tti.getKommand();
             allreturn.add(retline);
 
         }
