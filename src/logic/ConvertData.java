@@ -75,7 +75,7 @@ public class ConvertData {
 
             retline[4] = houers;
              */
-            retline[3] = "";
+            retline[3] = ""+tti.getMarkInExport();
             retline[4] = "";
             retline[5] = ti.getCustomername();
             retline[6] = tti.getKindOfAction();

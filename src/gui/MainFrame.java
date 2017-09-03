@@ -145,6 +145,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jTAction = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        jCBMark = new javax.swing.JCheckBox();
         jcbKindOfAction = new javax.swing.JComboBox<>();
         jSStartTime = new javax.swing.JSpinner();
         jSStopTime = new javax.swing.JSpinner();
@@ -412,6 +413,14 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
         jPanel3.setPreferredSize(new java.awt.Dimension(960, 50));
 
+        jCBMark.setText("Markieren");
+        jCBMark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBMarkActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jCBMark);
+
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
         jcbKindOfAction.setMaximumRowCount(20);
@@ -604,7 +613,7 @@ public class MainFrame extends javax.swing.JFrame {
                 if (name.equals("data.CustomerTracks")) {
                     CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
+                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(),jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
                     CT.getCustomeritems().add(TTI);
                     Calendar cal = Calendar.getInstance();
@@ -622,7 +631,7 @@ public class MainFrame extends javax.swing.JFrame {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
                     CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString());
+                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(),jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
                     CT.getCustomeritems().add(TTI);
                     Calendar cal = Calendar.getInstance();
@@ -920,6 +929,10 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbKindOfActionActionPerformed
 
+    private void jCBMarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBMarkActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCBMarkActionPerformed
+
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -978,6 +991,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBStopTimeTrack;
     private javax.swing.JButton jBTamplate;
     private javax.swing.JButton jBnewCustomer;
+    private javax.swing.JCheckBox jCBMark;
     private javax.swing.JLabel jLKlient;
     private javax.swing.JLabel jLTime;
     private javax.swing.JPanel jPCustomers;

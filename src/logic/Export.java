@@ -18,10 +18,13 @@ import javax.swing.JFileChooser;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFPrintSetup;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -72,7 +75,19 @@ public class Export {
                         convert.size() + 8 //end row
                 );
                 for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
+
                     cell = sheet.getRow(9 + Row).getCell(Cell + 1);
+                    if (Cell == 3) {
+                        if ("true".equals(convert.get(Row)[Cell])) {
+                            XSSFCellStyle style1 = workbook.createCellStyle();
+                            style1 = (XSSFCellStyle) cell.getCellStyle();
+                            style1 = (XSSFCellStyle) style1.clone();
+                            style1.setFillBackgroundColor(HSSFColor.RED.index);
+                            style1.setFillPattern(XSSFCellStyle.LESS_DOTS);
+                            cell.setCellStyle(style1);
+                        }
+                    }
+
                     cell.setCellValue(convert.get(Row)[Cell]);
                 }
             }

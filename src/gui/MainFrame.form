@@ -450,6 +450,14 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
                   <SubComponents>
+                    <Component class="javax.swing.JCheckBox" name="jCBMark">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Markieren"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCBMarkActionPerformed"/>
+                      </Events>
+                    </Component>
                     <Component class="javax.swing.JComboBox" name="jcbKindOfAction">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
