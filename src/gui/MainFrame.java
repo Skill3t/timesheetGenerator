@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
+import static javax.swing.JFileChooser.SAVE_DIALOG;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
@@ -111,8 +112,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         as = new AutoSave();
         as.autoSave();
-        
-       
+
     }
 
     /**
@@ -689,6 +689,7 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         }
         JFileChooser fileChooser = new JFileChooser();
+
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileNameExtensionFilter xlsxfilter = new FileNameExtensionFilter(
                 "xlsx files (*.xlsx)", "xlsx");
@@ -696,36 +697,57 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Speicherort");
         fileChooser.showSaveDialog(this);
         fileChooser.setAcceptAllFileFilterUsed(false);
-            if (fileChooser.getSelectedFile() != null) {
-            Export exp = new Export(fileChooser, jLTemplatePath.getText());
-            try {
-                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                        
-                boolean convertXls = exp.convertXls();
-                this.setCursor(Cursor.getDefaultCursor());
-                if (convertXls) {
-                    JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + fileChooser.getSelectedFile().toString());
-                    //export entity delete
-                } else {
-                    JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
-                }
-            } catch (HeadlessException | IOException | IllegalArgumentException | ParseException ex) {
-                JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
+        File f = fileChooser.getSelectedFile();
+
+        if (fileChooser.getSelectedFile() != null) {
+            int n = JOptionPane.YES_OPTION;
+            if (f.exists()) {
+                n = JOptionPane.showConfirmDialog(
+                        this, "Sie überschreiben eine Datei",
+                        "Überschreiben",
+                        JOptionPane.YES_NO_OPTION);
             }
+            if (n == JOptionPane.YES_OPTION) {
+
+                Export exp = new Export(fileChooser, jLTemplatePath.getText());
+                try {
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+                    boolean convertXls = exp.convertXls();
+                    this.setCursor(Cursor.getDefaultCursor());
+                    if (convertXls) {
+                        JOptionPane.showMessageDialog(this, "Erfolgreich Exportiert unter: " + fileChooser.getSelectedFile().toString());
+                        //export entity delete
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Leider nicht Erfolgreich Exportiert!");
+                    }
+                } catch (HeadlessException | IOException | IllegalArgumentException | ParseException ex) {
+                    JOptionPane.showMessageDialog(null, "Fehler: " + ex.getMessage(), "Export", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
         }
+
     }//GEN-LAST:event_jBExportActionPerformed
 
     private void jBDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteCustomerActionPerformed
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        try {
-            CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
-            AllTracks instance = AllTracks.getInstance();
-            instance.getAllCustomers().remove(CT.getCustomername());
-            setTieleUnsaved(true);
-            buildTree();
-        } catch (ClassCastException ex) {
-            JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
+        int n = JOptionPane.showConfirmDialog(
+                this, "Wollen Sie wirklich löschen",
+                "Löschen",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.YES_OPTION) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            try {
+                CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
+                AllTracks instance = AllTracks.getInstance();
+                instance.getAllCustomers().remove(CT.getCustomername());
+                setTieleUnsaved(true);
+                buildTree();
+            } catch (ClassCastException ex) {
+                JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
     }//GEN-LAST:event_jBDeleteCustomerActionPerformed
 
     private void jBTamplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBTamplateActionPerformed
@@ -775,17 +797,24 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBSaveTaskChangeActionPerformed
 
     private void jBDeleteTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteTrackActionPerformed
-        AllTracks instance = AllTracks.getInstance();
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
-        CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
-        CustomerTracks get = instance.getAllCustomers().get(CT.getCustomername());
-        TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
-        get.getCustomeritems().remove(TI);
-        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-        jTreeCustomer.setSelectionRow(jTreeCustomer.getSelectionRows()[0] - 1);
-        model.removeNodeFromParent(selectedNode);
-        setTieleUnsaved(true);
+        int n = JOptionPane.showConfirmDialog(
+                this, "Wollen Sie wirklich löschen",
+                "Löschen",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.YES_OPTION) {
+            AllTracks instance = AllTracks.getInstance();
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
+            CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
+            CustomerTracks get = instance.getAllCustomers().get(CT.getCustomername());
+            TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
+            get.getCustomeritems().remove(TI);
+            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+            jTreeCustomer.setSelectionRow(jTreeCustomer.getSelectionRows()[0] - 1);
+            model.removeNodeFromParent(selectedNode);
+            setTieleUnsaved(true);
+        }
+
     }//GEN-LAST:event_jBDeleteTrackActionPerformed
 
     private void jBDublicateTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDublicateTaskActionPerformed
@@ -1038,7 +1067,7 @@ public class MainFrame extends javax.swing.JFrame {
             this.setTitle(title + " unsaved");
         }
     }
-    
+
 //    public void setKeyshortcuts(){
 //        Action buttonAction = new AbstractAction("start") {
 //			

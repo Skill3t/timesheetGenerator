@@ -61,7 +61,6 @@ public class AutoSave {
                 fos.close();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
-
             }
         }
         return false;
