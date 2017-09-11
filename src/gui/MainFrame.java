@@ -5,15 +5,13 @@
  */
 package gui;
 
-import data.AllTracks;
-import data.CustomerTracks;
-import data.TrackedTimeItem;
+import entity.AllTracks;
+import entity.CustomerTracks;
+import entity.TrackedTimeItem;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,13 +37,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import logic.Export;
 import java.util.concurrent.TimeUnit;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import static javax.swing.JFileChooser.SAVE_DIALOG;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
@@ -556,6 +548,7 @@ public class MainFrame extends javax.swing.JFrame {
                     now = new java.util.Date();
                     jSStartTime.setValue(now);
                     jSStopTime.setValue(now);
+                    jCBMark.setSelected(false);
                     jBDeleteTrack.setEnabled(false);
                     jBSaveTaskChange.setEnabled(false);
                     jBStartTimeTrack.setEnabled(true);
@@ -568,6 +561,7 @@ public class MainFrame extends javax.swing.JFrame {
                     jcbKindOfAction.setSelectedItem(trackObject.getKindOfAction());
                     jSStartTime.setValue(trackObject.getStartTime());
                     jSStopTime.setValue(trackObject.getEndTime());
+                    jCBMark.setSelected(trackObject.getMarkInExport());
                     jBDeleteTrack.setEnabled(true);
                     jBSaveTaskChange.setEnabled(true);
                     jBDeleteCustomer.setEnabled(false);
@@ -613,7 +607,7 @@ public class MainFrame extends javax.swing.JFrame {
                 if (name.equals("data.CustomerTracks")) {
                     CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(),jCBMark.isSelected());
+                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
                     CT.getCustomeritems().add(TTI);
                     Calendar cal = Calendar.getInstance();
@@ -631,7 +625,7 @@ public class MainFrame extends javax.swing.JFrame {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
                     CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(),jCBMark.isSelected());
+                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
                     CT.getCustomeritems().add(TTI);
                     Calendar cal = Calendar.getInstance();
@@ -667,15 +661,6 @@ public class MainFrame extends javax.swing.JFrame {
         jSStartTime.setValue(createdDate);
         jLTime.setText("Zeit ");
         timer = new Timer();
-        /*timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                
-                jLTime.setText("Zeit " + getAgeInSeconds());
-            }
-        }, 1000, 1000);
-        
-         */
 
         TimerTask tt = new TimerTask() {
             @Override
@@ -790,19 +775,24 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
 
     private void jBSaveTaskChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveTaskChangeActionPerformed
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
-        TI.setKommand(jTAction.getText());
-        TI.setKindOfAction(jcbKindOfAction.getSelectedItem().toString());
-        TI.setStartTime((Date) jSStartTime.getModel().getValue());
-        TI.setEndTime((Date) jSStopTime.getModel().getValue());
-        selectedNode.setUserObject(TI);
-        DefaultMutableTreeNode selectedNode2 = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-        String s = selectedNode2.getUserObject().getClass().getName();
-        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-        model.reload((TreeNode) selectedNode2);
-        setTieleUnsaved(true);
-
+        int n = JOptionPane.showConfirmDialog(
+                this, "Wollen Sie wirklich Speichern?",
+                "Speichern",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.YES_OPTION) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
+            TI.setKommand(jTAction.getText());
+            TI.setKindOfAction(jcbKindOfAction.getSelectedItem().toString());
+            TI.setStartTime((Date) jSStartTime.getModel().getValue());
+            TI.setEndTime((Date) jSStopTime.getModel().getValue());
+            selectedNode.setUserObject(TI);
+            DefaultMutableTreeNode selectedNode2 = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            String s = selectedNode2.getUserObject().getClass().getName();
+            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+            model.reload((TreeNode) selectedNode2);
+            setTieleUnsaved(true);
+        }
     }//GEN-LAST:event_jBSaveTaskChangeActionPerformed
 
     private void jBDeleteTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteTrackActionPerformed
@@ -1082,26 +1072,4 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-//    public void setKeyshortcuts(){
-//        Action buttonAction = new AbstractAction("start") {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent evt) {
-//				System.out.println("Refreshing...");
-//			}
-//		};
-//		
-//		String key = "start";
-//
-//		jBSave.setAction(buttonAction);
-//		
-//		//buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
-//		 
-//                
-//                
-//		jBSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-//				KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
-//		
-//		jBSave.getActionMap().put(key, buttonAction);
-//    }
 }

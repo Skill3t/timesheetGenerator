@@ -5,7 +5,7 @@
  */
 package logic;
 
-import data.AllTracks;
+import entity.AllTracks;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;

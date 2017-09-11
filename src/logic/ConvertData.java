@@ -5,9 +5,9 @@
  */
 package logic;
 
-import data.AllTracks;
-import data.CustomerTracks;
-import data.TrackedTimeItem;
+import entity.AllTracks;
+import entity.CustomerTracks;
+import entity.TrackedTimeItem;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
