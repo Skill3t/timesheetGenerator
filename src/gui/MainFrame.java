@@ -5,6 +5,7 @@
  */
 package gui;
 
+import dbcon.SQLiteCon;
 import entity.AllTracks;
 import entity.CustomerTracks;
 import entity.TrackedTimeItem;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,6 +106,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         as = new AutoSave();
         as.autoSave();
+
+        try {
+            SQLiteCon.connect();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -536,11 +546,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         try {
-            String s = selectedNode.getUserObject().getClass().getName();// data.TrackedTimeItem
+            String s = selectedNode.getUserObject().getClass().getName();// entity.TrackedTimeItem
             Date now;
             //
             switch (s) {
-                case "data.CustomerTracks":
+                case "entity.CustomerTracks":
                     CustomerTracks userObject = (CustomerTracks) selectedNode.getUserObject();
                     jLKlient.setText("Mandant: " + userObject.getCustomername());
                     jTAction.setText("");
@@ -555,7 +565,7 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDeleteCustomer.setEnabled(true);
                     jBDublicateTask.setEnabled(false);
                     break;
-                case "data.TrackedTimeItem":
+                case "entity.TrackedTimeItem":
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
                     jTAction.setText(trackObject.getKommand());
                     jcbKindOfAction.setSelectedItem(trackObject.getKindOfAction());
@@ -583,6 +593,7 @@ public class MainFrame extends javax.swing.JFrame {
                     jBStopTimeTrack.setEnabled(false);
                     jBDublicateTask.setEnabled(false);
                     break;
+
             }
         } catch (ClassCastException e) {
             JOptionPane.showMessageDialog(null, "Fehler:" + e.getMessage());
@@ -604,12 +615,12 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
                 String name = selectedNode.getUserObject().getClass().getName();
-                if (name.equals("data.CustomerTracks")) {
+                if (name.equals("entity.CustomerTracks")) {
                     CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
                     TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
-                    CT.getCustomeritems().add(TTI);
+                    CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(TTI.getEndTime());
                     jBDeleteCustomer.setEnabled(true);
@@ -621,13 +632,13 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDublicateTask.setEnabled(false);
                     setTieleUnsaved(true);
 
-                } else if (name.equals("data.TrackedTimeItem")) {
+                } else if (name.equals("entity.TrackedTimeItem")) {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
                     CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
                     TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
-                    CT.getCustomeritems().add(TTI);
+                    CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(TTI.getEndTime());
                     jBDeleteCustomer.setEnabled(false);
@@ -767,7 +778,7 @@ public class MainFrame extends javax.swing.JFrame {
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
-            ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>();
+            TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
             cusomer.setCustomeritems(customeritems);
         }
         setTieleUnsaved(true);
@@ -781,17 +792,23 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
         if (n == JOptionPane.YES_OPTION) {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
+            CustomerTracks parent = (CustomerTracks) selectedNodeParent.getUserObject();
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
-            TI.setKommand(jTAction.getText());
-            TI.setKindOfAction(jcbKindOfAction.getSelectedItem().toString());
-            TI.setStartTime((Date) jSStartTime.getModel().getValue());
-            TI.setEndTime((Date) jSStopTime.getModel().getValue());
+            Long key = TI.getStartTimeS();
+
+            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+            parent.getCustomeritems().remove(key);
+            parent.getCustomeritems().put(TI.getStartTimeS(), TI);
+            //parent.getCustomeritems().replace(key, TI);
+            // TI.setKommand(jTAction.getText());
+            //TI.setKindOfAction(jcbKindOfAction.getSelectedItem().toString());
+            //TI.setStartTime((Date) jSStartTime.getModel().getValue());
+            //TI.setEndTime((Date) jSStopTime.getModel().getValue());
             selectedNode.setUserObject(TI);
-            DefaultMutableTreeNode selectedNode2 = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-            String s = selectedNode2.getUserObject().getClass().getName();
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-            model.reload((TreeNode) selectedNode2);
             setTieleUnsaved(true);
+            model.reload((TreeNode) selectedNode);
         }
     }//GEN-LAST:event_jBSaveTaskChangeActionPerformed
 
@@ -1044,8 +1061,9 @@ public class MainFrame extends javax.swing.JFrame {
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
             model.insertNodeInto(first, root, root.getChildCount());
-            for (TrackedTimeItem ti : cusomer.getCustomeritems()) {
-                model.insertNodeInto(new DefaultMutableTreeNode(ti), first, first.getChildCount());
+            TreeMap<Long, TrackedTimeItem> customeritems = cusomer.getCustomeritems();
+            for (Map.Entry<Long, TrackedTimeItem> items : customeritems.entrySet()) {
+                model.insertNodeInto(new DefaultMutableTreeNode(items.getValue()), first, first.getChildCount());
             }
         }
         if (instance.getAllCustomers().size() != 0) {

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Lars
  */
-public class TrackedTimeItem implements Serializable{
+public class TrackedTimeItem implements Serializable {
 
     private Date startTime;
     private Date endTime;
@@ -42,13 +42,16 @@ public class TrackedTimeItem implements Serializable{
         return markInExport;
     }
 
+    public Long getStartTimeS() {
+        long time = this.getStartTime().getTime();
+        return time;
+    }
+
     public void setMarkInExport(Boolean markInExport) {
         this.markInExport = markInExport;
     }
-    
 
-    
-    public TrackedTimeItem(Date startTime, Date endTime, String kommand, String kindOfAction, boolean markInExport ) {
+    public TrackedTimeItem(Date startTime, Date endTime, String kommand, String kindOfAction, boolean markInExport) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.kommand = kommand;

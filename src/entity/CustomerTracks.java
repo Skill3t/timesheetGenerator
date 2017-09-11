@@ -7,6 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,31 +16,38 @@ import java.util.concurrent.TimeUnit;
  * @author Lars
  */
 public class CustomerTracks implements Serializable{
-    private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
+   // private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
+    private TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
+
     private String customername;
 
     public CustomerTracks(String customername) {
         this.customername = customername;
     }
 
-    public ArrayList<TrackedTimeItem> getCustomeritems() {
-        return customeritems;
-    }
+    //public ArrayList<TrackedTimeItem> getCustomeritems() {
+    //    return customeritems;
+    //}
 
     public String getCustomername() {
         return customername;
     }
 
-    public void setCustomeritems(ArrayList<TrackedTimeItem> customeritems) {
+    public TreeMap<Long, TrackedTimeItem> getCustomeritems() {
+        return customeritems;
+    }
+
+    public void setCustomeritems(TreeMap<Long, TrackedTimeItem> customeritems) {
         this.customeritems = customeritems;
     }
+
     
     @Override
     public String toString() {
         // then you can avoid using toString
         long difftotal = 0;
-        for (TrackedTimeItem items : customeritems) {
-            difftotal = difftotal + items.getEndTime().getTime() - items.getStartTime().getTime();
+        for (Map.Entry<Long,TrackedTimeItem> items : customeritems.entrySet()) {
+            difftotal = difftotal + items.getValue().getEndTime().getTime() - items.getValue().getStartTime().getTime();
 
         }
         long toMinutes = TimeUnit.MILLISECONDS.toMinutes(difftotal);

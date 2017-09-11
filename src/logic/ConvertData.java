@@ -13,7 +13,9 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *
@@ -44,12 +46,13 @@ public class ConvertData {
         CustomerTracks ti = instance.getAllCustomers().get(customername);
         String[] retline;
         ArrayList<String[]> allreturn = new ArrayList();
+        TreeMap<Long, TrackedTimeItem> customeritems = ti.getCustomeritems();
+        for (Map.Entry<Long, TrackedTimeItem> tti : customeritems.entrySet()) {
 
-        for (TrackedTimeItem tti : ti.getCustomeritems()) {
             retline = new String[7];
 
             Calendar cal = Calendar.getInstance();
-            long time = tti.getStartTime().getTime();
+            long time = tti.getValue().getStartTime().getTime();
             int itoMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(time);
             cal.setTimeInMillis((long) itoMinutes * 60 * 1000);
 
@@ -57,7 +60,7 @@ public class ConvertData {
             retline[1] = String.format("%01d:%02d", cal.get(Calendar.HOUR_OF_DAY), +cal.get(Calendar.MINUTE));
             Calendar calolder = Calendar.getInstance();
 
-            time = tti.getEndTime().getTime();
+            time = tti.getValue().getEndTime().getTime();
             itoMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(time);
             calolder.setTimeInMillis((long) itoMinutes * 60 * 1000);
 
@@ -75,10 +78,10 @@ public class ConvertData {
 
             retline[4] = houers;
              */
-            retline[3] = ""+tti.getMarkInExport();
+            retline[3] = "" + tti.getValue().getMarkInExport();
             retline[4] = "";
-            retline[5] = tti.getKindOfAction();
-            retline[6] = tti.getKommand();
+            retline[5] = tti.getValue().getKindOfAction();
+            retline[6] = tti.getValue().getKommand();
             allreturn.add(retline);
 
         }
