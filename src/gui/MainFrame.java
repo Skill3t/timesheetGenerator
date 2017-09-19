@@ -5,6 +5,7 @@
  */
 package gui;
 
+import data.CRUDCustomerTrack;
 import dbcon.SQLiteCon;
 import entity.AllTracks;
 import entity.CustomerTracks;
@@ -109,6 +110,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         try {
             SQLiteCon.connect();
+            CRUDCustomerTrack t = new CRUDCustomerTrack();
+            t.getCustomerListe();
+            
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -158,7 +162,6 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Timesheet Generator");
         setMinimumSize(new java.awt.Dimension(990, 640));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         jPMenue.setBackground(new java.awt.Color(169, 1, 0));
         jPMenue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -290,14 +293,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBMail);
 
-        getContentPane().add(jPMenue);
-
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mandanten"));
         jPCustomers.setAutoscrolls(true);
         jPCustomers.setMinimumSize(new java.awt.Dimension(960, 540));
         jPCustomers.setPreferredSize(new java.awt.Dimension(960, 560));
-        jPCustomers.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane1.setAlignmentX(0.0F);
@@ -318,8 +318,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTreeCustomer);
-
-        jPCustomers.add(jScrollPane1);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setAlignmentX(0.0F);
@@ -393,21 +391,21 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 958, Short.MAX_VALUE)
+            .addGap(0, 1026, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 35, Short.MAX_VALUE)
                     .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, 956, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 35, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 34, Short.MAX_VALUE)
+            .addGap(0, 62, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 4, Short.MAX_VALUE)
+                    .addGap(0, 18, Short.MAX_VALUE)
                     .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 4, Short.MAX_VALUE)))
+                    .addGap(0, 18, Short.MAX_VALUE)))
         );
 
         jPTrackItem.add(jPanel2);
@@ -484,23 +482,54 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
+            .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPCustomorMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPCustomers.add(jPanel1);
+        javax.swing.GroupLayout jPCustomersLayout = new javax.swing.GroupLayout(jPCustomers);
+        jPCustomers.setLayout(jPCustomersLayout);
+        jPCustomersLayout.setHorizontalGroup(
+            jPCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPCustomersLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addGroup(jPCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPCustomersLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+        jPCustomersLayout.setVerticalGroup(
+            jPCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPCustomersLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-        getContentPane().add(jPCustomers);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -796,15 +825,9 @@ public class MainFrame extends javax.swing.JFrame {
             CustomerTracks parent = (CustomerTracks) selectedNodeParent.getUserObject();
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
             Long key = TI.getStartTimeS();
-
             TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
             parent.getCustomeritems().remove(key);
             parent.getCustomeritems().put(TI.getStartTimeS(), TI);
-            //parent.getCustomeritems().replace(key, TI);
-            // TI.setKommand(jTAction.getText());
-            //TI.setKindOfAction(jcbKindOfAction.getSelectedItem().toString());
-            //TI.setStartTime((Date) jSStartTime.getModel().getValue());
-            //TI.setEndTime((Date) jSStopTime.getModel().getValue());
             selectedNode.setUserObject(TI);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             setTieleUnsaved(true);
