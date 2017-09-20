@@ -30,19 +30,15 @@ public class AllTracks {
             return exempla;
         }
     }
-/*
-    public HashMap<String, CustomerTracks> getAllCustomers() {
-        return allCustomers;
-    }
 
-    public void setAllCustomers(HashMap<String, CustomerTracks> allCustomers) {
-        this.allCustomers = allCustomers;
+    public void addCustomer(CustomerTracks CT){
+        allCustomers.put(CT.getCustomername(), CT);
     }
-*/
-
+    
     public TreeMap<String, CustomerTracks> getAllCustomers() {
         return allCustomers;
     }
+    
 
     public void setAllCustomers(TreeMap<String, CustomerTracks> allCustomers) {
         this.allCustomers = allCustomers;
@@ -55,7 +51,7 @@ public class AllTracks {
     public void setTamplatePath(String tamplatePath) {
         this.tamplatePath = tamplatePath;
     }
- 
+
     
     
  

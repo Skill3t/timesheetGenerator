@@ -20,14 +20,12 @@ public class CustomerTracks implements Serializable{
     private TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
 
     private String customername;
+    private int id;
+    
 
     public CustomerTracks(String customername) {
         this.customername = customername;
     }
-
-    //public ArrayList<TrackedTimeItem> getCustomeritems() {
-    //    return customeritems;
-    //}
 
     public String getCustomername() {
         return customername;
@@ -41,6 +39,15 @@ public class CustomerTracks implements Serializable{
         this.customeritems = customeritems;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     
     @Override
     public String toString() {
