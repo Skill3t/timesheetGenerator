@@ -6,7 +6,9 @@
 package logic;
 
 import data.CRUDCustomerTrack;
+import data.CRUDTrackedTimeItem;
 import entity.CustomerTracks;
+import entity.TrackedTimeItem;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -24,8 +26,13 @@ public class CustomerTracksService {
         List<CustomerTracks> customerListe = CRUDCT.getCustomerListe();
         for (CustomerTracks CT : customerListe) {
             allCustomers.put(CT.getCustomername(), CT);
+            CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
+            List<TrackedTimeItem> trackedTimeItemListe = CRUDTTI.getTrackedTimeItemListe(CT.getId());
+            for (TrackedTimeItem TTI : trackedTimeItemListe) {
+                CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
+            }
         }
         return allCustomers;
     }
-    
+
 }

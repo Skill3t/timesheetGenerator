@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,21 +75,18 @@ public class CRUDCustomerTrack {
 
     public List<CustomerTracks> getCustomerListe() {
         try {
-            List<CustomerTracks> customerListe = null;
+            List<CustomerTracks> customerListe = new ArrayList<CustomerTracks>();
             ConnectionSingelton cst = null;
             cst = ConnectionSingelton.getInstance();
             Connection dbcon = cst.getDbcon();
             PreparedStatement ps = dbcon
                     .prepareStatement("SELECT * FROM Customer");
             ResultSet rs = ps.executeQuery();
-            AllTracks instance = AllTracks.getInstance();
-
             while (rs.next()) {
                 // item = new TrackedTimeItem();
                 CustomerTracks CT = new CustomerTracks(rs.getString("name"));
                 CT.setId(rs.getInt("id"));
-                customerListe.add(CT);
-                instance.addCustomer(CT);
+                customerListe.add(CT);  
             }
             rs.close();
             ps.close();

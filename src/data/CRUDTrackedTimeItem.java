@@ -16,6 +16,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 /**
  *
@@ -23,57 +35,92 @@ import java.sql.SQLException;
  */
 public class CRUDTrackedTimeItem {
 
-    public Integer insertTrackedTimeItem(TrackedTimeItem TTI, Integer CustomerID) throws SQLException, ClassNotFoundException {
-        ConnectionSingelton cst = ConnectionSingelton.getInstance();
-        Connection dbcon = cst.getDbcon();
-        String query = "INSERT INTO TrackedTimeItem ("
-                + " id,"
-                + " id_Customer,"
-                + " kindOfAction,"
-                + " startTime,"
-                + " endTime,"
-                + " kommand,"
-                + " markInExport,"
-                + ") VALUES ("
-                + "null, ?,?,?,?,?,?)";
-
+    public Integer insertTrackedTimeItem(TrackedTimeItem TTI, Integer CustomerID) {
         try {
+            ConnectionSingelton cst = null;
+            cst = ConnectionSingelton.getInstance();
+            Connection dbcon = cst.getDbcon();
+            String query = "INSERT INTO TrackedTimeItem ("
+                    + " id,"
+                    + " id_Customer,"
+                    + " kindOfAction,"
+                    + " startTime,"
+                    + " endTime,"
+                    + " kommand,"
+                    + " markInExport"
+                    + ") VALUES ("
+                    + "null, ?,?,?,?,?,?)";
+
             // set all the preparedstatement parameters
             PreparedStatement ps = dbcon.prepareStatement(query);
+
             ps.setInt(1, CustomerID);
             ps.setString(2, TTI.getKindOfAction());
-            ps.setInt(3, (int) TTI.getStartTime().getTime());
-            ps.setInt(4, (int) TTI.getEndTime().getTime());
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getEndTime().getTime()),
+                    ZoneId.systemDefault());
+            ps.setString(3, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+            zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getStartTime().getTime()),
+                    ZoneId.systemDefault());
+            ps.setString(4, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+            //ps.setInt(3, (int) TTI.getStartTime().getTime());
+            //ps.setInt(4, (int) TTI.getEndTime().getTime());
             ps.setString(5, TTI.getKommand());
-            ps.setInt(6, TTI.getMyInt());
+            int aint;
+            if (TTI.getMarkInExport()) {
+                aint = 1;
+            } else {
+                aint = 0;
+            }
+            ps.setInt(6, aint);
             int executeUpdate = ps.executeUpdate();
             ps.close();
             return executeUpdate;
 
-        } catch (SQLException se) {
+        } catch (SQLException ex) {
             // log exception
-            throw se;
+            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }
-/*
-    public CustomerTracks getCustomerByID(int id) throws SQLException, ClassNotFoundException {
-        CustomerTracks ct = null;
-        Connection dbcon = SQLiteCon.connect();
-        String query = "SELECT * FROM Customer WHRE id = ?";
-        PreparedStatement ps = dbcon
-                .prepareStatement(query);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            ct = new CustomerTracks(rs.getString("name"));
-            ct.setId(rs.getInt("id"));
-        }
-        ps.close();
-        dbcon.close();
-        return ct;
+        return 0;
     }
 
+    public List<TrackedTimeItem> getTrackedTimeItemListe(int CustomerID) {
+        try {
+            List<TrackedTimeItem> ListTTI = new ArrayList<TrackedTimeItem>();
+            ConnectionSingelton cst = null;
+            cst = ConnectionSingelton.getInstance();
+            Connection dbcon = cst.getDbcon();
+            PreparedStatement ps = dbcon
+                    .prepareStatement("SELECT * FROM TrackedTimeItem WHERE id_Customer = ?");
+            ps.setInt(1, CustomerID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                // item = new TrackedTimeItem();
+                int aInt = rs.getInt("markInExport");
+                boolean b;
+                if (aInt == 0) {
+                    b = false;
+                } else {
+                    b = true;
+                }
+                Calendar parseDateTime = javax.xml.bind.DatatypeConverter.parseDateTime(rs.getString("startTime"));
+                Date startTime = parseDateTime.getTime();
+                parseDateTime = javax.xml.bind.DatatypeConverter.parseDateTime(rs.getString("endTime"));
+                Date endTime = parseDateTime.getTime();
+                TrackedTimeItem TTI = new TrackedTimeItem(startTime, endTime, rs.getString("kommand"), rs.getString("kindOfAction"), b);
+                TTI.setId(rs.getInt("id"));
+                ListTTI.add(TTI);
+            }
+            rs.close();
+            ps.close();
+            return ListTTI;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /*
     public List<CustomerTracks> getCustomerListe() throws SQLException, ClassNotFoundException {
         List<CustomerTracks> customerListe = null;
         Connection dbcon = SQLiteCon.connect();
@@ -93,7 +140,7 @@ public class CRUDTrackedTimeItem {
         dbcon.close();
         return customerListe;
     }
-*/
+     */
     /**
      * *
      *
@@ -103,24 +150,42 @@ public class CRUDTrackedTimeItem {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
- /*   public int editCustomerByID(int id, String name) throws SQLException, ClassNotFoundException {
-        CustomerTracks customerByID = getCustomerByID(id);
-        if (customerByID == null) {
-            return -1;
+    public int editTrackedTimeItem(TrackedTimeItem TTI) {
+
+        ConnectionSingelton cst = ConnectionSingelton.getInstance();
+        Connection dbcon = cst.getDbcon();
+
+        String query = "UPDATE TrackedTimeItem SET kindOfAction = ?, startTime = ?, endTime = ?, kommand = ? , markInExport = ? WHERE id = ?";
+        PreparedStatement ps;
+        try {
+            ps = dbcon
+                    .prepareStatement(query);
+            ps.setString(1, TTI.getKindOfAction());
+            ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getStartTime().getTime()),
+                    ZoneId.systemDefault());
+            ps.setString(2, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+            zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getEndTime().getTime()),
+                    ZoneId.systemDefault());
+            ps.setString(3, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+            ps.setString(4, TTI.getKommand());
+            int aint;
+            if (TTI.getMarkInExport()) {
+                aint = 1;
+            } else {
+                aint = 0;
+            }
+            ps.setInt(5, aint);
+            ps.setInt(6, TTI.getId());
+            int executeUpdate = ps.executeUpdate();
+            ps.close();
+            return executeUpdate;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Connection dbcon = SQLiteCon.connect();
+        return 0;
 
-        String query = "UPDATE Customer SET name = ? WHERE id = ?";
-        PreparedStatement ps = dbcon
-                .prepareStatement(query);
-        ps.setString(1, name);
-        ps.setInt(2, id);
-        int executeUpdate = ps.executeUpdate();
-        ps.close();
-        dbcon.close();
-        return executeUpdate;
     }
-
+    /*
     public int deleteCustomerByID(int id) throws SQLException, ClassNotFoundException {
         Connection dbcon = SQLiteCon.connect();
 

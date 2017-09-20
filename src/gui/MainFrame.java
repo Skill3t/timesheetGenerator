@@ -42,6 +42,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
 import logic.AutoCompletion;
 import logic.AutoSave;
+import logic.CustomerTracksService;
+import logic.TrackedTimeItemService;
 
 /**
  *
@@ -65,6 +67,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         AutoCompletion.enable(jcbKindOfAction);
         if (readSaveState()) {
+            buildTree();
+        } else {
+            JOptionPane.showMessageDialog(null, "Datei saveState nicht vorhanden", "Warnung", JOptionPane.WARNING_MESSAGE);
             buildTree();
         }
         //Save the Status every 100 seconds
@@ -102,8 +107,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         as = new AutoSave();
-        as.autoSave();
-
+       // as.autoSave();
 
     }
 
@@ -640,6 +644,8 @@ public class MainFrame extends javax.swing.JFrame {
                     CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(TTI.getEndTime());
+                    TrackedTimeItemService TTIS = new TrackedTimeItemService();
+                    TTIS.saveTrack(TTI, CT.getId());
                     jBDeleteCustomer.setEnabled(true);
                     jBStartTimeTrack.setEnabled(true);
                     jBStopTimeTrack.setEnabled(false);
@@ -658,6 +664,8 @@ public class MainFrame extends javax.swing.JFrame {
                     CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(TTI.getEndTime());
+                    TrackedTimeItemService TTIS = new TrackedTimeItemService();
+                    TTIS.saveTrack(TTI, CT.getId());
                     jBDeleteCustomer.setEnabled(false);
                     jBStartTimeTrack.setEnabled(false);
                     jBStopTimeTrack.setEnabled(false);
@@ -813,9 +821,13 @@ public class MainFrame extends javax.swing.JFrame {
             CustomerTracks parent = (CustomerTracks) selectedNodeParent.getUserObject();
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
             Long key = TI.getStartTimeS();
+            int id = TI.getId();
             TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+            TI.setId(id);
             parent.getCustomeritems().remove(key);
             parent.getCustomeritems().put(TI.getStartTimeS(), TI);
+            CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
+            CRUDTTI.editTrackedTimeItem(TI);
             selectedNode.setUserObject(TI);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             setTieleUnsaved(true);
@@ -1060,11 +1072,13 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void buildTree() {
-        AllTracks instance = AllTracks.getInstance();
+        //AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
-        Set set = instance.getAllCustomers().entrySet();
+        CustomerTracksService cts = new CustomerTracksService();
+        Set set = cts.getAllCustomers().entrySet();
+        //Set set = instance.getAllCustomers().entrySet();
 
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
@@ -1077,7 +1091,7 @@ public class MainFrame extends javax.swing.JFrame {
                 model.insertNodeInto(new DefaultMutableTreeNode(items.getValue()), first, first.getChildCount());
             }
         }
-        if (instance.getAllCustomers().size() != 0) {
+        if (cts.getAllCustomers().size() != 0) {
             jTreeCustomer.expandRow(0);
             jTreeCustomer.setRootVisible(false);
             jTreeCustomer.collapseRow(0);

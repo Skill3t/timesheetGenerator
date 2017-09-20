@@ -15,17 +15,23 @@ import java.util.concurrent.TimeUnit;
  * @author Lars
  */
 public class TrackedTimeItem implements Serializable {
-
+    private int id;
     private Date startTime;
     private Date endTime;
     private String kommand;
     private String kindOfAction;
     private Boolean markInExport;
-    private int myInt = (markInExport) ? 1 : 0;
 
-    public int getMyInt() {
-        return myInt;
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
+   
     
     
     public Date getStartTime() {
