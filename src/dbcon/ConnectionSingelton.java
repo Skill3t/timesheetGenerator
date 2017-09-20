@@ -7,6 +7,8 @@ package dbcon;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,18 +23,24 @@ public class ConnectionSingelton {
     }
     private static Connection dbcon;
 
-    public static Connection getDbcon() {
+    public Connection getDbcon() {
         return dbcon;
     }
     
     // Eine Zugriffsmethode auf Klassenebene, welches dir '''einmal''' ein konkretes 
     // Objekt erzeugt und dieses zurückliefert.
 
-    public static ConnectionSingelton getInstance() throws SQLException, ClassNotFoundException {
+    public static ConnectionSingelton getInstance() {
        
         if (ConnectionSingelton.instance == null) {
             ConnectionSingelton.instance = new ConnectionSingelton();
-             dbcon = SQLiteCon.connect();
+            try {
+                dbcon = SQLiteCon.connect();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConnectionSingelton.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ConnectionSingelton.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return ConnectionSingelton.instance;
     }

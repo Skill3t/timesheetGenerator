@@ -18,7 +18,7 @@ import java.sql.SQLException;
 
 public class SQLiteCon {
 
-    public static Connection connect() throws SQLException, ClassNotFoundException {
+    protected static Connection connect() throws SQLException, ClassNotFoundException {
        Connection conn = null;
         try {
             // db parameters

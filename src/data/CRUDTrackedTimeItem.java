@@ -7,6 +7,8 @@ package data;
 
 import dbcon.ConnectionSingelton;
 import dbcon.SQLiteCon;
+import entity.AllTracks;
+import entity.CustomerTracks;
 import java.util.Date;
 import java.util.List;
 import entity.TrackedTimeItem;
@@ -21,90 +23,114 @@ import java.sql.SQLException;
  */
 public class CRUDTrackedTimeItem {
 
-    public TrackedTimeItem getTrackedTimeItemByID(int tid) throws SQLException, ClassNotFoundException {
-        TrackedTimeItem item = null;
+    public Integer insertTrackedTimeItem(TrackedTimeItem TTI, Integer CustomerID) throws SQLException, ClassNotFoundException {
+        ConnectionSingelton cst = ConnectionSingelton.getInstance();
+        Connection dbcon = cst.getDbcon();
+        String query = "INSERT INTO TrackedTimeItem ("
+                + " id,"
+                + " id_Customer,"
+                + " kindOfAction,"
+                + " startTime,"
+                + " endTime,"
+                + " kommand,"
+                + " markInExport,"
+                + ") VALUES ("
+                + "null, ?,?,?,?,?,?)";
+
+        try {
+            // set all the preparedstatement parameters
+            PreparedStatement ps = dbcon.prepareStatement(query);
+            ps.setInt(1, CustomerID);
+            ps.setString(2, TTI.getKindOfAction());
+            ps.setInt(3, (int) TTI.getStartTime().getTime());
+            ps.setInt(4, (int) TTI.getEndTime().getTime());
+            ps.setString(5, TTI.getKommand());
+            ps.setInt(6, TTI.getMyInt());
+            int executeUpdate = ps.executeUpdate();
+            ps.close();
+            return executeUpdate;
+
+        } catch (SQLException se) {
+            // log exception
+            throw se;
+        }
+
+    }
+/*
+    public CustomerTracks getCustomerByID(int id) throws SQLException, ClassNotFoundException {
+        CustomerTracks ct = null;
         Connection dbcon = SQLiteCon.connect();
+        String query = "SELECT * FROM Customer WHRE id = ?";
         PreparedStatement ps = dbcon
-                .prepareStatement("SELECT * FROM task WHERE id=?");
-        ps.setInt(1, tid);
+                .prepareStatement(query);
+        ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-           // item = new TrackedTimeItem();
-            System.out.println(rs.getString(1) + "\n" + rs.getString(2));
+            ct = new CustomerTracks(rs.getString("name"));
+            ct.setId(rs.getInt("id"));
         }
         ps.close();
         dbcon.close();
-        return item;
-    }
-/*
-    public List<TrackedTimeItem> getSachListe() {
-        List<Sachbearbeiter> sachListe = null;
-        Query q = em.createNativeQuery("SELECT * FROM Sachbearbeiter", Sachbearbeiter.class);
-        sachListe = q.getResultList();
-        return sachListe;
+        return ct;
     }
 
-    @Override
-    public boolean insertSach(Sachbearbeiter sach) {
-        boolean status = false;
-        if (sach.getSid() == null) {
-            em.persist(sach);
-            status = true;
+    public List<CustomerTracks> getCustomerListe() throws SQLException, ClassNotFoundException {
+        List<CustomerTracks> customerListe = null;
+        Connection dbcon = SQLiteCon.connect();
+        PreparedStatement ps = dbcon
+                .prepareStatement("SELECT * FROM Customer");
+        ResultSet rs = ps.executeQuery();
+        AllTracks instance = AllTracks.getInstance();
+
+        while (rs.next()) {
+            // item = new TrackedTimeItem();
+            CustomerTracks CT = new CustomerTracks(rs.getString("name"));
+            CT.setId(rs.getInt("id"));
+            customerListe.add(CT);
+            instance.addCustomer(CT);
         }
-        return status;
+        ps.close();
+        dbcon.close();
+        return customerListe;
+    }
+*/
+    /**
+     * *
+     *
+     * @param id id of the Customer
+     * @param name new name ot the Customer
+     * @return -1 Customer did not exist 1 update sucsess
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+ /*   public int editCustomerByID(int id, String name) throws SQLException, ClassNotFoundException {
+        CustomerTracks customerByID = getCustomerByID(id);
+        if (customerByID == null) {
+            return -1;
+        }
+        Connection dbcon = SQLiteCon.connect();
+
+        String query = "UPDATE Customer SET name = ? WHERE id = ?";
+        PreparedStatement ps = dbcon
+                .prepareStatement(query);
+        ps.setString(1, name);
+        ps.setInt(2, id);
+        int executeUpdate = ps.executeUpdate();
+        ps.close();
+        dbcon.close();
+        return executeUpdate;
     }
 
-    @Override
-    public boolean editSach(Sachbearbeiter sach) {
-        boolean status = false;
+    public int deleteCustomerByID(int id) throws SQLException, ClassNotFoundException {
+        Connection dbcon = SQLiteCon.connect();
 
-        sach = em.find(Sachbearbeiter.class, sach.getSid());
-        if (sach == null) {
-            return false;
-        }
-
-        String name = null;
-        String vorname = null;
-        Integer nsid = null;
-        Date geburtsdatum = null;
-        List<Antrag> antragList = null;
-        String geschlecht = null;
-        String telefon = null;
-
-        sach.getSid();
-        sach.getTitel();
-        sach.getVorname();
-        sach.getName();
-        sach.getGeschlecht();
-        sach.getTelefon();
-        sach.getGeburtsdatum();
-        sach.getAbteilung();
-        sach.getAdresse();
-        sach.getAntragList();
-
-        //sach.setSid(nsid);
-        sach.setTitel(name);
-        sach.setVorname(vorname);
-        sach.setName(name);
-        sach.setGeschlecht(geschlecht);
-        sach.setTelefon(telefon);
-        sach.setGeburtsdatum(geburtsdatum);
-        sach.setAbteilung(name);
-        sach.setAdresse(vorname);
-        sach.setAntragList(antragList);
-
-        em.merge(sach);
-        status = true;
-        return status;
-    }
-
-    @Override
-    public boolean deleteSach(int sid) {
-        Sachbearbeiter sach = em.find(Sachbearbeiter.class, sid);
-        if (sach != null) {
-            em.remove(sach);
-            return true;
-        }
-        return false;
+        String query = "DELETE FROM Customer WHERE id = ?";
+        PreparedStatement ps = dbcon
+                .prepareStatement(query);
+        ps.setInt(1, id);
+        int executeUpdate = ps.executeUpdate();
+        ps.close();
+        dbcon.close();
+        return executeUpdate;
     }*/
 }

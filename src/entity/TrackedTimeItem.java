@@ -21,7 +21,13 @@ public class TrackedTimeItem implements Serializable {
     private String kommand;
     private String kindOfAction;
     private Boolean markInExport;
+    private int myInt = (markInExport) ? 1 : 0;
 
+    public int getMyInt() {
+        return myInt;
+    }
+    
+    
     public Date getStartTime() {
         return startTime;
     }

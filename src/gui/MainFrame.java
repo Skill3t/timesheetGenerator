@@ -104,6 +104,7 @@ public class MainFrame extends javax.swing.JFrame {
         as = new AutoSave();
         as.autoSave();
 
+
     }
 
     /**

@@ -5,27 +5,33 @@
  */
 package entity;
 
+import data.CRUDCustomerTrack;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Lars
  */
-public class CustomerTracks implements Serializable{
-   // private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
+public class CustomerTracks implements Serializable {
+    // private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
+
     private TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
 
-    private String customername;
     private int id;
-    
+    private String customername;
 
     public CustomerTracks(String customername) {
-        this.customername = customername;
+        this.customername = customername;    
     }
+
+ 
 
     public String getCustomername() {
         return customername;
@@ -46,14 +52,12 @@ public class CustomerTracks implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-    
+
     @Override
     public String toString() {
         // then you can avoid using toString
         long difftotal = 0;
-        for (Map.Entry<Long,TrackedTimeItem> items : customeritems.entrySet()) {
+        for (Map.Entry<Long, TrackedTimeItem> items : customeritems.entrySet()) {
             difftotal = difftotal + items.getValue().getEndTime().getTime() - items.getValue().getStartTime().getTime();
 
         }
