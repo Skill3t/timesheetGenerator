@@ -12,6 +12,7 @@ import java.util.TreeMap;
  * @author Lars
  */
 public class AllTracks {
+    /*
     private String tamplatePath;
     private static AllTracks exempla;
     //private ArrayList<CustomerTrachs> allCustomers = new ArrayList<CustomerTrachs>();
@@ -53,7 +54,7 @@ public class AllTracks {
     }
 
     
-    
+    */
  
     
 }

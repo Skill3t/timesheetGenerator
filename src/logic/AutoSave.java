@@ -21,7 +21,7 @@ import static java.util.concurrent.TimeUnit.*;
  * @author Lars
  */
 public class AutoSave {
-
+/*
     public boolean saved;
 
     private final ScheduledExecutorService scheduler
@@ -65,5 +65,5 @@ public class AutoSave {
         }
         return false;
     }
-
+*/
 }

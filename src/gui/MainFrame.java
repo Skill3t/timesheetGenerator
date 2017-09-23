@@ -41,9 +41,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
 import logic.AutoCompletion;
-import logic.AutoSave;
 import logic.CustomerTracksService;
 import logic.TrackedTimeItemService;
+import logic.TrackedTimeService;
 
 /**
  *
@@ -55,7 +55,6 @@ public class MainFrame extends javax.swing.JFrame {
     private Timer timer;
     private JLabel jLTemplatePath = new JLabel();
     private String title = ("Timesheet Generator");
-    private final AutoSave as;
 
     /**
      * Creates new form MainFrame
@@ -66,48 +65,14 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
 
         AutoCompletion.enable(jcbKindOfAction);
+        /*
         if (readSaveState()) {
             buildTree();
         } else {
             JOptionPane.showMessageDialog(null, "Datei saveState nicht vorhanden", "Warnung", JOptionPane.WARNING_MESSAGE);
             buildTree();
-        }
-        //Save the Status every 100 seconds
-
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-
-                Object[] options = {"Nicht speichern",
-                    "Abbrechen",
-                    "Speichern"};
-                int n = JOptionPane.showOptionDialog(null,
-                        "Möchtest du die Änderungen speichern? ",
-                        "Speichern",
-                        JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[2]);
-                switch (n) {
-                    case 0: //Nicht speichern
-                        System.exit(0);
-                        break;
-                    case 1: //Abbrechen
-                        break;
-                    case 2: //Sichern..
-                        if (as.save()) {
-                            System.exit(0);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Fehler beim Speichern", "Speichern", JOptionPane.ERROR_MESSAGE);
-                        }
-                        break;
-                }
-            }
-        });
-
-        as = new AutoSave();
-       // as.autoSave();
+        }*/
+        buildTree();
 
     }
 
@@ -122,7 +87,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPMenue = new javax.swing.JPanel();
         jBnewCustomer = new javax.swing.JButton();
-        jBSave = new javax.swing.JButton();
         jBExport = new javax.swing.JButton();
         jBTamplate = new javax.swing.JButton();
         jBDeleteTreeleafs = new javax.swing.JButton();
@@ -149,7 +113,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBDublicateTask = new javax.swing.JButton();
         jBDeleteTrack = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Timesheet Generator");
         setMinimumSize(new java.awt.Dimension(990, 640));
 
@@ -180,26 +144,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPMenue.add(jBnewCustomer);
-
-        jBSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/floppydisk.png"))); // NOI18N
-        jBSave.setToolTipText("Save ");
-        jBSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jBSave.setBorderPainted(false);
-        jBSave.setMargin(new java.awt.Insets(0, 10, 0, 10));
-        jBSave.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jBSaveMouseExited(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jBSaveMouseEntered(evt);
-            }
-        });
-        jBSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBSaveActionPerformed(evt);
-            }
-        });
-        jPMenue.add(jBSave);
 
         jBExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/glyphicons-416-disk-open.png"))); // NOI18N
         jBExport.setToolTipText("Export to .xls");
@@ -533,12 +477,15 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
-        AllTracks instance = AllTracks.getInstance();
-        CustomerTracks get = instance.getAllCustomers().get(S);
-        int bevor = instance.getAllCustomers().size();
+        CustomerTracksService CTS = new CustomerTracksService();
+        TreeMap<String, CustomerTracks> allCustomers = CTS.getAllCustomers();
+        CustomerTracks get = allCustomers.get(S);
+        int bevor = allCustomers.size();
         if (get == null) {
             CustomerTracks ct = new CustomerTracks(S);
-            instance.getAllCustomers().put(ct.getCustomername(), ct);
+            allCustomers.put(ct.getCustomername(), ct);
+            int saveCustomer = CTS.saveCustomer(ct);
+            ct.setId(saveCustomer);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
@@ -550,18 +497,8 @@ public class MainFrame extends javax.swing.JFrame {
             jTreeCustomer.setRootVisible(false);
             jTreeCustomer.collapseRow(0);
         }
-        setTieleUnsaved(true);
         buildTree();
     }//GEN-LAST:event_jBnewCustomerActionPerformed
-
-    private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
-        if (as.save()) {
-            JOptionPane.showMessageDialog(null, "Der Zustand wurde gespeichert.");
-            setTieleUnsaved(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "Fehler beim Speichern");
-        }
-    }//GEN-LAST:event_jBSaveActionPerformed
 
 
     private void jTreeCustomerValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeCustomerValueChanged
@@ -653,7 +590,6 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDeleteTrack.setEnabled(false);
                     jBSaveTaskChange.setEnabled(false);
                     jBDublicateTask.setEnabled(false);
-                    setTieleUnsaved(true);
 
                 } else if (name.equals("entity.TrackedTimeItem")) {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
@@ -769,9 +705,8 @@ public class MainFrame extends javax.swing.JFrame {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
             try {
                 CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
-                AllTracks instance = AllTracks.getInstance();
-                instance.getAllCustomers().remove(CT.getCustomername());
-                setTieleUnsaved(true);
+                CustomerTracksService CTS = new CustomerTracksService();
+                boolean removeCustomer = CTS.removeCustomer(CT);
                 buildTree();
             } catch (ClassCastException ex) {
                 JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -781,7 +716,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBDeleteCustomerActionPerformed
 
     private void jBTamplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBTamplateActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
+        /*  JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter(".xlsx", "xlsx"));
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(this);
@@ -792,12 +727,11 @@ public class MainFrame extends javax.swing.JFrame {
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue.add(jLTemplatePath);
             SwingUtilities.updateComponentTreeUI(this);
-            setTieleUnsaved(true);
-        }
+        }*/
     }//GEN-LAST:event_jBTamplateActionPerformed
 
     private void jBDeleteTreeleafsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteTreeleafsActionPerformed
-        AllTracks instance = AllTracks.getInstance();
+        /* AllTracks instance = AllTracks.getInstance();
         Set set = instance.getAllCustomers().entrySet();
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
@@ -806,8 +740,7 @@ public class MainFrame extends javax.swing.JFrame {
             TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
             cusomer.setCustomeritems(customeritems);
         }
-        setTieleUnsaved(true);
-        buildTree();
+        buildTree();*/
     }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
 
     private void jBSaveTaskChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveTaskChangeActionPerformed
@@ -826,11 +759,10 @@ public class MainFrame extends javax.swing.JFrame {
             TI.setId(id);
             parent.getCustomeritems().remove(key);
             parent.getCustomeritems().put(TI.getStartTimeS(), TI);
-            CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
-            CRUDTTI.editTrackedTimeItem(TI);
+            TrackedTimeService TTS = new TrackedTimeService();
+            TTS.updateTrackedTime(TI);
             selectedNode.setUserObject(TI);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-            setTieleUnsaved(true);
             model.reload((TreeNode) selectedNode);
         }
     }//GEN-LAST:event_jBSaveTaskChangeActionPerformed
@@ -841,17 +773,13 @@ public class MainFrame extends javax.swing.JFrame {
                 "Löschen",
                 JOptionPane.YES_NO_OPTION);
         if (n == JOptionPane.YES_OPTION) {
-            AllTracks instance = AllTracks.getInstance();
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-            DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
-            CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
-            CustomerTracks get = instance.getAllCustomers().get(CT.getCustomername());
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
-            get.getCustomeritems().remove(TI);
+            TrackedTimeService TTS = new TrackedTimeService();
+            TTS.removeTrackedTime(TI);
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             jTreeCustomer.setSelectionRow(jTreeCustomer.getSelectionRows()[0] - 1);
             model.removeNodeFromParent(selectedNode);
-            setTieleUnsaved(true);
         }
 
     }//GEN-LAST:event_jBDeleteTrackActionPerformed
@@ -914,14 +842,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBnewCustomerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBnewCustomerMouseEntered
         jBnewCustomer.setBorderPainted(true);
     }//GEN-LAST:event_jBnewCustomerMouseEntered
-
-    private void jBSaveMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBSaveMouseEntered
-        jBSave.setBorderPainted(true);
-    }//GEN-LAST:event_jBSaveMouseEntered
-
-    private void jBSaveMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBSaveMouseExited
-        jBSave.setBorderPainted(false);
-    }//GEN-LAST:event_jBSaveMouseExited
 
     private void jBExportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBExportMouseEntered
         jBExport.setBorderPainted(true);
@@ -1015,7 +935,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBDublicateTask;
     private javax.swing.JButton jBExport;
     private javax.swing.JButton jBMail;
-    private javax.swing.JButton jBSave;
     private javax.swing.JButton jBSaveTaskChange;
     private javax.swing.JButton jBStartTimeTrack;
     private javax.swing.JButton jBStopTimeTrack;
@@ -1039,6 +958,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcbKindOfAction;
     // End of variables declaration//GEN-END:variables
 
+    /*
     private boolean readSaveState() {
         File state = new File(System.getProperty("user.dir") + "/saveState");
         if (state.isFile()) {
@@ -1070,7 +990,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
         return false;
     }
-
+     */
     private void buildTree() {
         //AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
@@ -1103,16 +1023,6 @@ public class MainFrame extends javax.swing.JFrame {
         jBDeleteCustomer.setEnabled(false);
         jBDublicateTask.setEnabled(false);
         SwingUtilities.updateComponentTreeUI(this);
-    }
-
-    public void setTieleUnsaved(boolean b) {
-        String title = this.getTitle();
-        title = title.replace("unsaved", "");
-        this.setTitle(title);
-
-        if (b) {
-            this.setTitle(title + " unsaved");
-        }
     }
 
 }

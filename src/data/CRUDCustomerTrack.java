@@ -6,8 +6,6 @@
 package data;
 
 import dbcon.ConnectionSingelton;
-import dbcon.SQLiteCon;
-import entity.AllTracks;
 import entity.CustomerTracks;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,12 +22,20 @@ import java.util.logging.Logger;
  */
 public class CRUDCustomerTrack {
 
-    public Integer insertCustomerTrack(CustomerTracks CT) throws SQLException, ClassNotFoundException {
+    /**
+     * *
+     *
+     * @param CT
+     * @return Integer id of the new Customer -1 = error
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public int insertCustomerTrack(CustomerTracks CT) {
         ConnectionSingelton cst = ConnectionSingelton.getInstance();
         Connection dbcon = cst.getDbcon();
         String query = "INSERT INTO Customer ("
                 + " id,"
-                + " name,"
+                + " name"
                 + ") VALUES ("
                 + "null, ?)";
 
@@ -40,25 +46,54 @@ public class CRUDCustomerTrack {
 
             int executeUpdate = ps.executeUpdate();
             ps.close();
-            return executeUpdate;
+            if (executeUpdate == 1) {
+                CustomerTracks customerByName = this.getCustomerByName(CT.getCustomername());
+                return customerByName.getId();
+            } else {
+                return -1;
+            }
 
         } catch (SQLException se) {
             // log exception
-            throw se;
+            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, se);
         }
-
+        return -1;
     }
 
     public CustomerTracks getCustomerByID(int id) {
         CustomerTracks ct = null;
         ConnectionSingelton cst = ConnectionSingelton.getInstance();
         Connection dbcon = cst.getDbcon();
-        String query = "SELECT * FROM Customer WHRE id = ?";
+        String query = "SELECT * FROM Customer WHERE id = ?";
         PreparedStatement ps;
         try {
             ps = dbcon
                     .prepareStatement(query);
             ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ct = new CustomerTracks(rs.getString("name"));
+                ct.setId(rs.getInt("id"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ct;
+    }
+
+    public CustomerTracks getCustomerByName(String name) {
+        CustomerTracks ct = null;
+        ConnectionSingelton cst = ConnectionSingelton.getInstance();
+        Connection dbcon = cst.getDbcon();
+        String query = "SELECT * FROM Customer WHERE name = ?";
+        PreparedStatement ps;
+        try {
+            ps = dbcon
+                    .prepareStatement(query);
+            ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ct = new CustomerTracks(rs.getString("name"));
@@ -86,7 +121,7 @@ public class CRUDCustomerTrack {
                 // item = new TrackedTimeItem();
                 CustomerTracks CT = new CustomerTracks(rs.getString("name"));
                 CT.setId(rs.getInt("id"));
-                customerListe.add(CT);  
+                customerListe.add(CT);
             }
             rs.close();
             ps.close();

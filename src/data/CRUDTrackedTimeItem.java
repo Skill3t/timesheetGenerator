@@ -6,9 +6,6 @@
 package data;
 
 import dbcon.ConnectionSingelton;
-import dbcon.SQLiteCon;
-import entity.AllTracks;
-import entity.CustomerTracks;
 import java.util.Date;
 import java.util.List;
 import entity.TrackedTimeItem;
@@ -16,13 +13,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.time.ZonedDateTime;
@@ -62,9 +55,6 @@ public class CRUDTrackedTimeItem {
             zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getStartTime().getTime()),
                     ZoneId.systemDefault());
             ps.setString(4, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-
-            //ps.setInt(3, (int) TTI.getStartTime().getTime());
-            //ps.setInt(4, (int) TTI.getEndTime().getTime());
             ps.setString(5, TTI.getKommand());
             int aint;
             if (TTI.getMarkInExport()) {
@@ -185,17 +175,24 @@ public class CRUDTrackedTimeItem {
         return 0;
 
     }
-    /*
-    public int deleteCustomerByID(int id) throws SQLException, ClassNotFoundException {
-        Connection dbcon = SQLiteCon.connect();
 
-        String query = "DELETE FROM Customer WHERE id = ?";
-        PreparedStatement ps = dbcon
-                .prepareStatement(query);
-        ps.setInt(1, id);
-        int executeUpdate = ps.executeUpdate();
-        ps.close();
-        dbcon.close();
-        return executeUpdate;
-    }*/
+    public int deleteTrackedTimeItem(int id) {
+        ConnectionSingelton cst = ConnectionSingelton.getInstance();
+        Connection dbcon = cst.getDbcon();
+        String query = "DELETE FROM TrackedTimeItem WHERE id = ?";
+        PreparedStatement ps;
+        try {
+            ps = dbcon
+                    .prepareStatement(query);
+            ps.setInt(1, id);
+            int executeUpdate = ps.executeUpdate();
+            ps.close();
+            return executeUpdate;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+
+    }
+
 }
