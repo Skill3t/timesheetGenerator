@@ -57,4 +57,16 @@ public class CustomerTracksService {
         }
     }
 
+    public void removeAllTimeTracks() {
+        CRUDCustomerTrack CRUDCT = new CRUDCustomerTrack();
+        List<CustomerTracks> customerListe = CRUDCT.getCustomerListe();
+        for (CustomerTracks CT : customerListe) {
+            CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
+            List<TrackedTimeItem> trackedTimeItemListe = CRUDTTI.getTrackedTimeItemListe(CT.getId());
+            for (TrackedTimeItem TTI : trackedTimeItemListe) {
+                CRUDTTI.deleteTrackedTimeItem(TTI.getId());                
+            }
+        }
+    }
+
 }

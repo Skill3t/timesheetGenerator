@@ -44,6 +44,7 @@ import logic.AutoCompletion;
 import logic.CustomerTracksService;
 import logic.TrackedTimeItemService;
 import logic.TrackedTimeService;
+import logic.UserService;
 
 /**
  *
@@ -55,6 +56,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Timer timer;
     private JLabel jLTemplatePath = new JLabel();
     private String title = ("Timesheet Generator");
+    private final int userId = 1; //add user later on 
 
     /**
      * Creates new form MainFrame
@@ -65,15 +67,13 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
 
         AutoCompletion.enable(jcbKindOfAction);
-        /*
-        if (readSaveState()) {
+
+        if (readUserSettings()) {
             buildTree();
         } else {
             JOptionPane.showMessageDialog(null, "Datei saveState nicht vorhanden", "Warnung", JOptionPane.WARNING_MESSAGE);
             buildTree();
-        }*/
-        buildTree();
-
+        }
     }
 
     /**
@@ -716,31 +716,30 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBDeleteCustomerActionPerformed
 
     private void jBTamplateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBTamplateActionPerformed
-        /*  JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter(".xlsx", "xlsx"));
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(this);
         if (fileChooser.getSelectedFile() != null) {
-            AllTracks instance = AllTracks.getInstance();
-            instance.setTamplatePath(fileChooser.getSelectedFile().toString());
+            UserService US = new UserService();
+            US.setTemplatePathByID(userId, fileChooser.getSelectedFile().toString());
             jLTemplatePath.setText(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue.add(jLTemplatePath);
             SwingUtilities.updateComponentTreeUI(this);
-        }*/
+        }
     }//GEN-LAST:event_jBTamplateActionPerformed
 
     private void jBDeleteTreeleafsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteTreeleafsActionPerformed
-        /* AllTracks instance = AllTracks.getInstance();
-        Set set = instance.getAllCustomers().entrySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry) iterator.next();
-            CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
-            TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
-            cusomer.setCustomeritems(customeritems);
+        int n = JOptionPane.showConfirmDialog(
+                this, "Wollen Sie wirklich alle Tracks löschen",
+                "Löschen",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.YES_OPTION) {
+            CustomerTracksService CTS = new CustomerTracksService();
+            CTS.removeAllTimeTracks();
+            buildTree();
         }
-        buildTree();*/
     }//GEN-LAST:event_jBDeleteTreeleafsActionPerformed
 
     private void jBSaveTaskChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveTaskChangeActionPerformed
@@ -958,39 +957,14 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcbKindOfAction;
     // End of variables declaration//GEN-END:variables
 
-    /*
-    private boolean readSaveState() {
-        File state = new File(System.getProperty("user.dir") + "/saveState");
-        if (state.isFile()) {
-            InputStream fis = null;
-            try {
-                fis = new FileInputStream(System.getProperty("user.dir") + "/saveState");
-                ObjectInputStream o = new ObjectInputStream(fis);
-                AllTracks instance = AllTracks.getInstance();
-                //    private TreeMap<String, CustomerTracks> allCustomers = new TreeMap<String, CustomerTracks>(String.CASE_INSENSITIVE_ORDER);
-                TreeMap<String, CustomerTracks> allCustomers = new TreeMap<String, CustomerTracks>(String.CASE_INSENSITIVE_ORDER);
-                Object confObjekt = o.readObject();
-                allCustomers = (TreeMap<String, CustomerTracks>) confObjekt;
-                confObjekt = o.readObject();
-                jLTemplatePath.setText((String) confObjekt);
-                //  jLTemplatePath = (JLabel) confObjekt;
-                jPMenue.add(jLTemplatePath);
-                SwingUtilities.updateComponentTreeUI(this);
-                instance.setAllCustomers(allCustomers);
-                instance.setTamplatePath((String) confObjekt);
-                return true;
-            } catch (IOException | ClassNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "Fehler beim Laden der saveState Datei: \n" + e.getMessage() + "\n Version nicht kompatibel", "Fehler", JOptionPane.ERROR_MESSAGE);
-            } finally {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                }
-            }
-        }
-        return false;
+    private boolean readUserSettings() {
+        UserService US = new UserService();
+        String path = US.getTemplatePathByID(userId);
+        jLTemplatePath.setText(path);
+        jPMenue.add(jLTemplatePath);
+        return true;
     }
-     */
+
     private void buildTree() {
         //AllTracks instance = AllTracks.getInstance();
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
