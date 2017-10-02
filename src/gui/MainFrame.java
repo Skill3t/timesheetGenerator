@@ -5,8 +5,6 @@
  */
 package gui;
 
-import data.CRUDCustomerTrack;
-import dbcon.SQLiteCon;
 import entity.AllTracks;
 import entity.CustomerTracks;
 import entity.TrackedTimeItem;
@@ -21,9 +19,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -107,18 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         as = new AutoSave();
         as.autoSave();
-
-        try {
-            SQLiteCon.connect();
-            CRUDCustomerTrack t = new CRUDCustomerTrack();
-            t.getCustomerListe();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+ 
     }
 
     /**
