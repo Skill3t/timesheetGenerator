@@ -26,7 +26,7 @@ public class ConvertData {
     ArrayList<String> sheetnames = new ArrayList();
 
     public ConvertData() {
-        /*
+        
         AllTracks instance = AllTracks.getInstance();
         Set set = instance.getAllCustomers().entrySet();
         Iterator iterator = set.iterator();
@@ -34,8 +34,7 @@ public class ConvertData {
             Map.Entry mentry = (Map.Entry) iterator.next();
             CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
             sheetnames.add(cusomer.getCustomername());
-        }*/
-
+        }
     }
 
     public ArrayList<String> getSheetnames() {
@@ -44,7 +43,7 @@ public class ConvertData {
 
     public ArrayList<String[]> convert(String customername) {
         ArrayList<String[]> allreturn = new ArrayList();
-/*
+
         AllTracks instance = AllTracks.getInstance();
         CustomerTracks ti = instance.getAllCustomers().get(customername);
         String[] retline;
@@ -74,7 +73,7 @@ public class ConvertData {
             retline[6] = tti.getValue().getKommand();
             allreturn.add(retline);
 
-        }*/
+        }
         return allreturn;
     }
 }
