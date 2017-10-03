@@ -26,9 +26,11 @@ public class ConvertData {
     ArrayList<String> sheetnames = new ArrayList();
 
     public ConvertData() {
-        
-        AllTracks instance = AllTracks.getInstance();
-        Set set = instance.getAllCustomers().entrySet();
+
+        CustomerTracksService cts = new CustomerTracksService();
+        Set set = cts.getAllCustomers().entrySet();
+        //Set set = instance.getAllCustomers().entrySet();
+
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
@@ -44,8 +46,9 @@ public class ConvertData {
     public ArrayList<String[]> convert(String customername) {
         ArrayList<String[]> allreturn = new ArrayList();
 
-        AllTracks instance = AllTracks.getInstance();
-        CustomerTracks ti = instance.getAllCustomers().get(customername);
+        CustomerTracksService cts = new CustomerTracksService();
+        CustomerTracks ti = cts.getAllCustomers().get(customername);
+
         String[] retline;
         TreeMap<Long, TrackedTimeItem> customeritems = ti.getCustomeritems();
         for (Map.Entry<Long, TrackedTimeItem> tti : customeritems.entrySet()) {
