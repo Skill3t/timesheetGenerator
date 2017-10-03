@@ -3,12 +3,13 @@
 ## Features
 - Track time for multiple customer
 - Export data to .xls
-- Auto save
+- SQLite DB
 - No internet or cloude service needed
 
 ## Requirements
 - Java
 - Export template
+- SQLite DB
 
 ## License
 
@@ -29,3 +30,8 @@
   Apache License Version 2.0, January 2004
   http://www.apache.org/licenses/
 
+## DB
+
+- CREATE TABLE "Customer" ( `id` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `name` TEXT NOT NULL UNIQUE )
+- CREATE TABLE "TrackedTimeItem" ( `id` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `id_Customer` INTEGER, `kindOfAction` TEXT, `startTime` TEXT, `endTime` TEXT, `kommand` TEXT, `markInExport` INTEGER, FOREIGN KEY(`id_Customer`) REFERENCES `Customer`(`id`) )
+- CREATE TABLE `User` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `tamplatePath` BLOB )
