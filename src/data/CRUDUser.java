@@ -6,7 +6,7 @@
 package data;
 
 import dbcon.ConnectionSingelton;
-import entity.CustomerTracks;
+import entity.Customer;
 import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +38,7 @@ public class CRUDUser {
             rs.close();
             ps.close();
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return user;
@@ -63,7 +63,7 @@ public class CRUDUser {
             ps.close();
             return executeUpdate;
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
 

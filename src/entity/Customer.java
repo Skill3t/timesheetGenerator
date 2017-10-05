@@ -5,7 +5,7 @@
  */
 package entity;
 
-import data.CRUDCustomerTrack;
+import data.CRUDCustomer;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Lars
  */
-public class CustomerTracks implements Serializable {
+public class Customer implements Serializable {
     // private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
 
     private TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
@@ -27,7 +27,7 @@ public class CustomerTracks implements Serializable {
     private int id;
     private String customername;
 
-    public CustomerTracks(String customername) {
+    public Customer(String customername) {
         this.customername = customername;    
     }
 
@@ -51,6 +51,10 @@ public class CustomerTracks implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setCustomername(String customername) {
+        this.customername = customername;
     }
 
     @Override

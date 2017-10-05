@@ -5,18 +5,14 @@
  */
 package gui;
 
-import entity.AllTracks;
-import entity.CustomerTracks;
+import entity.Customer;
 import entity.TrackedTimeItem;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -101,6 +97,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBStopTimeTrack = new javax.swing.JButton();
         jLTime = new javax.swing.JLabel();
         jBDeleteCustomer = new javax.swing.JButton();
+        jBRenameCustomer = new javax.swing.JButton();
         jPTrackItem = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jTAction = new javax.swing.JTextField();
@@ -267,7 +264,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPCustomorMenue.setPreferredSize(new java.awt.Dimension(960, 50));
 
         jLKlient.setText("Mandant: X");
-        jPCustomorMenue.add(jLKlient);
 
         jBStartTimeTrack.setBackground(new java.awt.Color(252, 252, 252));
         jBStartTimeTrack.setText("Start");
@@ -277,7 +273,6 @@ public class MainFrame extends javax.swing.JFrame {
                 jBStartTimeTrackActionPerformed(evt);
             }
         });
-        jPCustomorMenue.add(jBStartTimeTrack);
 
         jBStopTimeTrack.setBackground(new java.awt.Color(252, 252, 252));
         jBStopTimeTrack.setText("Stopp");
@@ -287,10 +282,8 @@ public class MainFrame extends javax.swing.JFrame {
                 jBStopTimeTrackActionPerformed(evt);
             }
         });
-        jPCustomorMenue.add(jBStopTimeTrack);
 
         jLTime.setText("Zeit: ");
-        jPCustomorMenue.add(jLTime);
 
         jBDeleteCustomer.setBackground(new java.awt.Color(252, 252, 252));
         jBDeleteCustomer.setText("Lösche Mandanten");
@@ -300,20 +293,69 @@ public class MainFrame extends javax.swing.JFrame {
                 jBDeleteCustomerActionPerformed(evt);
             }
         });
-        jPCustomorMenue.add(jBDeleteCustomer);
+
+        jBRenameCustomer.setBackground(new java.awt.Color(252, 252, 252));
+        jBRenameCustomer.setText("Umbenennen");
+        jBRenameCustomer.setEnabled(false);
+        jBRenameCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBRenameCustomerActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPCustomorMenueLayout = new javax.swing.GroupLayout(jPCustomorMenue);
+        jPCustomorMenue.setLayout(jPCustomorMenueLayout);
+        jPCustomorMenueLayout.setHorizontalGroup(
+            jPCustomorMenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(jLKlient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jBStartTimeTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jBStopTimeTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jLTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jBDeleteCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jBRenameCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(150, 150, 150))
+        );
+        jPCustomorMenueLayout.setVerticalGroup(
+            jPCustomorMenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jLKlient))
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBStartTimeTrack))
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBStopTimeTrack))
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jLTime))
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBDeleteCustomer))
+            .addGroup(jPCustomorMenueLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBRenameCustomer))
+        );
 
         jPTrackItem.setBackground(new java.awt.Color(204, 204, 204));
         jPTrackItem.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPTrackItem.setAlignmentX(0.0F);
         jPTrackItem.setAlignmentY(0.0F);
-        jPTrackItem.setMinimumSize(new java.awt.Dimension(14, 80));
+        jPTrackItem.setMinimumSize(new java.awt.Dimension(960, 80));
         jPTrackItem.setPreferredSize(new java.awt.Dimension(960, 100));
-        jPTrackItem.setLayout(new javax.swing.BoxLayout(jPTrackItem, javax.swing.BoxLayout.PAGE_AXIS));
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setMinimumSize(new java.awt.Dimension(960, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(960, 50));
 
-        jTAction.setMinimumSize(new java.awt.Dimension(100, 26));
+        jTAction.setMinimumSize(new java.awt.Dimension(900, 26));
         jTAction.setPreferredSize(new java.awt.Dimension(200, 26));
         jTAction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -325,26 +367,22 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1026, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 35, Short.MAX_VALUE)
-                    .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, 956, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 35, Short.MAX_VALUE)))
+                .addComponent(jTAction, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 991, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 62, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 18, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(18, Short.MAX_VALUE)
                     .addComponent(jTAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 18, Short.MAX_VALUE)))
+                    .addContainerGap(18, Short.MAX_VALUE)))
         );
 
-        jPTrackItem.add(jPanel2);
-
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel3.setMinimumSize(new java.awt.Dimension(960, 39));
         jPanel3.setPreferredSize(new java.awt.Dimension(960, 50));
 
         jCBMark.setText("Markieren");
@@ -353,7 +391,6 @@ public class MainFrame extends javax.swing.JFrame {
                 jCBMarkActionPerformed(evt);
             }
         });
-        jPanel3.add(jCBMark);
 
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
@@ -366,13 +403,10 @@ public class MainFrame extends javax.swing.JFrame {
                 jcbKindOfActionActionPerformed(evt);
             }
         });
-        jPanel3.add(jcbKindOfAction);
 
         jSStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
-        jPanel3.add(jSStartTime);
 
         jSStopTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
-        jPanel3.add(jSStopTime);
 
         jBSaveTaskChange.setBackground(new java.awt.Color(252, 252, 252));
         jBSaveTaskChange.setText("speichern");
@@ -385,7 +419,6 @@ public class MainFrame extends javax.swing.JFrame {
                 jBSaveTaskChangeActionPerformed(evt);
             }
         });
-        jPanel3.add(jBSaveTaskChange);
 
         jBDublicateTask.setBackground(new java.awt.Color(252, 252, 252));
         jBDublicateTask.setText("duplizieren");
@@ -395,7 +428,6 @@ public class MainFrame extends javax.swing.JFrame {
                 jBDublicateTaskActionPerformed(evt);
             }
         });
-        jPanel3.add(jBDublicateTask);
 
         jBDeleteTrack.setBackground(new java.awt.Color(252, 252, 252));
         jBDeleteTrack.setText("löschen");
@@ -408,23 +440,81 @@ public class MainFrame extends javax.swing.JFrame {
                 jBDeleteTrackActionPerformed(evt);
             }
         });
-        jPanel3.add(jBDeleteTrack);
 
-        jPTrackItem.add(jPanel3);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jCBMark, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jcbKindOfAction, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jSStartTime)
+                .addGap(5, 5, 5)
+                .addComponent(jSStopTime)
+                .addGap(5, 5, 5)
+                .addComponent(jBSaveTaskChange, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jBDublicateTask, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(jBDeleteTrack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(25, 25, 25))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(jCBMark))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jcbKindOfAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jSStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jSStopTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBSaveTaskChange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBDublicateTask))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jBDeleteTrack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout jPTrackItemLayout = new javax.swing.GroupLayout(jPTrackItem);
+        jPTrackItem.setLayout(jPTrackItemLayout);
+        jPTrackItemLayout.setHorizontalGroup(
+            jPTrackItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+        );
+        jPTrackItemLayout.setVerticalGroup(
+            jPTrackItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPTrackItemLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
-            .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPCustomorMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPTrackItem, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -478,11 +568,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
         CustomerTracksService CTS = new CustomerTracksService();
-        TreeMap<String, CustomerTracks> allCustomers = CTS.getAllCustomers();
-        CustomerTracks get = allCustomers.get(S);
+        TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
+        Customer get = allCustomers.get(S);
         int bevor = allCustomers.size();
         if (get == null) {
-            CustomerTracks ct = new CustomerTracks(S);
+            Customer ct = new Customer(S);
             allCustomers.put(ct.getCustomername(), ct);
             int saveCustomer = CTS.saveCustomer(ct);
             ct.setId(saveCustomer);
@@ -509,7 +599,7 @@ public class MainFrame extends javax.swing.JFrame {
             //
             switch (s) {
                 case "entity.CustomerTracks":
-                    CustomerTracks userObject = (CustomerTracks) selectedNode.getUserObject();
+                    Customer userObject = (Customer) selectedNode.getUserObject();
                     jLKlient.setText("Mandant: " + userObject.getCustomername());
                     jTAction.setText("");
                     jcbKindOfAction.setSelectedIndex(0);
@@ -521,6 +611,8 @@ public class MainFrame extends javax.swing.JFrame {
                     jBSaveTaskChange.setEnabled(false);
                     jBStartTimeTrack.setEnabled(true);
                     jBDeleteCustomer.setEnabled(true);
+                    jBRenameCustomer.setEnabled(true);
+
                     jBDublicateTask.setEnabled(false);
                     break;
                 case "entity.TrackedTimeItem":
@@ -533,6 +625,8 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDeleteTrack.setEnabled(true);
                     jBSaveTaskChange.setEnabled(true);
                     jBDeleteCustomer.setEnabled(false);
+                    jBRenameCustomer.setEnabled(false);
+
                     jBStartTimeTrack.setEnabled(false);
                     jBStopTimeTrack.setEnabled(false);
                     jBDublicateTask.setEnabled(true);
@@ -547,6 +641,8 @@ public class MainFrame extends javax.swing.JFrame {
                     jBDeleteTrack.setEnabled(false);
                     jBSaveTaskChange.setEnabled(false);
                     jBDeleteCustomer.setEnabled(false);
+                    jBRenameCustomer.setEnabled(false);
+
                     jBStartTimeTrack.setEnabled(false);
                     jBStopTimeTrack.setEnabled(false);
                     jBDublicateTask.setEnabled(false);
@@ -574,7 +670,7 @@ public class MainFrame extends javax.swing.JFrame {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
                 String name = selectedNode.getUserObject().getClass().getName();
                 if (name.equals("entity.CustomerTracks")) {
-                    CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
+                    Customer CT = (Customer) selectedNode.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
                     TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
@@ -584,6 +680,7 @@ public class MainFrame extends javax.swing.JFrame {
                     TrackedTimeItemService TTIS = new TrackedTimeItemService();
                     TTIS.saveTrack(TTI, CT.getId());
                     jBDeleteCustomer.setEnabled(true);
+                    jBRenameCustomer.setEnabled(true);
                     jBStartTimeTrack.setEnabled(true);
                     jBStopTimeTrack.setEnabled(false);
 
@@ -593,7 +690,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                 } else if (name.equals("entity.TrackedTimeItem")) {
                     DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
-                    CustomerTracks CT = (CustomerTracks) selectedNodeParent.getUserObject();
+                    Customer CT = (Customer) selectedNodeParent.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
                     TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
                     model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
@@ -603,6 +700,7 @@ public class MainFrame extends javax.swing.JFrame {
                     TrackedTimeItemService TTIS = new TrackedTimeItemService();
                     TTIS.saveTrack(TTI, CT.getId());
                     jBDeleteCustomer.setEnabled(false);
+                    jBRenameCustomer.setEnabled(false);
                     jBStartTimeTrack.setEnabled(false);
                     jBStopTimeTrack.setEnabled(false);
 
@@ -625,6 +723,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void jBStartTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStartTimeTrackActionPerformed
         jBStartTimeTrack.setEnabled(false);
         jBDeleteCustomer.setEnabled(false);
+        jBRenameCustomer.setEnabled(false);
         jBStopTimeTrack.setEnabled(true);
         jTreeCustomer.setEnabled(false);
         createdDate = new java.util.Date();
@@ -704,7 +803,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (n == JOptionPane.YES_OPTION) {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
             try {
-                CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
+                Customer CT = (Customer) selectedNode.getUserObject();
                 CustomerTracksService CTS = new CustomerTracksService();
                 boolean removeCustomer = CTS.removeCustomer(CT);
                 buildTree();
@@ -750,7 +849,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (n == JOptionPane.YES_OPTION) {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
             DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
-            CustomerTracks parent = (CustomerTracks) selectedNodeParent.getUserObject();
+            Customer parent = (Customer) selectedNodeParent.getUserObject();
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
             Long key = TI.getStartTimeS();
             int id = TI.getId();
@@ -790,6 +889,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBStartTimeTrack.setEnabled(false);
         jBStopTimeTrack.setEnabled(false);
         jBDeleteCustomer.setEnabled(false);
+        jBRenameCustomer.setEnabled(false);
         jBDublicateTask.setEnabled(false);
 
         jBStopTimeTrack.setEnabled(true);
@@ -882,6 +982,61 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCBMarkActionPerformed
 
+    private void jBRenameCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRenameCustomerActionPerformed
+
+        /*
+        int n = JOptionPane.showConfirmDialog(
+                this, "Wollen Sie wirklich löschen",
+                "Löschen",
+                JOptionPane.YES_NO_OPTION);
+        if (n == JOptionPane.YES_OPTION) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+            try {
+                CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
+                CustomerTracksService CTS = new CustomerTracksService();
+                boolean removeCustomer = CTS.removeCustomer(CT);
+                buildTree();
+            } catch (ClassCastException ex) {
+                JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+         */
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
+        Customer CT = (Customer) selectedNode.getUserObject();
+        String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!", CT.getCustomername());
+        Customer newCT = CT;
+        newCT.setCustomername(S);
+        CustomerTracksService CTS = new CustomerTracksService();
+        CTS.removeCustomer(CT);
+        CTS.saveCustomer(newCT);
+        buildTree();
+
+
+        /*
+        CustomerTracksService CTS = new CustomerTracksService();
+        TreeMap<String, CustomerTracks> allCustomers = CTS.getAllCustomers();
+        CustomerTracks get = allCustomers.get(S);
+        int bevor = allCustomers.size();
+        if (get == null) {
+            CustomerTracks ct = new CustomerTracks(S);
+            allCustomers.put(ct.getCustomername(), ct);
+            int saveCustomer = CTS.saveCustomer(ct);
+            ct.setId(saveCustomer);
+            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
+        } else {
+            JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
+        }
+        if (bevor == 0) {
+            jTreeCustomer.expandRow(0);
+            jTreeCustomer.setRootVisible(false);
+            jTreeCustomer.collapseRow(0);
+        }
+        buildTree();
+         */
+    }//GEN-LAST:event_jBRenameCustomerActionPerformed
+
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
         java.util.Date now = new java.util.Date();
@@ -934,6 +1089,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBDublicateTask;
     private javax.swing.JButton jBExport;
     private javax.swing.JButton jBMail;
+    private javax.swing.JButton jBRenameCustomer;
     private javax.swing.JButton jBSaveTaskChange;
     private javax.swing.JButton jBStartTimeTrack;
     private javax.swing.JButton jBStopTimeTrack;
@@ -977,7 +1133,7 @@ public class MainFrame extends javax.swing.JFrame {
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
-            CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
+            Customer cusomer = (Customer) mentry.getValue();
             DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
             model.insertNodeInto(first, root, root.getChildCount());
             TreeMap<Long, TrackedTimeItem> customeritems = cusomer.getCustomeritems();
@@ -995,6 +1151,8 @@ public class MainFrame extends javax.swing.JFrame {
         jBStartTimeTrack.setEnabled(false);
         jBStopTimeTrack.setEnabled(false);
         jBDeleteCustomer.setEnabled(false);
+        jBRenameCustomer.setEnabled(false);
+
         jBDublicateTask.setEnabled(false);
         SwingUtilities.updateComponentTreeUI(this);
     }

@@ -5,15 +5,12 @@
  */
 package logic;
 
-import data.CRUDCustomerTrack;
+import data.CRUDCustomer;
 import data.CRUDTrackedTimeItem;
-import entity.CustomerTracks;
+import entity.Customer;
 import entity.TrackedTimeItem;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,13 +18,13 @@ import java.util.logging.Logger;
  */
 public class CustomerTracksService {
 
-    private TreeMap<String, CustomerTracks> allCustomers = new TreeMap<String, CustomerTracks>(String.CASE_INSENSITIVE_ORDER);
+    private TreeMap<String, Customer> allCustomers = new TreeMap<String, Customer>(String.CASE_INSENSITIVE_ORDER);
 
-    public TreeMap<String, CustomerTracks> getAllCustomers() {
-        allCustomers = new TreeMap<String, CustomerTracks>(String.CASE_INSENSITIVE_ORDER);
-        CRUDCustomerTrack CRUDCT = new CRUDCustomerTrack();
-        List<CustomerTracks> customerListe = CRUDCT.getCustomerListe();
-        for (CustomerTracks CT : customerListe) {
+    public TreeMap<String, Customer> getAllCustomers() {
+        allCustomers = new TreeMap<String, Customer>(String.CASE_INSENSITIVE_ORDER);
+        CRUDCustomer CRUDCT = new CRUDCustomer();
+        List<Customer> customerListe = CRUDCT.getCustomerListe();
+        for (Customer CT : customerListe) {
             allCustomers.put(CT.getCustomername(), CT);
             CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
             List<TrackedTimeItem> trackedTimeItemListe = CRUDTTI.getTrackedTimeItemListe(CT.getId());
@@ -38,16 +35,21 @@ public class CustomerTracksService {
         return allCustomers;
     }
 
-    public int saveCustomer(CustomerTracks CT) {
+    public int saveCustomer(Customer CT) {
         int ret = -1;
-        CRUDCustomerTrack CRUDCT = new CRUDCustomerTrack();
-        ret = CRUDCT.insertCustomerTrack(CT);
+        CRUDCustomer CRUDCT = new CRUDCustomer();
+        Customer customerByID = CRUDCT.getCustomerByID(CT.getId());
+        if (customerByID == null) { // neuer Customer
+            return CRUDCT.insertCustomerTrack(CT);
+        }else{
+            
+        }
 
         return ret;
     }
 
-    public boolean removeCustomer(CustomerTracks CT) {
-        CRUDCustomerTrack CRUDCT = new CRUDCustomerTrack();
+    public boolean removeCustomer(Customer CT) {
+        CRUDCustomer CRUDCT = new CRUDCustomer();
         int anzahl = CRUDCT.deleteCustomerByID(CT.getId());
         if (anzahl == 1) {
             return true;
@@ -58,13 +60,13 @@ public class CustomerTracksService {
     }
 
     public void removeAllTimeTracks() {
-        CRUDCustomerTrack CRUDCT = new CRUDCustomerTrack();
-        List<CustomerTracks> customerListe = CRUDCT.getCustomerListe();
-        for (CustomerTracks CT : customerListe) {
+        CRUDCustomer CRUDCT = new CRUDCustomer();
+        List<Customer> customerListe = CRUDCT.getCustomerListe();
+        for (Customer CT : customerListe) {
             CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
             List<TrackedTimeItem> trackedTimeItemListe = CRUDTTI.getTrackedTimeItemListe(CT.getId());
             for (TrackedTimeItem TTI : trackedTimeItemListe) {
-                CRUDTTI.deleteTrackedTimeItem(TTI.getId());                
+                CRUDTTI.deleteTrackedTimeItem(TTI.getId());
             }
         }
     }

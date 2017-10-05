@@ -69,7 +69,7 @@ public class CRUDTrackedTimeItem {
 
         } catch (SQLException ex) {
             // log exception
-            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
@@ -105,7 +105,7 @@ public class CRUDTrackedTimeItem {
             ps.close();
             return ListTTI;
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -170,7 +170,7 @@ public class CRUDTrackedTimeItem {
             ps.close();
             return executeUpdate;
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
 
@@ -189,7 +189,7 @@ public class CRUDTrackedTimeItem {
             ps.close();
             return executeUpdate;
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDCustomerTrack.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
 

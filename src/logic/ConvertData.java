@@ -6,7 +6,7 @@
 package logic;
 
 import entity.AllTracks;
-import entity.CustomerTracks;
+import entity.Customer;
 import entity.TrackedTimeItem;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,7 +34,7 @@ public class ConvertData {
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
             Map.Entry mentry = (Map.Entry) iterator.next();
-            CustomerTracks cusomer = (CustomerTracks) mentry.getValue();
+            Customer cusomer = (Customer) mentry.getValue();
             sheetnames.add(cusomer.getCustomername());
         }
     }
@@ -47,7 +47,7 @@ public class ConvertData {
         ArrayList<String[]> allreturn = new ArrayList();
 
         CustomerTracksService cts = new CustomerTracksService();
-        CustomerTracks ti = cts.getAllCustomers().get(customername);
+        Customer ti = cts.getAllCustomers().get(customername);
 
         String[] retline;
         TreeMap<Long, TrackedTimeItem> customeritems = ti.getCustomeritems();

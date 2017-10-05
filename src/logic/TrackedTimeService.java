@@ -6,7 +6,7 @@
 package logic;
 
 import data.CRUDTrackedTimeItem;
-import entity.CustomerTracks;
+import entity.Customer;
 import entity.TrackedTimeItem;
 
 /**
