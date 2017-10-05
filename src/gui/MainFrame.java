@@ -37,7 +37,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.TreeNode;
 import logic.AutoCompletion;
-import logic.CustomerTracksService;
+import logic.CustomerService;
 import logic.TrackedTimeItemService;
 import logic.TrackedTimeService;
 import logic.UserService;
@@ -567,7 +567,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
-        CustomerTracksService CTS = new CustomerTracksService();
+        CustomerService CTS = new CustomerService();
         TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
         Customer get = allCustomers.get(S);
         int bevor = allCustomers.size();
@@ -598,7 +598,7 @@ public class MainFrame extends javax.swing.JFrame {
             Date now;
             //
             switch (s) {
-                case "entity.CustomerTracks":
+                case "entity.Customer":
                     Customer userObject = (Customer) selectedNode.getUserObject();
                     jLKlient.setText("Mandant: " + userObject.getCustomername());
                     jTAction.setText("");
@@ -804,7 +804,7 @@ public class MainFrame extends javax.swing.JFrame {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
             try {
                 Customer CT = (Customer) selectedNode.getUserObject();
-                CustomerTracksService CTS = new CustomerTracksService();
+                CustomerService CTS = new CustomerService();
                 boolean removeCustomer = CTS.removeCustomer(CT);
                 buildTree();
             } catch (ClassCastException ex) {
@@ -835,7 +835,7 @@ public class MainFrame extends javax.swing.JFrame {
                 "Löschen",
                 JOptionPane.YES_NO_OPTION);
         if (n == JOptionPane.YES_OPTION) {
-            CustomerTracksService CTS = new CustomerTracksService();
+            CustomerService CTS = new CustomerService();
             CTS.removeAllTimeTracks();
             buildTree();
         }
@@ -1004,11 +1004,9 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         Customer CT = (Customer) selectedNode.getUserObject();
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!", CT.getCustomername());
-        Customer newCT = CT;
-        newCT.setCustomername(S);
-        CustomerTracksService CTS = new CustomerTracksService();
-        CTS.removeCustomer(CT);
-        CTS.saveCustomer(newCT);
+        CT.setCustomername(S);
+        CustomerService CTS = new CustomerService();
+        CTS.saveCustomer(CT);
         buildTree();
 
 
@@ -1126,7 +1124,7 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
-        CustomerTracksService cts = new CustomerTracksService();
+        CustomerService cts = new CustomerService();
         Set set = cts.getAllCustomers().entrySet();
         //Set set = instance.getAllCustomers().entrySet();
 

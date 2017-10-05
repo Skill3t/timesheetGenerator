@@ -27,7 +27,7 @@ public class ConvertData {
 
     public ConvertData() {
 
-        CustomerTracksService cts = new CustomerTracksService();
+        CustomerService cts = new CustomerService();
         Set set = cts.getAllCustomers().entrySet();
         //Set set = instance.getAllCustomers().entrySet();
 
@@ -46,7 +46,7 @@ public class ConvertData {
     public ArrayList<String[]> convert(String customername) {
         ArrayList<String[]> allreturn = new ArrayList();
 
-        CustomerTracksService cts = new CustomerTracksService();
+        CustomerService cts = new CustomerService();
         Customer ti = cts.getAllCustomers().get(customername);
 
         String[] retline;
