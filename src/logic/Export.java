@@ -66,14 +66,15 @@ public class Export {
             cell = sheet.getRow(0).getCell(1);
             cell.setCellValue(cd.sheetnames.get(i));
             ArrayList<String[]> convert = cd.convert(cd.sheetnames.get(i));
+            //setPrintArea 
+            workbook.setPrintArea(
+                    i + 1, //sheet index
+                    0, //start column Spalte
+                    6, //end column
+                    0, //start row zeile
+                    convert.size() + 8 //end row
+            );
             for (int Row = 0; Row < convert.size(); Row++) {
-                workbook.setPrintArea(
-                        i + 1, //sheet index
-                        0, //start column Spalte
-                        9, //end column
-                        0, //start row zeile
-                        convert.size() + 8 //end row
-                );
                 for (int Cell = 0; Cell < convert.get(Row).length; Cell++) {
                     cell = sheet.getRow(9 + Row).getCell(Cell);
                     if (Cell == 3) {
