@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -70,6 +71,24 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Datei saveState nicht vorhanden", "Warnung", JOptionPane.WARNING_MESSAGE);
             buildTree();
         }
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Color foreground = jLTime.getForeground();
+                if (foreground.getRed() == 255) {
+                    int n = JOptionPane.showConfirmDialog(
+                            null, "Achtung laufende Task!\nWenn Sie mit ok bestätigen, geht dieser Task verloren. \nWenn Sie dies nicht wollen, bestätigen Sie mit nein.",
+                            "Schließen",
+                            JOptionPane.YES_NO_OPTION);
+                    if (n == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
+                } else {
+                    System.exit(0);
+                }
+
+            }
+        });
     }
 
     /**
@@ -110,7 +129,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBDublicateTask = new javax.swing.JButton();
         jBDeleteTrack = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Timesheet Generator");
         setMinimumSize(new java.awt.Dimension(990, 640));
 
@@ -669,7 +688,7 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
                 String name = selectedNode.getUserObject().getClass().getName();
-                if (name.equals("entity.CustomerTracks")) {
+                if (name.equals("entity.Customer")) {
                     Customer CT = (Customer) selectedNode.getUserObject();
                     DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
                     TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
@@ -984,23 +1003,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jBRenameCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRenameCustomerActionPerformed
 
-        /*
-        int n = JOptionPane.showConfirmDialog(
-                this, "Wollen Sie wirklich löschen",
-                "Löschen",
-                JOptionPane.YES_NO_OPTION);
-        if (n == JOptionPane.YES_OPTION) {
-            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
-            try {
-                CustomerTracks CT = (CustomerTracks) selectedNode.getUserObject();
-                CustomerTracksService CTS = new CustomerTracksService();
-                boolean removeCustomer = CTS.removeCustomer(CT);
-                buildTree();
-            } catch (ClassCastException ex) {
-                JOptionPane.showMessageDialog(null, "Fehler bitte einen Mandanten auswählen", "Fehler", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-         */
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         Customer CT = (Customer) selectedNode.getUserObject();
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!", CT.getCustomername());
@@ -1008,31 +1010,6 @@ public class MainFrame extends javax.swing.JFrame {
         CustomerService CTS = new CustomerService();
         CTS.saveCustomer(CT);
         buildTree();
-
-
-        /*
-        CustomerTracksService CTS = new CustomerTracksService();
-        TreeMap<String, CustomerTracks> allCustomers = CTS.getAllCustomers();
-        CustomerTracks get = allCustomers.get(S);
-        int bevor = allCustomers.size();
-        if (get == null) {
-            CustomerTracks ct = new CustomerTracks(S);
-            allCustomers.put(ct.getCustomername(), ct);
-            int saveCustomer = CTS.saveCustomer(ct);
-            ct.setId(saveCustomer);
-            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-            model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
-        } else {
-            JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
-        }
-        if (bevor == 0) {
-            jTreeCustomer.expandRow(0);
-            jTreeCustomer.setRootVisible(false);
-            jTreeCustomer.collapseRow(0);
-        }
-        buildTree();
-         */
     }//GEN-LAST:event_jBRenameCustomerActionPerformed
 
     public String getAgeInSeconds() {
