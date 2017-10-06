@@ -5,6 +5,7 @@
  */
 package logic;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,7 +18,9 @@ import java.util.Locale;
 import javax.swing.JFileChooser;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -25,6 +28,7 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -83,10 +87,10 @@ public class Export {
                             style1 = (XSSFCellStyle) cell.getCellStyle();
                             style1 = (XSSFCellStyle) style1.clone();
                             style1.setFillBackgroundColor(HSSFColor.RED.index);
-                            style1.setFillPattern(XSSFCellStyle.LESS_DOTS);
-                            sheet.getRow(9 + Row).getCell(0).setCellStyle(style1);
-                            sheet.getRow(9 + Row).getCell(1).setCellStyle(style1);
-                            sheet.getRow(9 + Row).getCell(2).setCellStyle(style1);
+                            style1.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+                            XSSFColor myColor = new XSSFColor(Color.RED);
+                            style1.setFillForegroundColor(myColor);
+                            sheet.getRow(9 + Row).getCell(6).setCellStyle(style1);
                         }
                     } else {
                         cell.setCellValue(convert.get(Row)[Cell]);
