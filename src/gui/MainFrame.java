@@ -112,6 +112,10 @@ public class MainFrame extends javax.swing.JFrame {
         jBTamplate = new javax.swing.JButton();
         jBDeleteTreeleafs = new javax.swing.JButton();
         jBMail = new javax.swing.JButton();
+        jLfrom = new java.awt.Label();
+        jSFrom = new javax.swing.JSpinner();
+        jlto = new java.awt.Label();
+        jSStopTime1 = new javax.swing.JSpinner();
         jPCustomers = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTreeCustomer = new javax.swing.JTree();
@@ -248,6 +252,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPMenue.add(jBMail);
+
+        jLfrom.setText("von:");
+        jPMenue.add(jLfrom);
+
+        jSFrom.setModel(new javax.swing.SpinnerDateModel());
+        jSFrom.setToolTipText("");
+        jSFrom.setEditor(new javax.swing.JSpinner.DateEditor(jSFrom, "dd.MM.yyyy"));
+        jPMenue.add(jSFrom);
+
+        jlto.setText("bis:");
+        jPMenue.add(jlto);
+        jlto.getAccessibleContext().setAccessibleName("");
+
+        jSStopTime1.setModel(new javax.swing.SpinnerDateModel());
+        jSStopTime1.setEditor(new javax.swing.JSpinner.DateEditor(jSStopTime1, "dd.MM.yyyy"));
+        jPMenue.add(jSStopTime1);
 
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mandanten"));
@@ -618,9 +638,8 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             String s = selectedNode.getUserObject().getClass().getName();// entity.TrackedTimeItem
             Date now;
-            //
             switch (s) {
-                case "entity.Customer":
+                case Customer.IDENTIFIER:
                     Customer userObject = (Customer) selectedNode.getUserObject();
                     jLKlient.setText("Mandant: " + userObject.getCustomername());
                     jTAction.setText("");
@@ -637,7 +656,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                     jBDublicateTask.setEnabled(false);
                     break;
-                case "entity.TrackedTimeItem":
+                case TrackedTimeItem.IDENTIFIER:
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
                     jTAction.setText(trackObject.getKommand());
                     jcbKindOfAction.setSelectedItem(trackObject.getKindOfAction());
@@ -691,44 +710,49 @@ public class MainFrame extends javax.swing.JFrame {
             try {
                 DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
                 String name = selectedNode.getUserObject().getClass().getName();
-                if (name.equals("entity.Customer")) {
-                    Customer CT = (Customer) selectedNode.getUserObject();
-                    DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
-                    model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
-                    CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(TTI.getEndTime());
-                    TrackedTimeItemService TTIS = new TrackedTimeItemService();
-                    TTIS.saveTrack(TTI, CT.getId());
-                    jBDeleteCustomer.setEnabled(true);
-                    jBRenameCustomer.setEnabled(true);
-                    jBStartTimeTrack.setEnabled(true);
-                    jBStopTimeTrack.setEnabled(false);
+                Customer CT;
+                DefaultTreeModel model;
+                Calendar cal;
+                TrackedTimeItemService TTIS = new TrackedTimeItemService();
+                switch (name) {
+                    case Customer.IDENTIFIER:
+                        CT = (Customer) selectedNode.getUserObject();
+                        model = (DefaultTreeModel) jTreeCustomer.getModel();
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+                        model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
+                        CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
+                        cal = Calendar.getInstance();
+                        cal.setTime(TTI.getEndTime());
+                        TTIS.saveTrack(TTI, CT.getId());
+                        jBDeleteCustomer.setEnabled(true);
+                        jBRenameCustomer.setEnabled(true);
+                        jBStartTimeTrack.setEnabled(true);
+                        jBStopTimeTrack.setEnabled(false);
 
-                    jBDeleteTrack.setEnabled(false);
-                    jBSaveTaskChange.setEnabled(false);
-                    jBDublicateTask.setEnabled(false);
+                        jBDeleteTrack.setEnabled(false);
+                        jBSaveTaskChange.setEnabled(false);
+                        jBDublicateTask.setEnabled(false);
+                        break;
+                    case TrackedTimeItem.IDENTIFIER:
+                        DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
+                        CT = (Customer) selectedNodeParent.getUserObject();
+                        model = (DefaultTreeModel) jTreeCustomer.getModel();
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+                        model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
+                        CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
+                        cal = Calendar.getInstance();
+                        cal.setTime(TTI.getEndTime());
+                        TTIS.saveTrack(TTI, CT.getId());
+                        jBDeleteCustomer.setEnabled(false);
+                        jBRenameCustomer.setEnabled(false);
+                        jBStartTimeTrack.setEnabled(false);
+                        jBStopTimeTrack.setEnabled(false);
 
-                } else if (name.equals("entity.TrackedTimeItem")) {
-                    DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
-                    Customer CT = (Customer) selectedNodeParent.getUserObject();
-                    DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-                    TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
-                    model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
-                    CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(TTI.getEndTime());
-                    TrackedTimeItemService TTIS = new TrackedTimeItemService();
-                    TTIS.saveTrack(TTI, CT.getId());
-                    jBDeleteCustomer.setEnabled(false);
-                    jBRenameCustomer.setEnabled(false);
-                    jBStartTimeTrack.setEnabled(false);
-                    jBStopTimeTrack.setEnabled(false);
+                        jBDeleteTrack.setEnabled(true);
+                        jBSaveTaskChange.setEnabled(true);
+                        jBDublicateTask.setEnabled(true);
+                        break;
 
-                    jBDeleteTrack.setEnabled(true);
-                    jBSaveTaskChange.setEnabled(true);
-                    jBDublicateTask.setEnabled(true);
                 }
                 jTAction.setText("");
                 jLTime.setText("Zeit");
@@ -1019,7 +1043,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void buildTree() {
-/*
+        /*
         ImageIcon leafIcon = new ImageIcon(getClass().getResource("/resources/glyphicons-68-cleaning.png"));
         if (leafIcon != null) {
             DefaultTreeCellRenderer renderer
@@ -1045,8 +1069,8 @@ public class MainFrame extends javax.swing.JFrame {
                 return c;
             }
         });
-        */
-        
+         */
+
         DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
@@ -1061,7 +1085,7 @@ public class MainFrame extends javax.swing.JFrame {
             model.insertNodeInto(first, root, root.getChildCount());
             TreeMap<Long, TrackedTimeItem> customeritems = cusomer.getCustomeritems();
             for (Map.Entry<Long, TrackedTimeItem> items : customeritems.entrySet()) {
-            
+
                 model.insertNodeInto(new DefaultMutableTreeNode(items.getValue()), first, first.getChildCount());
             }
         }
@@ -1142,6 +1166,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCBMark;
     private javax.swing.JLabel jLKlient;
     private javax.swing.JLabel jLTime;
+    private java.awt.Label jLfrom;
     private javax.swing.JPanel jPCustomers;
     private javax.swing.JPanel jPCustomorMenue;
     private javax.swing.JPanel jPMenue;
@@ -1149,12 +1174,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JSpinner jSFrom;
     private javax.swing.JSpinner jSStartTime;
     private javax.swing.JSpinner jSStopTime;
+    private javax.swing.JSpinner jSStopTime1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTAction;
     private javax.swing.JTree jTreeCustomer;
     private javax.swing.JComboBox<String> jcbKindOfAction;
+    private java.awt.Label jlto;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -181,6 +181,40 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBMailActionPerformed"/>
           </Events>
         </Component>
+        <Component class="java.awt.Label" name="jLfrom">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="von:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSpinner" name="jSFrom">
+          <Properties>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+              <SpinnerModel initial="now" stepSize="5" type="date"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
+              <SpinnerEditor format="dd.MM.yyyy" type="1"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="java.awt.Label" name="jlto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="bis:"/>
+          </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+          </AccessibilityProperties>
+        </Component>
+        <Component class="javax.swing.JSpinner" name="jSStopTime1">
+          <Properties>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+              <SpinnerModel initial="now" stepSize="5" type="date"/>
+            </Property>
+            <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
+              <SpinnerEditor format="dd.MM.yyyy" type="1"/>
+            </Property>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPCustomers">

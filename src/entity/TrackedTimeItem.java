@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit;
  * @author Lars
  */
 public class TrackedTimeItem implements Serializable {
+
+    public static final String IDENTIFIER = "entity.TrackedTimeItem";
+
     private int id;
     private Date startTime;
     private Date endTime;
@@ -29,11 +32,7 @@ public class TrackedTimeItem implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-   
-    
-    
+
     public Date getStartTime() {
         return startTime;
     }

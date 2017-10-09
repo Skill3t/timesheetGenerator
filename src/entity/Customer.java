@@ -5,15 +5,10 @@
  */
 package entity;
 
-import data.CRUDCustomer;
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class Customer implements Serializable {
     // private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
-
+    public static final String IDENTIFIER = "entity.Customer";
     private TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
 
     private int id;
