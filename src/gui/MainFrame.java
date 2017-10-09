@@ -1094,13 +1094,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jBRenameCustomerActionPerformed
 
     private void jbRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRefreshActionPerformed
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        /*SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String value = sdf.format(jSFrom.getValue());
         Date value1 = (Date) jSFrom.getValue();
-        String value2 = sdf.format(jSto.getValue());
+        String value2 = sdf.format(jSto.getValue());*/
         buildTree();
-
-
     }//GEN-LAST:event_jbRefreshActionPerformed
 
     private boolean readUserSettings() {
