@@ -8,6 +8,7 @@ package gui;
 import entity.Customer;
 import entity.TrackedTimeItem;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
@@ -33,9 +34,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import logic.Export;
 import java.util.concurrent.TimeUnit;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import logic.AutoCompletion;
 import logic.CustomerService;
@@ -268,6 +274,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTreeCustomer);
+        jTreeCustomer.getAccessibleContext().setAccessibleName("");
+        jTreeCustomer.getAccessibleContext().setAccessibleDescription("");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setAlignmentX(0.0F);
@@ -405,11 +413,6 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(960, 50));
 
         jCBMark.setText("Markieren");
-        jCBMark.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBMarkActionPerformed(evt);
-            }
-        });
 
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
@@ -997,10 +1000,6 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbKindOfActionActionPerformed
 
-    private void jCBMarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBMarkActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCBMarkActionPerformed
-
     private void jBRenameCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRenameCustomerActionPerformed
 
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
@@ -1011,6 +1010,76 @@ public class MainFrame extends javax.swing.JFrame {
         CTS.saveCustomer(CT);
         buildTree();
     }//GEN-LAST:event_jBRenameCustomerActionPerformed
+    private boolean readUserSettings() {
+        UserService US = new UserService();
+        String path = US.getTemplatePathByID(userId);
+        jLTemplatePath.setText(path);
+        jPMenue.add(jLTemplatePath);
+        return true;
+    }
+
+    private void buildTree() {
+/*
+        ImageIcon leafIcon = new ImageIcon(getClass().getResource("/resources/glyphicons-68-cleaning.png"));
+        if (leafIcon != null) {
+            DefaultTreeCellRenderer renderer
+                    = new DefaultTreeCellRenderer();
+            renderer.setLeafIcon(leafIcon);
+            jTreeCustomer.setCellRenderer(renderer);
+
+        }
+        
+            jTreeCustomer.setCellRenderer(new DefaultTreeCellRenderer() {
+            private Icon loadIcon = UIManager.getIcon("OptionPane.errorIcon");
+            private Icon saveIcon = UIManager.getIcon("OptionPane.informationIcon");
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree,
+                    Object value, boolean selected, boolean expanded,
+                    boolean isLeaf, int row, boolean focused) {
+                Component c = super.getTreeCellRendererComponent(tree, value,
+                        selected, expanded, isLeaf, row, focused);
+                if (selected)
+                    setIcon(loadIcon);
+                else
+                    setIcon(saveIcon);
+                return c;
+            }
+        });
+        */
+        
+        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        root.removeAllChildren();
+        CustomerService cts = new CustomerService();
+        Set set = cts.getAllCustomers().entrySet();
+
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry mentry = (Map.Entry) iterator.next();
+            Customer cusomer = (Customer) mentry.getValue();
+            DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
+            model.insertNodeInto(first, root, root.getChildCount());
+            TreeMap<Long, TrackedTimeItem> customeritems = cusomer.getCustomeritems();
+            for (Map.Entry<Long, TrackedTimeItem> items : customeritems.entrySet()) {
+            
+                model.insertNodeInto(new DefaultMutableTreeNode(items.getValue()), first, first.getChildCount());
+            }
+        }
+        if (cts.getAllCustomers().size() != 0) {
+            jTreeCustomer.expandRow(0);
+            jTreeCustomer.setRootVisible(false);
+            jTreeCustomer.collapseRow(0);
+        }
+        jBDeleteTrack.setEnabled(false);
+        jBSaveTaskChange.setEnabled(false);
+        jBStartTimeTrack.setEnabled(false);
+        jBStopTimeTrack.setEnabled(false);
+        jBDeleteCustomer.setEnabled(false);
+        jBRenameCustomer.setEnabled(false);
+
+        jBDublicateTask.setEnabled(false);
+        SwingUtilities.updateComponentTreeUI(this);
+    }
 
     public String getAgeInSeconds() {
         Calendar cal = Calendar.getInstance();
@@ -1087,49 +1156,5 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTree jTreeCustomer;
     private javax.swing.JComboBox<String> jcbKindOfAction;
     // End of variables declaration//GEN-END:variables
-
-    private boolean readUserSettings() {
-        UserService US = new UserService();
-        String path = US.getTemplatePathByID(userId);
-        jLTemplatePath.setText(path);
-        jPMenue.add(jLTemplatePath);
-        return true;
-    }
-
-    private void buildTree() {
-        //AllTracks instance = AllTracks.getInstance();
-        DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        root.removeAllChildren();
-        CustomerService cts = new CustomerService();
-        Set set = cts.getAllCustomers().entrySet();
-        //Set set = instance.getAllCustomers().entrySet();
-
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry) iterator.next();
-            Customer cusomer = (Customer) mentry.getValue();
-            DefaultMutableTreeNode first = new DefaultMutableTreeNode(cusomer);
-            model.insertNodeInto(first, root, root.getChildCount());
-            TreeMap<Long, TrackedTimeItem> customeritems = cusomer.getCustomeritems();
-            for (Map.Entry<Long, TrackedTimeItem> items : customeritems.entrySet()) {
-                model.insertNodeInto(new DefaultMutableTreeNode(items.getValue()), first, first.getChildCount());
-            }
-        }
-        if (cts.getAllCustomers().size() != 0) {
-            jTreeCustomer.expandRow(0);
-            jTreeCustomer.setRootVisible(false);
-            jTreeCustomer.collapseRow(0);
-        }
-        jBDeleteTrack.setEnabled(false);
-        jBSaveTaskChange.setEnabled(false);
-        jBStartTimeTrack.setEnabled(false);
-        jBStopTimeTrack.setEnabled(false);
-        jBDeleteCustomer.setEnabled(false);
-        jBRenameCustomer.setEnabled(false);
-
-        jBDublicateTask.setEnabled(false);
-        SwingUtilities.updateComponentTreeUI(this);
-    }
 
 }

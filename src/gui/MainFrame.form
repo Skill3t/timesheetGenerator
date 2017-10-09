@@ -269,6 +269,10 @@
                 <Property name="autoscrolls" type="boolean" value="true"/>
                 <Property name="visibleRowCount" type="int" value="2000"/>
               </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+                <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+              </AccessibilityProperties>
               <Events>
                 <EventHandler event="valueChanged" listener="javax.swing.event.TreeSelectionListener" parameters="javax.swing.event.TreeSelectionEvent" handler="jTreeCustomerValueChanged"/>
               </Events>
@@ -599,9 +603,6 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Markieren"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCBMarkActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="jcbKindOfAction">
                       <Properties>
