@@ -9,6 +9,7 @@ import data.CRUDCustomer;
 import data.CRUDTrackedTimeItem;
 import entity.Customer;
 import entity.TrackedTimeItem;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -35,12 +36,30 @@ public class CustomerService {
         return allCustomers;
     }
 
+    public TreeMap<String, Customer> getAllCustomers(Date from, Date to) {
+        allCustomers = new TreeMap<String, Customer>(String.CASE_INSENSITIVE_ORDER);
+        CRUDCustomer CRUDCT = new CRUDCustomer();
+        List<Customer> customerListe = CRUDCT.getCustomerListe();
+        for (Customer CT : customerListe) {
+            allCustomers.put(CT.getCustomername(), CT);
+            CRUDTrackedTimeItem CRUDTTI = new CRUDTrackedTimeItem();
+            List<TrackedTimeItem> trackedTimeItemListe = CRUDTTI.getTrackedTimeItemListe(CT.getId());
+            for (TrackedTimeItem TTI : trackedTimeItemListe) {
+                if (TTI.getStartTime().after(from) && TTI.getStartTime().before(to)) {
+                    CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
+
+                }
+            }
+        }
+        return allCustomers;
+    }
+
     public int saveCustomer(Customer CT) {
         CRUDCustomer CRUDCT = new CRUDCustomer();
         Customer customerByID = CRUDCT.getCustomerByID(CT.getId());
         if (customerByID == null) { // neuer Customer
             return CRUDCT.insertCustomerTrack(CT);
-        }else{
+        } else {
             return CRUDCT.editCustomerByID(CT.getId(), CT.getCustomername());
         }
     }

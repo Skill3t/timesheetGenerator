@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -66,10 +67,25 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
-
         initComponents();
-
         AutoCompletion.enable(jcbKindOfAction);
+
+        Date time = new java.util.Date();
+        Calendar calstart = Calendar.getInstance();
+        calstart.setTime(time);
+        int year = calstart.get(Calendar.YEAR);
+
+        int daysOfMonth = calstart.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int month = calstart.get(Calendar.MONTH);
+        calstart.set(year, month, 1);
+        Date date = calstart.getTime();
+        jSFrom.setValue(date);
+
+        Calendar calend = Calendar.getInstance();
+        calend.setTime(time);
+        calend.set(year, month, daysOfMonth);
+        Date date2 = calend.getTime();
+        jSto.setValue(date2);
 
         if (readUserSettings()) {
             buildTree();
@@ -95,6 +111,7 @@ public class MainFrame extends javax.swing.JFrame {
 
             }
         });
+
     }
 
     /**
@@ -106,16 +123,19 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel4 = new javax.swing.JPanel();
         jPMenue = new javax.swing.JPanel();
         jBnewCustomer = new javax.swing.JButton();
         jBExport = new javax.swing.JButton();
         jBTamplate = new javax.swing.JButton();
         jBDeleteTreeleafs = new javax.swing.JButton();
         jBMail = new javax.swing.JButton();
+        jPMenue1 = new javax.swing.JPanel();
         jLfrom = new java.awt.Label();
         jSFrom = new javax.swing.JSpinner();
         jlto = new java.awt.Label();
-        jSStopTime1 = new javax.swing.JSpinner();
+        jSto = new javax.swing.JSpinner();
+        jbRefresh = new javax.swing.JButton();
         jPCustomers = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTreeCustomer = new javax.swing.JTree();
@@ -143,11 +163,17 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Timesheet Generator");
         setMinimumSize(new java.awt.Dimension(990, 640));
 
+        jPanel4.setBackground(new java.awt.Color(169, 1, 0));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setMaximumSize(new java.awt.Dimension(32767, 82));
+        jPanel4.setMinimumSize(new java.awt.Dimension(660, 41));
+        jPanel4.setPreferredSize(new java.awt.Dimension(960, 63));
+
         jPMenue.setBackground(new java.awt.Color(169, 1, 0));
-        jPMenue.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPMenue.setAlignmentX(0.0F);
         jPMenue.setMaximumSize(new java.awt.Dimension(32767, 82));
-        jPMenue.setMinimumSize(new java.awt.Dimension(960, 41));
-        jPMenue.setPreferredSize(new java.awt.Dimension(960, 63));
+        jPMenue.setMinimumSize(new java.awt.Dimension(310, 41));
+        jPMenue.setPreferredSize(new java.awt.Dimension(310, 63));
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 25, 15));
 
         jBnewCustomer.setBackground(new java.awt.Color(169, 1, 0));
@@ -253,21 +279,53 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jPMenue.add(jBMail);
 
-        jLfrom.setText("von:");
-        jPMenue.add(jLfrom);
+        jPMenue1.setBackground(new java.awt.Color(169, 1, 0));
+        jPMenue1.setAlignmentX(0.0F);
+        jPMenue1.setMaximumSize(new java.awt.Dimension(32767, 82));
+        jPMenue1.setMinimumSize(new java.awt.Dimension(750, 41));
+        jPMenue1.setPreferredSize(new java.awt.Dimension(650, 63));
+        jPMenue1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 15));
 
-        jSFrom.setModel(new javax.swing.SpinnerDateModel());
+        jLfrom.setText("von:");
+        jPMenue1.add(jLfrom);
+
+        jSFrom.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1507562815902L), null, null, java.util.Calendar.DAY_OF_MONTH));
         jSFrom.setToolTipText("");
+        jSFrom.setAlignmentX(0.0F);
+        jSFrom.setAlignmentY(0.0F);
         jSFrom.setEditor(new javax.swing.JSpinner.DateEditor(jSFrom, "dd.MM.yyyy"));
-        jPMenue.add(jSFrom);
+        jPMenue1.add(jSFrom);
 
         jlto.setText("bis:");
-        jPMenue.add(jlto);
-        jlto.getAccessibleContext().setAccessibleName("");
+        jPMenue1.add(jlto);
 
-        jSStopTime1.setModel(new javax.swing.SpinnerDateModel());
-        jSStopTime1.setEditor(new javax.swing.JSpinner.DateEditor(jSStopTime1, "dd.MM.yyyy"));
-        jPMenue.add(jSStopTime1);
+        jSto.setModel(new javax.swing.SpinnerDateModel());
+        jSto.setEditor(new javax.swing.JSpinner.DateEditor(jSto, "dd.MM.yyyy"));
+        jPMenue1.add(jSto);
+
+        jbRefresh.setText("aktualisieren");
+        jbRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbRefreshActionPerformed(evt);
+            }
+        });
+        jPMenue1.add(jbRefresh);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
         jPCustomers.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Mandanten"));
@@ -533,8 +591,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPTrackItem.setLayout(jPTrackItemLayout);
         jPTrackItemLayout.setHorizontalGroup(
             jPTrackItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1022, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1022, Short.MAX_VALUE)
         );
         jPTrackItemLayout.setVerticalGroup(
             jPTrackItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -548,8 +606,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
-            .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
+            .addComponent(jPTrackItem, javax.swing.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
+            .addComponent(jPCustomorMenue, javax.swing.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -569,32 +627,32 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPCustomersLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         jPCustomersLayout.setVerticalGroup(
             jPCustomersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPCustomersLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(5, 5, 5)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(5, 5, 5))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPMenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jPCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE))
+                .addComponent(jPCustomers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -870,7 +928,7 @@ public class MainFrame extends javax.swing.JFrame {
             US.setTemplatePathByID(userId, fileChooser.getSelectedFile().toString());
             jLTemplatePath.setText(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
-            jPMenue.add(jLTemplatePath);
+            jPMenue1.add(jLTemplatePath);
             SwingUtilities.updateComponentTreeUI(this);
         }
     }//GEN-LAST:event_jBTamplateActionPerformed
@@ -1034,11 +1092,22 @@ public class MainFrame extends javax.swing.JFrame {
         CTS.saveCustomer(CT);
         buildTree();
     }//GEN-LAST:event_jBRenameCustomerActionPerformed
+
+    private void jbRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRefreshActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        String value = sdf.format(jSFrom.getValue());
+        Date value1 = (Date) jSFrom.getValue();
+        String value2 = sdf.format(jSto.getValue());
+        buildTree();
+
+
+    }//GEN-LAST:event_jbRefreshActionPerformed
+
     private boolean readUserSettings() {
         UserService US = new UserService();
         String path = US.getTemplatePathByID(userId);
         jLTemplatePath.setText(path);
-        jPMenue.add(jLTemplatePath);
+        jPMenue1.add(jLTemplatePath);
         return true;
     }
 
@@ -1075,7 +1144,10 @@ public class MainFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         root.removeAllChildren();
         CustomerService cts = new CustomerService();
-        Set set = cts.getAllCustomers().entrySet();
+        Date value1 = (Date) jSFrom.getValue();
+        Date value2 = (Date) jSto.getValue();
+
+        Set set = cts.getAllCustomers(value1, value2).entrySet();
 
         Iterator iterator = set.iterator();
         while (iterator.hasNext()) {
@@ -1170,17 +1242,20 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPCustomers;
     private javax.swing.JPanel jPCustomorMenue;
     private javax.swing.JPanel jPMenue;
+    private javax.swing.JPanel jPMenue1;
     private javax.swing.JPanel jPTrackItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JSpinner jSFrom;
     private javax.swing.JSpinner jSStartTime;
     private javax.swing.JSpinner jSStopTime;
-    private javax.swing.JSpinner jSStopTime1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSto;
     private javax.swing.JTextField jTAction;
     private javax.swing.JTree jTreeCustomer;
+    private javax.swing.JButton jbRefresh;
     private javax.swing.JComboBox<String> jcbKindOfAction;
     private java.awt.Label jlto;
     // End of variables declaration//GEN-END:variables
