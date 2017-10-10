@@ -15,18 +15,16 @@ import java.util.concurrent.TimeUnit;
  * @author Lars
  */
 public class Customer implements Serializable {
-    // private ArrayList<TrackedTimeItem> customeritems = new ArrayList<TrackedTimeItem>() ;
     public static final String IDENTIFIER = "entity.Customer";
     private TreeMap<Long, TrackedTimeItem> customeritems = new TreeMap<Long, TrackedTimeItem>();
-
     private int id;
     private String customername;
+    private int industryNumber;
+    private int companyStageNumber;
 
     public Customer(String customername) {
         this.customername = customername;    
     }
-
- 
 
     public String getCustomername() {
         return customername;
@@ -50,6 +48,22 @@ public class Customer implements Serializable {
 
     public void setCustomername(String customername) {
         this.customername = customername;
+    }
+
+    public int getIndustryNumber() {
+        return industryNumber;
+    }
+
+    public void setIndustryNumber(int industryNumber) {
+        this.industryNumber = industryNumber;
+    }
+
+    public int getCompanyStageNumber() {
+        return companyStageNumber;
+    }
+
+    public void setCompanyStageNumber(int companyStageNumber) {
+        this.companyStageNumber = companyStageNumber;
     }
 
     @Override
