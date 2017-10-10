@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,5 +69,27 @@ public class CRUDUser {
         }
         return 0;
 
+    }
+    
+        public ArrayList<String> getUserListe() {
+        try {
+            ArrayList<String> useres = new ArrayList<String>();
+            ConnectionSingelton cst = null;
+            cst = ConnectionSingelton.getInstance();
+            Connection dbcon = cst.getDbcon();
+            PreparedStatement ps = dbcon
+                    .prepareStatement("SELECT name FROM User");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String user = rs.getString("name");
+                useres.add(user);
+            }
+            rs.close();
+            ps.close();
+            return useres;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

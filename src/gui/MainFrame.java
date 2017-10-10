@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -70,6 +71,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         AutoCompletion.enable(jcbKindOfAction);
 
+        //set From and to --> to the first and the last day of the aktuell month 
         Date time = new java.util.Date();
         Calendar calstart = Calendar.getInstance();
         calstart.setTime(time);
@@ -87,6 +89,12 @@ public class MainFrame extends javax.swing.JFrame {
         Date date2 = calend.getTime();
         jSto.setValue(date2);
 
+        UserService US = new UserService();
+        ArrayList<String> userNames = US.getUserNames();
+        String[] toArray = (String[]) userNames.toArray(new String[userNames.size()]);
+
+        jCbUser.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+
         if (readUserSettings()) {
             buildTree();
         } else {
@@ -99,7 +107,7 @@ public class MainFrame extends javax.swing.JFrame {
                 Color foreground = jLTime.getForeground();
                 if (foreground.getRed() == 255) {
                     int n = JOptionPane.showConfirmDialog(
-                            null, "Achtung laufende Task!\nWenn Sie mit ok bestätigen, geht dieser Task verloren. \nWenn Sie dies nicht wollen, bestätigen Sie mit nein.",
+                            null, "Achtung laufende Erfassung!\nWenn Sie mit ok bestätigen, geht dieser Erfassung verloren. \nWenn Sie dies nicht wollen, bestätigen Sie mit nein.",
                             "Schließen",
                             JOptionPane.YES_NO_OPTION);
                     if (n == JOptionPane.YES_OPTION) {
@@ -131,6 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
         jBDeleteTreeleafs = new javax.swing.JButton();
         jBMail = new javax.swing.JButton();
         jPMenue1 = new javax.swing.JPanel();
+        jCbUser = new javax.swing.JComboBox<>();
         jLfrom = new java.awt.Label();
         jSFrom = new javax.swing.JSpinner();
         jlto = new java.awt.Label();
@@ -147,6 +156,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLTime = new javax.swing.JLabel();
         jBDeleteCustomer = new javax.swing.JButton();
         jBRenameCustomer = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPTrackItem = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jTAction = new javax.swing.JTextField();
@@ -286,6 +296,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue1.setPreferredSize(new java.awt.Dimension(650, 63));
         jPMenue1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 15));
 
+        jCbUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPMenue1.add(jCbUser);
+
         jLfrom.setText("von:");
         jPMenue1.add(jLfrom);
 
@@ -303,6 +316,7 @@ public class MainFrame extends javax.swing.JFrame {
         jSto.setEditor(new javax.swing.JSpinner.DateEditor(jSto, "dd.MM.yyyy"));
         jPMenue1.add(jSto);
 
+        jbRefresh.setBackground(new java.awt.Color(252, 252, 252));
         jbRefresh.setText("aktualisieren");
         jbRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -316,9 +330,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -408,6 +422,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(252, 252, 252));
+        jButton1.setText("Stammdaten");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPCustomorMenueLayout = new javax.swing.GroupLayout(jPCustomorMenue);
         jPCustomorMenue.setLayout(jPCustomorMenueLayout);
         jPCustomorMenueLayout.setHorizontalGroup(
@@ -425,7 +447,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jBDeleteCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addComponent(jBRenameCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(150, 150, 150))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(47, 47, 47))
         );
         jPCustomorMenueLayout.setVerticalGroup(
             jPCustomorMenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,7 +470,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jBDeleteCustomer))
             .addGroup(jPCustomorMenueLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(jBRenameCustomer))
+                .addGroup(jPCustomorMenueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBRenameCustomer)
+                    .addComponent(jButton1)))
         );
 
         jPTrackItem.setBackground(new java.awt.Color(204, 204, 204));
@@ -667,6 +693,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
+        newCustomer nC = new newCustomer(this, true);
+        nC.setVisible(true);
         CustomerService CTS = new CustomerService();
         TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
         Customer get = allCustomers.get(S);
@@ -1083,13 +1111,31 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbKindOfActionActionPerformed
 
     private void jBRenameCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRenameCustomerActionPerformed
-
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTreeCustomer.getLastSelectedPathComponent();
         Customer CT = (Customer) selectedNode.getUserObject();
         String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!", CT.getCustomername());
-        CT.setCustomername(S);
+
         CustomerService CTS = new CustomerService();
-        CTS.saveCustomer(CT);
+        TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
+
+        Customer get = allCustomers.get(S);
+        int bevor = allCustomers.size();
+        if (get == null) {
+            Customer ct = new Customer(S);
+            allCustomers.put(ct.getCustomername(), ct);
+            int saveCustomer = CTS.saveCustomer(ct);
+            ct.setId(saveCustomer);
+            DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
+        } else {
+            JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
+        }
+        if (bevor == 0) {
+            jTreeCustomer.expandRow(0);
+            jTreeCustomer.setRootVisible(false);
+            jTreeCustomer.collapseRow(0);
+        }
         buildTree();
     }//GEN-LAST:event_jBRenameCustomerActionPerformed
 
@@ -1100,6 +1146,10 @@ public class MainFrame extends javax.swing.JFrame {
         String value2 = sdf.format(jSto.getValue());*/
         buildTree();
     }//GEN-LAST:event_jbRefreshActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(null, "Funktion folgt");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private boolean readUserSettings() {
         UserService US = new UserService();
@@ -1233,7 +1283,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jBStopTimeTrack;
     private javax.swing.JButton jBTamplate;
     private javax.swing.JButton jBnewCustomer;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCBMark;
+    private javax.swing.JComboBox<String> jCbUser;
     private javax.swing.JLabel jLKlient;
     private javax.swing.JLabel jLTime;
     private java.awt.Label jLfrom;

@@ -7,6 +7,8 @@ package logic;
 
 import data.CRUDUser;
 import entity.User;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,6 +24,13 @@ public class UserService {
 
     public void setTemplatePathByID(int id, String path) {
         CRUDUser crudu = new CRUDUser();
-        crudu.editUserByID(id,path);
+        crudu.editUserByID(id, path);
+    }
+
+    public ArrayList<String> getUserNames() {
+        CRUDUser crudu = new CRUDUser();
+        ArrayList<String> userListe = crudu.getUserListe();
+        return userListe;
+
     }
 }
