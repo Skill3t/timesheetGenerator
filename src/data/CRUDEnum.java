@@ -107,4 +107,27 @@ public class CRUDEnum {
         }
         return null;
     }
+
+    public HashMap<Integer, String> getKindListe() {
+        try {
+            HashMap<Integer, String> hmap = new HashMap<Integer, String>();
+            ConnectionSingelton cst = null;
+            cst = ConnectionSingelton.getInstance();
+            Connection dbcon = cst.getDbcon();
+            PreparedStatement ps = dbcon
+                    .prepareStatement("SELECT * FROM kind");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int number = rs.getInt("number");
+                String user = rs.getString("description");
+                hmap.put(number, user);
+            }
+            rs.close();
+            ps.close();
+            return hmap;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

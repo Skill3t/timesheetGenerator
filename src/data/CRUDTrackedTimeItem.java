@@ -36,7 +36,7 @@ public class CRUDTrackedTimeItem {
             String query = "INSERT INTO TrackedTimeItem ("
                     + " id,"
                     + " id_Customer,"
-                    + " kindOfAction,"
+                    + " kindnumber,"
                     + " startTime,"
                     + " endTime,"
                     + " kommand,"
@@ -48,7 +48,7 @@ public class CRUDTrackedTimeItem {
             PreparedStatement ps = dbcon.prepareStatement(query);
 
             ps.setInt(1, CustomerID);
-            ps.setString(2, TTI.getKindOfAction());
+            ps.setInt(2, TTI.getKindOfAction());
             ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getEndTime().getTime()),
                     ZoneId.systemDefault());
             ps.setString(3, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
@@ -97,7 +97,7 @@ public class CRUDTrackedTimeItem {
                 Date startTime = parseDateTime.getTime();
                 parseDateTime = javax.xml.bind.DatatypeConverter.parseDateTime(rs.getString("endTime"));
                 Date endTime = parseDateTime.getTime();
-                TrackedTimeItem TTI = new TrackedTimeItem(startTime, endTime, rs.getString("kommand"), rs.getString("kindOfAction"), b);
+                TrackedTimeItem TTI = new TrackedTimeItem(startTime, endTime, rs.getString("kommand"), rs.getInt("kindnumber"), b);
                 TTI.setId(rs.getInt("id"));
                 ListTTI.add(TTI);
             }
@@ -145,12 +145,12 @@ public class CRUDTrackedTimeItem {
         ConnectionSingelton cst = ConnectionSingelton.getInstance();
         Connection dbcon = cst.getDbcon();
 
-        String query = "UPDATE TrackedTimeItem SET kindOfAction = ?, startTime = ?, endTime = ?, kommand = ? , markInExport = ? WHERE id = ?";
+        String query = "UPDATE TrackedTimeItem SET kindnumber = ?, startTime = ?, endTime = ?, kommand = ? , markInExport = ? WHERE id = ?";
         PreparedStatement ps;
         try {
             ps = dbcon
                     .prepareStatement(query);
-            ps.setString(1, TTI.getKindOfAction());
+            ps.setInt(1, TTI.getKindOfAction());
             ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getStartTime().getTime()),
                     ZoneId.systemDefault());
             ps.setString(2, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));

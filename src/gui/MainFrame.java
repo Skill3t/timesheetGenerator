@@ -8,20 +8,18 @@ package gui;
 import entity.Customer;
 import entity.TrackedTimeItem;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
-import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -36,17 +34,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import logic.Export;
 import java.util.concurrent.TimeUnit;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JTree;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import logic.AutoCompletion;
 import logic.CustomerService;
+import logic.EnumServices;
 import logic.TrackedTimeItemService;
 import logic.TrackedTimeService;
 import logic.UserService;
@@ -71,6 +65,12 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         AutoCompletion.enable(jcbKindOfAction);
 
+        //Set drop down from SQL DB
+        EnumServices ES = new EnumServices();
+        HashMap<Integer, String> companyStage = ES.getKind();
+        String[] toArray = (String[]) companyStage.values().toArray(new String[companyStage.size()]);
+        jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+
         //set From and to --> to the first and the last day of the aktuell month 
         Date time = new java.util.Date();
         Calendar calstart = Calendar.getInstance();
@@ -92,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
         //Set Usernames form DB to drop down
         UserService US = new UserService();
         ArrayList<String> userNames = US.getUserNames();
-        String[] toArray = (String[]) userNames.toArray(new String[userNames.size()]);
+        toArray = (String[]) userNames.toArray(new String[userNames.size()]);
         jCbUser.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
 
         if (readUserSettings()) {
@@ -521,7 +521,6 @@ public class MainFrame extends javax.swing.JFrame {
         jcbKindOfAction.setBackground(new java.awt.Color(252, 252, 252));
         jcbKindOfAction.setEditable(true);
         jcbKindOfAction.setMaximumRowCount(20);
-        jcbKindOfAction.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Besprechung", "Email", "Entwurf","Intern", "Korrespondenz", "Review", "Review und Entwurf", "Telefonat"}));
         jcbKindOfAction.setToolTipText("");
         jcbKindOfAction.setPreferredSize(new java.awt.Dimension(200, 26));
         jcbKindOfAction.addActionListener(new java.awt.event.ActionListener() {
@@ -750,7 +749,9 @@ public class MainFrame extends javax.swing.JFrame {
                 case TrackedTimeItem.IDENTIFIER:
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
                     jTAction.setText(trackObject.getKommand());
-                    jcbKindOfAction.setSelectedItem(trackObject.getKindOfAction());
+                     EnumServices ES = new EnumServices();
+                    HashMap<Integer, String> kinds = ES.getKind();
+                    jcbKindOfAction.setSelectedItem(kinds.get(trackObject.getKindOfAction()));
                     jSStartTime.setValue(trackObject.getStartTime());
                     jSStopTime.setValue(trackObject.getEndTime());
                     jCBMark.setSelected(trackObject.getMarkInExport());
@@ -789,7 +790,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTreeCustomerValueChanged
 
     private void jBStopTimeTrackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBStopTimeTrackActionPerformed
-
         if (jTAction.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Bitte einen Beschreibungstext eingeben und erneut Stopp betätigen");
             return;
@@ -809,7 +809,7 @@ public class MainFrame extends javax.swing.JFrame {
                     case Customer.IDENTIFIER:
                         CT = (Customer) selectedNode.getUserObject();
                         model = (DefaultTreeModel) jTreeCustomer.getModel();
-                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected());
                         model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
                         CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                         cal = Calendar.getInstance();
@@ -828,7 +828,7 @@ public class MainFrame extends javax.swing.JFrame {
                         DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
                         CT = (Customer) selectedNodeParent.getUserObject();
                         model = (DefaultTreeModel) jTreeCustomer.getModel();
-                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected());
                         model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
                         CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                         cal = Calendar.getInstance();
@@ -990,7 +990,7 @@ public class MainFrame extends javax.swing.JFrame {
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
             Long key = TI.getStartTimeS();
             int id = TI.getId();
-            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected());
+            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected());
             TI.setId(id);
             parent.getCustomeritems().remove(key);
             parent.getCustomeritems().put(TI.getStartTimeS(), TI);

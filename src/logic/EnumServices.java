@@ -44,10 +44,14 @@ public class EnumServices {
         return hmap;
     }
 
-    
-        public HashMap<Integer, String> getChannel() {
+    public HashMap<Integer, String> getChannel() {
         CRUDEnum crude = new CRUDEnum();
         HashMap<Integer, String> hmap = crude.getChannelListe();
+        return hmap;
+    }
+        public HashMap<Integer, String> getKind() {
+        CRUDEnum crude = new CRUDEnum();
+        HashMap<Integer, String> hmap = crude.getKindListe();
         return hmap;
     }
 }

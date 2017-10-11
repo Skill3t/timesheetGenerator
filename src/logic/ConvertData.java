@@ -10,6 +10,7 @@ import entity.Customer;
 import entity.TrackedTimeItem;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -72,7 +73,9 @@ public class ConvertData {
 
             retline[3] = "" + tti.getValue().getMarkInExport();
             retline[4] = "";
-            retline[5] = tti.getValue().getKindOfAction();
+            EnumServices ES = new EnumServices();
+            HashMap<Integer, String> companyStage = ES.getKind();
+            retline[5] = companyStage.get(tti.getValue().getKindOfAction());
             retline[6] = tti.getValue().getKommand();
             allreturn.add(retline);
 
