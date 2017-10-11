@@ -55,7 +55,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Timer timer;
     private JLabel jLTemplatePath = new JLabel();
     private String title = ("Timesheet Generator");
-    private final int userId = 1; //add user later on 
+    private int userNumber = 1; //add user later on 
 
     /**
      * Creates new form MainFrame
@@ -297,6 +297,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPMenue1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 15));
 
         jCbUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbUserActionPerformed(evt);
+            }
+        });
         jPMenue1.add(jCbUser);
 
         jLfrom.setText("von:");
@@ -749,7 +754,7 @@ public class MainFrame extends javax.swing.JFrame {
                 case TrackedTimeItem.IDENTIFIER:
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
                     jTAction.setText(trackObject.getKommand());
-                     EnumServices ES = new EnumServices();
+                    EnumServices ES = new EnumServices();
                     HashMap<Integer, String> kinds = ES.getKind();
                     jcbKindOfAction.setSelectedItem(kinds.get(trackObject.getKindOfAction()));
                     jSStartTime.setValue(trackObject.getStartTime());
@@ -958,7 +963,7 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooser.showOpenDialog(this);
         if (fileChooser.getSelectedFile() != null) {
             UserService US = new UserService();
-            US.setTemplatePathByID(userId, fileChooser.getSelectedFile().toString());
+            US.setTemplatePathByNumber(userNumber, fileChooser.getSelectedFile().toString());
             jLTemplatePath.setText(fileChooser.getSelectedFile().toString());
             jLTemplatePath.setForeground(new java.awt.Color(252, 252, 252));
             jPMenue1.add(jLTemplatePath);
@@ -1156,9 +1161,18 @@ public class MainFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Funktion folgt");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jCbUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbUserActionPerformed
+        userNumber = jCbUser.getSelectedIndex();
+        UserService US = new UserService();
+        String path = US.getTemplatePathByNumber(userNumber);
+        jLTemplatePath.setText(path);
+                
+        System.out.println("Action ");
+    }//GEN-LAST:event_jCbUserActionPerformed
+
     private boolean readUserSettings() {
         UserService US = new UserService();
-        String path = US.getTemplatePathByID(userId);
+        String path = US.getTemplatePathByNumber(userNumber);
         jLTemplatePath.setText(path);
         jPMenue1.add(jLTemplatePath);
         return true;

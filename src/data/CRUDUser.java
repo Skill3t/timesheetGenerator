@@ -6,14 +6,12 @@
 package data;
 
 import dbcon.ConnectionSingelton;
-import entity.Customer;
 import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,19 +21,19 @@ import java.util.logging.Logger;
  */
 public class CRUDUser {
 
-    public User getUserByID(int id) {
+    public User getUserByNumber(int number) {
         User user = null;
         ConnectionSingelton cst = ConnectionSingelton.getInstance();
         Connection dbcon = cst.getDbcon();
-        String query = "SELECT * FROM User WHERE id = ?";
+        String query = "SELECT * FROM User WHERE number = ?";
         PreparedStatement ps;
         try {
             ps = dbcon
                     .prepareStatement(query);
-            ps.setInt(1, id);
+            ps.setInt(1, number);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                user = new User(rs.getInt("id"), rs.getString("name"), rs.getString("tamplatePath"));
+                user = new User(rs.getInt("number"), rs.getString("name"), rs.getString("tamplatePath"));
             }
             rs.close();
             ps.close();
@@ -46,21 +44,21 @@ public class CRUDUser {
         return user;
     }
 
-    public int editUserByID(int id, String path) {
-        User customerByID = getUserByID(id);
+    public int editUserByNumber(int number, String path) {
+        User customerByID = getUserByNumber(number);
         if (customerByID == null) {
             return -1;
         }
         ConnectionSingelton cst = ConnectionSingelton.getInstance();
         Connection dbcon = cst.getDbcon();
 
-        String query = "UPDATE User SET tamplatePath = ? WHERE id = ?";
+        String query = "UPDATE User SET tamplatePath = ? WHERE numer = ?";
         PreparedStatement ps;
         try {
             ps = dbcon
                     .prepareStatement(query);
             ps.setString(1, path);
-            ps.setInt(2, id);
+            ps.setInt(2, number);
             int executeUpdate = ps.executeUpdate();
             ps.close();
             return executeUpdate;

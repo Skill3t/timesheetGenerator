@@ -11,11 +11,12 @@ package entity;
  */
 public class User {
     private int id;
+    private int numer;
     private String name;
     private String tamplatePath;
 
-    public User(int id, String name, String tamplatePath) {
-        this.id = id;
+    public User(int numer, String name, String tamplatePath) {
+        this.numer = numer;
         this.name = name;
         this.tamplatePath = tamplatePath;
     }
@@ -30,6 +31,14 @@ public class User {
         this.id = id;
     }
 
+    public int getNumer() {
+        return numer;
+    }
+
+    public void setNumer(int numer) {
+        this.numer = numer;
+    }
+    
     public String getName() {
         return name;
     }
