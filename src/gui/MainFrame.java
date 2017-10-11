@@ -89,10 +89,10 @@ public class MainFrame extends javax.swing.JFrame {
         Date date2 = calend.getTime();
         jSto.setValue(date2);
 
+        //Set Usernames form DB to drop down
         UserService US = new UserService();
         ArrayList<String> userNames = US.getUserNames();
         String[] toArray = (String[]) userNames.toArray(new String[userNames.size()]);
-
         jCbUser.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
 
         if (readUserSettings()) {
@@ -692,9 +692,11 @@ public class MainFrame extends javax.swing.JFrame {
      * @param evt
      */
     private void jBnewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBnewCustomerActionPerformed
-        String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
         newCustomer nC = new newCustomer(this, true);
         nC.setVisible(true);
+        /*
+        String S = JOptionPane.showInputDialog("Bitte neuen Mandanten eingeben!");
+
         CustomerService CTS = new CustomerService();
         TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
         Customer get = allCustomers.get(S);
@@ -715,6 +717,9 @@ public class MainFrame extends javax.swing.JFrame {
             jTreeCustomer.setRootVisible(false);
             jTreeCustomer.collapseRow(0);
         }
+         */
+        this.setEnabled(true);
+
         buildTree();
     }//GEN-LAST:event_jBnewCustomerActionPerformed
 

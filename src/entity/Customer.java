@@ -21,11 +21,22 @@ public class Customer implements Serializable {
     private String customername;
     private int industryNumber;
     private int companyStageNumber;
+    private int Channel;
+    private boolean internal;
 
     public Customer(String customername) {
         this.customername = customername;    
     }
 
+    public Customer(String customername, int industryNumber, int companyStageNumber, int Channel, boolean internal) {
+        this.customername = customername;
+        this.industryNumber = industryNumber;
+        this.companyStageNumber = companyStageNumber;
+        this.Channel = Channel;
+        this.internal = internal;
+    }
+    
+    
     public String getCustomername() {
         return customername;
     }
@@ -65,7 +76,23 @@ public class Customer implements Serializable {
     public void setCompanyStageNumber(int companyStageNumber) {
         this.companyStageNumber = companyStageNumber;
     }
+    public int getChannel() {
+        return Channel;
+    }
 
+    public void setChannel(int Channel) {
+        this.Channel = Channel;
+    }
+
+    public boolean isInternal() {
+        return internal;
+    }
+
+    public void setInternal(boolean internal) {
+        this.internal = internal;
+    }
+
+    
     @Override
     public String toString() {
         // then you can avoid using toString
