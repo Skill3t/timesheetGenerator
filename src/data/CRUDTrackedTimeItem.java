@@ -36,33 +36,35 @@ public class CRUDTrackedTimeItem {
             String query = "INSERT INTO TrackedTimeItem ("
                     + " id,"
                     + " id_Customer,"
+                    + " Usernumber,"
                     + " kindnumber,"
                     + " startTime,"
                     + " endTime,"
                     + " kommand,"
                     + " markInExport"
                     + ") VALUES ("
-                    + "null, ?,?,?,?,?,?)";
+                    + "null, ?,?,?,?,?,?,?)";
 
             // set all the preparedstatement parameters
             PreparedStatement ps = dbcon.prepareStatement(query);
-
             ps.setInt(1, CustomerID);
-            ps.setInt(2, TTI.getKindOfAction());
+            ps.setInt(2, TTI.getUsernumber());
+            ps.setInt(3, TTI.getKindOfAction());
+
             ZonedDateTime zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getEndTime().getTime()),
                     ZoneId.systemDefault());
-            ps.setString(3, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+            ps.setString(4, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
             zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TTI.getStartTime().getTime()),
                     ZoneId.systemDefault());
-            ps.setString(4, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-            ps.setString(5, TTI.getKommand());
+            ps.setString(5, zdt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+            ps.setString(6, TTI.getKommand());
             int aint;
             if (TTI.getMarkInExport()) {
                 aint = 1;
             } else {
                 aint = 0;
             }
-            ps.setInt(6, aint);
+            ps.setInt(7, aint);
             int executeUpdate = ps.executeUpdate();
             ps.close();
             return executeUpdate;
@@ -97,7 +99,7 @@ public class CRUDTrackedTimeItem {
                 Date startTime = parseDateTime.getTime();
                 parseDateTime = javax.xml.bind.DatatypeConverter.parseDateTime(rs.getString("endTime"));
                 Date endTime = parseDateTime.getTime();
-                TrackedTimeItem TTI = new TrackedTimeItem(startTime, endTime, rs.getString("kommand"), rs.getInt("kindnumber"), b);
+                TrackedTimeItem TTI = new TrackedTimeItem(startTime, endTime, rs.getString("kommand"), rs.getInt("kindnumber"), b, rs.getInt("usernumber"));
                 TTI.setId(rs.getInt("id"));
                 ListTTI.add(TTI);
             }

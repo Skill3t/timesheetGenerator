@@ -55,7 +55,7 @@ public class MainFrame extends javax.swing.JFrame {
     private Timer timer;
     private JLabel jLTemplatePath = new JLabel();
     private String title = ("Timesheet Generator");
-    private int userNumber = 1; //add user later on 
+    private int userNumber = 0; //add user later on 
 
     /**
      * Creates new form MainFrame
@@ -814,7 +814,7 @@ public class MainFrame extends javax.swing.JFrame {
                     case Customer.IDENTIFIER:
                         CT = (Customer) selectedNode.getUserObject();
                         model = (DefaultTreeModel) jTreeCustomer.getModel();
-                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected());
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected(),userNumber);
                         model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
                         CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                         cal = Calendar.getInstance();
@@ -833,7 +833,7 @@ public class MainFrame extends javax.swing.JFrame {
                         DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
                         CT = (Customer) selectedNodeParent.getUserObject();
                         model = (DefaultTreeModel) jTreeCustomer.getModel();
-                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected());
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected(),userNumber);
                         model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
                         CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                         cal = Calendar.getInstance();
@@ -995,7 +995,7 @@ public class MainFrame extends javax.swing.JFrame {
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
             Long key = TI.getStartTimeS();
             int id = TI.getId();
-            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected());
+            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected(),userNumber);
             TI.setId(id);
             parent.getCustomeritems().remove(key);
             parent.getCustomeritems().put(TI.getStartTimeS(), TI);
@@ -1165,9 +1165,7 @@ public class MainFrame extends javax.swing.JFrame {
         userNumber = jCbUser.getSelectedIndex();
         UserService US = new UserService();
         String path = US.getTemplatePathByNumber(userNumber);
-        jLTemplatePath.setText(path);
-                
-        System.out.println("Action ");
+        jLTemplatePath.setText(path);      
     }//GEN-LAST:event_jCbUserActionPerformed
 
     private boolean readUserSettings() {
