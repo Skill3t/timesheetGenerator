@@ -22,14 +22,11 @@
  * THE SOFTWARE.
  */
 package gui;
-import entity.*;
+
 
 import entity.Customer;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import logic.CustomerService;
 import logic.EnumServices;
@@ -51,21 +48,8 @@ public class newCustomer extends javax.swing.JDialog {
         EnumServices ES = new EnumServices();
         HashMap<Integer, String> companyStage = ES.getCompanyStage();
         String[] toArray = (String[]) companyStage.values().toArray(new String[companyStage.size()]);
-
-        Vector model = new Vector();
-        for (Map.Entry<Integer, String> entry : companyStage.entrySet()) {
-            Integer key = entry.getKey();
-            String value = entry.getValue();
-            //model.addElement(new Item(key, value));
-        }
-
-   
-
-        //  Easiest approach is to just override toString() method
-        //  of the Item class
-        jCBCompanyStage = new JComboBox(model);
-
-        // jCBCompanyStage.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+        jCBCompanyStage.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+        
         HashMap<Integer, String> industry = ES.getIndustry();
         toArray = (String[]) industry.values().toArray(new String[industry.size()]);
         jCBIndustry.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
@@ -85,25 +69,41 @@ public class newCustomer extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLCustomer = new javax.swing.JLabel();
         jTFCustomerName = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        jLIndustry = new javax.swing.JLabel();
         jCBIndustry = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
+        jLStage = new javax.swing.JLabel();
         jCBCompanyStage = new javax.swing.JComboBox<>();
+        jLChannel = new javax.swing.JLabel();
         jCBChannel = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
+        jCBInternal = new javax.swing.JCheckBox();
         jBSave = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        jTFCustomerName.setText("Mandantenname");
+        jLCustomer.setText("Mandantenname");
+        getContentPane().add(jLCustomer);
 
-        jLabel1.setText("Welcher Branche gehört der Mandant an");
+        jTFCustomerName.setToolTipText("Mandantenname");
+        getContentPane().add(jTFCustomerName);
 
-        jLabel2.setText("In welcher Unternehmensphasen befindet sich der Mandant");
+        jLIndustry.setText("Welcher Branche gehört der Mandant an");
+        getContentPane().add(jLIndustry);
+        getContentPane().add(jCBIndustry);
 
-        jLabel3.setText("Über welchen Kanal wurde das Mandats-Unternehmen gewonnen?");
+        jLStage.setText("In welcher Unternehmensphasen befindet sich der Mandant");
+        getContentPane().add(jLStage);
+        getContentPane().add(jCBCompanyStage);
+
+        jLChannel.setText("Über welchen Kanal wurde das Mandats-Unternehmen gewonnen?");
+        getContentPane().add(jLChannel);
+
+        getContentPane().add(jCBChannel);
+
+        jCBInternal.setText("Intern");
+        getContentPane().add(jCBInternal);
 
         jBSave.setText("Speichern");
         jBSave.addActionListener(new java.awt.event.ActionListener() {
@@ -111,86 +111,27 @@ public class newCustomer extends javax.swing.JDialog {
                 jBSaveActionPerformed(evt);
             }
         });
-
-        jCheckBox1.setText("Intern");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(267, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jBSave)
-                        .addGap(60, 60, 60))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
-                        .addGap(203, 203, 203))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jCBIndustry, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCBCompanyStage, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jCBChannel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTFCustomerName, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTFCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCBIndustry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCBCompanyStage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCBChannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jBSave)
-                .addContainerGap())
-        );
+        getContentPane().add(jBSave);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
         String S = jTFCustomerName.getText();
-        Customer c = new Customer(S);
         // public Customer(String customername, int industryNumber, int companyStageNumber, int Channel, boolean internal) {
-        String chanel = jCBChannel.getSelectedItem().toString();
-        String companyStage = jCBCompanyStage.getSelectedItem().toString();
-        EnumServices ES = new EnumServices();
-        HashMap<Integer, String> HMcompanyStage = ES.getCompanyStage();
-
-        String industry = jCBIndustry.getSelectedItem().toString();
-
+        int selectedIndexchanel = jCBChannel.getSelectedIndex();
+        int selectedIndexCompanyStage = jCBCompanyStage.getSelectedIndex();
+        int selectedIndexindustry = jCBIndustry.getSelectedIndex();
+        boolean internal = jCBInternal.isSelected();
+        Customer c = new Customer(S, selectedIndexindustry, selectedIndexCompanyStage, selectedIndexchanel, internal);
         CustomerService CTS = new CustomerService();
         TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
         Customer get = allCustomers.get(S);
         int bevor = allCustomers.size();
         if (get == null) {
-            Customer ct = new Customer(S);
-            allCustomers.put(ct.getCustomername(), ct);
-            int saveCustomer = CTS.saveCustomer(ct);
-            ct.setId(saveCustomer);
+            allCustomers.put(c.getCustomername(), c);
+            int saveCustomer = CTS.saveCustomer(c);
+            c.setId(saveCustomer);
         } else {
             JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
         }
@@ -204,10 +145,11 @@ public class newCustomer extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> jCBChannel;
     private javax.swing.JComboBox<String> jCBCompanyStage;
     private javax.swing.JComboBox<String> jCBIndustry;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JCheckBox jCBInternal;
+    private javax.swing.JLabel jLChannel;
+    private javax.swing.JLabel jLCustomer;
+    private javax.swing.JLabel jLIndustry;
+    private javax.swing.JLabel jLStage;
     private javax.swing.JTextField jTFCustomerName;
     // End of variables declaration//GEN-END:variables
 }

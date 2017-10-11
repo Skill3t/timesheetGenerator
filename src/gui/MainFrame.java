@@ -175,15 +175,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(169, 1, 0));
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.setMaximumSize(new java.awt.Dimension(32767, 82));
-        jPanel4.setMinimumSize(new java.awt.Dimension(660, 41));
-        jPanel4.setPreferredSize(new java.awt.Dimension(960, 63));
+        jPanel4.setMaximumSize(new java.awt.Dimension(32767, 63));
+        jPanel4.setMinimumSize(new java.awt.Dimension(960, 41));
+        jPanel4.setPreferredSize(new java.awt.Dimension(1260, 63));
 
         jPMenue.setBackground(new java.awt.Color(169, 1, 0));
         jPMenue.setAlignmentX(0.0F);
-        jPMenue.setMaximumSize(new java.awt.Dimension(32767, 82));
-        jPMenue.setMinimumSize(new java.awt.Dimension(310, 41));
-        jPMenue.setPreferredSize(new java.awt.Dimension(310, 63));
+        jPMenue.setMaximumSize(new java.awt.Dimension(32767, 63));
+        jPMenue.setMinimumSize(new java.awt.Dimension(265, 41));
+        jPMenue.setPreferredSize(new java.awt.Dimension(265, 63));
         jPMenue.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 25, 15));
 
         jBnewCustomer.setBackground(new java.awt.Color(169, 1, 0));
@@ -291,9 +291,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPMenue1.setBackground(new java.awt.Color(169, 1, 0));
         jPMenue1.setAlignmentX(0.0F);
-        jPMenue1.setMaximumSize(new java.awt.Dimension(32767, 82));
-        jPMenue1.setMinimumSize(new java.awt.Dimension(750, 41));
-        jPMenue1.setPreferredSize(new java.awt.Dimension(650, 63));
+        jPMenue1.setMaximumSize(new java.awt.Dimension(32767, 63));
+        jPMenue1.setMinimumSize(new java.awt.Dimension(770, 41));
+        jPMenue1.setPreferredSize(new java.awt.Dimension(770, 63));
         jPMenue1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 15));
 
         jCbUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -330,15 +330,15 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPMenue1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPMenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPMenue, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+            .addComponent(jPMenue1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         jPCustomers.setBackground(new java.awt.Color(204, 204, 204));
@@ -1126,13 +1126,13 @@ public class MainFrame extends javax.swing.JFrame {
         Customer get = allCustomers.get(S);
         int bevor = allCustomers.size();
         if (get == null) {
-            Customer ct = new Customer(S);
-            allCustomers.put(ct.getCustomername(), ct);
-            int saveCustomer = CTS.saveCustomer(ct);
-            ct.setId(saveCustomer);
+            CT.setCustomername(S);
+
+            int saveCustomer = CTS.saveCustomer(CT);
+
             DefaultTreeModel model = (DefaultTreeModel) jTreeCustomer.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-            model.insertNodeInto(new DefaultMutableTreeNode(ct), root, root.getChildCount());
+            model.insertNodeInto(new DefaultMutableTreeNode(CT), root, root.getChildCount());
         } else {
             JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
         }

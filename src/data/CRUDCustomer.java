@@ -35,15 +35,28 @@ public class CRUDCustomer {
         Connection dbcon = cst.getDbcon();
         String query = "INSERT INTO Customer ("
                 + " id,"
-                + " name"
+                + " name,"
+                + " internal,"
+                + " IndustryNumber,"
+                + " companyStageNumber,"
+                + " ChannelNumber"
                 + ") VALUES ("
-                + "null, ?)";
+                + "null, ?,?,?,?,?)";
 
         try {
             // set all the preparedstatement parameters
             PreparedStatement ps = dbcon.prepareStatement(query);
             ps.setString(1, CT.getCustomername());
-
+            int aint;
+            if (CT.isInternal()) {
+                aint = 1;
+            } else {
+                aint = 0;
+            }
+            ps.setInt(2, aint);
+            ps.setInt(3, CT.getIndustryNumber());
+            ps.setInt(4, CT.getCompanyStageNumber());
+            ps.setInt(5, CT.getChannel());
             int executeUpdate = ps.executeUpdate();
             ps.close();
             if (executeUpdate == 1) {
