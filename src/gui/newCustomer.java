@@ -23,7 +23,6 @@
  */
 package gui;
 
-
 import entity.Customer;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -44,12 +43,13 @@ public class newCustomer extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         parent.setEnabled(false);
+        jBSave.setEnabled(true);
         //Set dropdown form DB 
         EnumServices ES = new EnumServices();
         HashMap<Integer, String> companyStage = ES.getCompanyStage();
         String[] toArray = (String[]) companyStage.values().toArray(new String[companyStage.size()]);
         jCBCompanyStage.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
-        
+
         HashMap<Integer, String> industry = ES.getIndustry();
         toArray = (String[]) industry.values().toArray(new String[industry.size()]);
         jCBIndustry.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
@@ -58,6 +58,34 @@ public class newCustomer extends javax.swing.JDialog {
         toArray = (String[]) channel.values().toArray(new String[channel.size()]);
         jCBChannel.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
 
+    }
+
+    public newCustomer(java.awt.Frame parent, boolean modal, Customer customer) {
+        super(parent, modal);
+        initComponents();
+        parent.setEnabled(false);
+        jTFCustomerName.setEnabled(false);
+        jBrefresh.setEnabled(true);
+        //Set dropdown form DB 
+        EnumServices ES = new EnumServices();
+        HashMap<Integer, String> companyStage = ES.getCompanyStage();
+        String[] toArray = (String[]) companyStage.values().toArray(new String[companyStage.size()]);
+        jCBCompanyStage.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+
+        jCBCompanyStage.setSelectedIndex(customer.getCompanyStageNumber());
+
+        HashMap<Integer, String> industry = ES.getIndustry();
+        toArray = (String[]) industry.values().toArray(new String[industry.size()]);
+        jCBIndustry.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+        jCBIndustry.setSelectedIndex(customer.getIndustryNumber());
+
+        HashMap<Integer, String> channel = ES.getChannel();
+        toArray = (String[]) channel.values().toArray(new String[channel.size()]);
+        jCBChannel.setModel(new javax.swing.DefaultComboBoxModel<>(toArray));
+        jCBChannel.setSelectedIndex(customer.getChannel());
+
+        jTFCustomerName.setText(customer.getCustomername());
+        jCBInternal.setSelected(customer.isInternal());
     }
 
     /**
@@ -79,12 +107,13 @@ public class newCustomer extends javax.swing.JDialog {
         jCBChannel = new javax.swing.JComboBox<>();
         jCBInternal = new javax.swing.JCheckBox();
         jBSave = new javax.swing.JButton();
+        jBrefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setMaximumSize(new java.awt.Dimension(475, 280));
-        setMinimumSize(new java.awt.Dimension(475, 280));
-        setPreferredSize(new java.awt.Dimension(475, 280));
+        setMaximumSize(new java.awt.Dimension(475, 330));
+        setMinimumSize(new java.awt.Dimension(475, 330));
+        setPreferredSize(new java.awt.Dimension(475, 330));
 
         jLCustomer.setText("Mandantenname");
 
@@ -99,9 +128,19 @@ public class newCustomer extends javax.swing.JDialog {
         jCBInternal.setText("Intern");
 
         jBSave.setText("Speichern");
+        jBSave.setEnabled(false);
         jBSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBSaveActionPerformed(evt);
+            }
+        });
+
+        jBrefresh.setText("Aktualisieren");
+        jBrefresh.setAutoscrolls(true);
+        jBrefresh.setEnabled(false);
+        jBrefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBrefreshActionPerformed(evt);
             }
         });
 
@@ -119,13 +158,16 @@ public class newCustomer extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLIndustry, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                        .addComponent(jLIndustry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(164, 164, 164))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLStage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(40, 40, 40))
                     .addComponent(jLChannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(114, 114, 114))))
+            .addComponent(jBrefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,7 +193,9 @@ public class newCustomer extends javax.swing.JDialog {
                 .addGap(1, 1, 1)
                 .addComponent(jCBInternal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBSave))
+                .addComponent(jBSave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jBrefresh))
         );
 
         pack();
@@ -159,7 +203,6 @@ public class newCustomer extends javax.swing.JDialog {
 
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
         String S = jTFCustomerName.getText();
-        // public Customer(String customername, int industryNumber, int companyStageNumber, int Channel, boolean internal) {
         int selectedIndexchanel = jCBChannel.getSelectedIndex();
         int selectedIndexCompanyStage = jCBCompanyStage.getSelectedIndex();
         int selectedIndexindustry = jCBIndustry.getSelectedIndex();
@@ -177,12 +220,34 @@ public class newCustomer extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Mandant schon vorhanden!");
         }
         dispose();
-        // TODO add your handling code here:
     }//GEN-LAST:event_jBSaveActionPerformed
+
+    private void jBrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBrefreshActionPerformed
+        String S = jTFCustomerName.getText();
+        CustomerService CTS = new CustomerService();
+        TreeMap<String, Customer> allCustomers = CTS.getAllCustomers();
+        Customer get = allCustomers.get(S);
+
+        int selectedIndexchanel = jCBChannel.getSelectedIndex();
+        int selectedIndexCompanyStage = jCBCompanyStage.getSelectedIndex();
+        int selectedIndexindustry = jCBIndustry.getSelectedIndex();
+        boolean internal = jCBInternal.isSelected();
+        // get.setCustomername(S);
+        get.setChannel(selectedIndexchanel);
+        get.setCompanyStageNumber(selectedIndexCompanyStage);
+        get.setIndustryNumber(selectedIndexindustry);
+        get.setInternal(internal);
+
+        int saveCustomer = CTS.saveCustomer(get);
+        // c.setId(saveCustomer);
+
+        dispose();
+    }//GEN-LAST:event_jBrefreshActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBSave;
+    private javax.swing.JButton jBrefresh;
     private javax.swing.JComboBox<String> jCBChannel;
     private javax.swing.JComboBox<String> jCBCompanyStage;
     private javax.swing.JComboBox<String> jCBIndustry;

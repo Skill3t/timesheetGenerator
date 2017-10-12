@@ -111,6 +111,18 @@ public class CRUDCustomer {
             while (rs.next()) {
                 ct = new Customer(rs.getString("name"));
                 ct.setId(rs.getInt("id"));
+
+                int aInt = rs.getInt("internal");
+                boolean b;
+                if (aInt == 0) {
+                    b = false;
+                } else {
+                    b = true;
+                }
+                ct.setInternal(b);
+                ct.setIndustryNumber(rs.getInt("IndustryNumber"));
+                ct.setCompanyStageNumber(rs.getInt("companyStageNumber"));
+                ct.setChannel(rs.getInt("ChannelNumber"));
             }
             rs.close();
             ps.close();
@@ -132,8 +144,8 @@ public class CRUDCustomer {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 // item = new TrackedTimeItem();
-                Customer CT = new Customer(rs.getString("name"));
-                CT.setId(rs.getInt("id"));
+                Customer CT = getCustomerByName(rs.getString("name"));
+                
                 customerListe.add(CT);
             }
             rs.close();
@@ -150,11 +162,15 @@ public class CRUDCustomer {
      *
      * @param id id of the Customer
      * @param name new name ot the Customer
+     * @param internal
+     * @param IndustryNumber
+     * @param companyStageNumber
+     * @param ChannelNumber
      * @return -1 Customer did not exist 1 update sucsess 0 Error
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public int editCustomerByID(int id, String name) {
+    public int editCustomerByID(int id, String name, boolean internal, int IndustryNumber, int companyStageNumber, int ChannelNumber) {
         Customer customerByID = getCustomerByID(id);
         if (customerByID == null) {
             return -1;
@@ -162,13 +178,23 @@ public class CRUDCustomer {
         ConnectionSingelton cst = ConnectionSingelton.getInstance();
         Connection dbcon = cst.getDbcon();
 
-        String query = "UPDATE Customer SET name = ? WHERE id = ?";
+        String query = "UPDATE Customer SET name = ?,internal = ? , IndustryNumber = ?,companyStageNumber = ?,ChannelNumber = ? WHERE id = ?";
         PreparedStatement ps;
         try {
             ps = dbcon
                     .prepareStatement(query);
             ps.setString(1, name);
-            ps.setInt(2, id);
+            int aint;
+            if (internal) {
+                aint = 1;
+            } else {
+                aint = 0;
+            }
+            ps.setInt(2, aint);
+            ps.setInt(3, IndustryNumber);
+            ps.setInt(4, companyStageNumber);
+            ps.setInt(5, ChannelNumber);
+            ps.setInt(6, id);
             int executeUpdate = ps.executeUpdate();
             ps.close();
             return executeUpdate;

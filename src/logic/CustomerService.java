@@ -60,7 +60,7 @@ public class CustomerService {
         if (customerByID == null) { // neuer Customer
             return CRUDCT.insertCustomerTrack(CT);
         } else {
-            return CRUDCT.editCustomerByID(CT.getId(), CT.getCustomername());
+            return CRUDCT.editCustomerByID(CT.getId(), CT.getCustomername(),CT.isInternal(),CT.getIndustryNumber(),CT.getCompanyStageNumber(),CT.getChannel());
         }
     }
 
