@@ -22,7 +22,7 @@ public class TrackedTimeItem implements Serializable {
     private Date startTime;
     private Date endTime;
     private String kommand;
-    private int kindOfAction;
+    private String kindOfAction;
     private Boolean markInExport;
     private int usernumber;
 
@@ -56,7 +56,7 @@ public class TrackedTimeItem implements Serializable {
         return kommand;
     }
 
-    public int getKindOfAction() {
+    public String getKindOfAction() {
         return kindOfAction;
     }
 
@@ -73,7 +73,7 @@ public class TrackedTimeItem implements Serializable {
         this.markInExport = markInExport;
     }
 
-    public TrackedTimeItem(Date startTime, Date endTime, String kommand, int kindOfAction, boolean markInExport, int usernumber) {
+    public TrackedTimeItem(Date startTime, Date endTime, String kommand, String kindOfAction, boolean markInExport, int usernumber) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.kommand = kommand;
@@ -94,7 +94,7 @@ public class TrackedTimeItem implements Serializable {
         this.kommand = kommand;
     }
 
-    public void setKindOfAction(int kindOfAction) {
+    public void setKindOfAction(String kindOfAction) {
         this.kindOfAction = kindOfAction;
     }
 

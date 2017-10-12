@@ -754,9 +754,7 @@ public class MainFrame extends javax.swing.JFrame {
                 case TrackedTimeItem.IDENTIFIER:
                     TrackedTimeItem trackObject = (TrackedTimeItem) selectedNode.getUserObject();
                     jTAction.setText(trackObject.getKommand());
-                    EnumServices ES = new EnumServices();
-                    HashMap<Integer, String> kinds = ES.getKind();
-                    jcbKindOfAction.setSelectedItem(kinds.get(trackObject.getKindOfAction()));
+                    jcbKindOfAction.setSelectedItem(trackObject.getKindOfAction());
                     jSStartTime.setValue(trackObject.getStartTime());
                     jSStopTime.setValue(trackObject.getEndTime());
                     jCBMark.setSelected(trackObject.getMarkInExport());
@@ -814,7 +812,7 @@ public class MainFrame extends javax.swing.JFrame {
                     case Customer.IDENTIFIER:
                         CT = (Customer) selectedNode.getUserObject();
                         model = (DefaultTreeModel) jTreeCustomer.getModel();
-                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected(),userNumber);
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected(),userNumber);
                         model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNode, selectedNode.getChildCount());
                         CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                         cal = Calendar.getInstance();
@@ -833,7 +831,7 @@ public class MainFrame extends javax.swing.JFrame {
                         DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode) selectedNode.getParent();
                         CT = (Customer) selectedNodeParent.getUserObject();
                         model = (DefaultTreeModel) jTreeCustomer.getModel();
-                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected(),userNumber);
+                        TTI = new TrackedTimeItem(createdDate, now, jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected(),userNumber);
                         model.insertNodeInto(new DefaultMutableTreeNode(TTI), selectedNodeParent, selectedNodeParent.getChildCount());
                         CT.getCustomeritems().put(TTI.getStartTimeS(), TTI);
                         cal = Calendar.getInstance();
@@ -995,7 +993,7 @@ public class MainFrame extends javax.swing.JFrame {
             TrackedTimeItem TI = (TrackedTimeItem) selectedNode.getUserObject();
             Long key = TI.getStartTimeS();
             int id = TI.getId();
-            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedIndex(), jCBMark.isSelected(),userNumber);
+            TI = new TrackedTimeItem((Date) jSStartTime.getModel().getValue(), (Date) jSStopTime.getModel().getValue(), jTAction.getText(), jcbKindOfAction.getSelectedItem().toString(), jCBMark.isSelected(),userNumber);
             TI.setId(id);
             parent.getCustomeritems().remove(key);
             parent.getCustomeritems().put(TI.getStartTimeS(), TI);

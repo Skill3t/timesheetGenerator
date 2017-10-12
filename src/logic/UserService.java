@@ -16,15 +16,15 @@ import java.util.List;
  */
 public class UserService {
 
-    public String getTemplatePathByID(int id) {
+    public String getTemplatePathByNumber(int id) {
         CRUDUser crudu = new CRUDUser();
-        User userByID = crudu.getUserByID(id);
+        User userByID = crudu.getUserByNumber(id);
         return userByID.getTamplatePath();
     }
 
-    public void setTemplatePathByID(int id, String path) {
+    public void setTemplatePathByNumber(int id, String path) {
         CRUDUser crudu = new CRUDUser();
-        crudu.editUserByID(id, path);
+        crudu.editUserByNumber(id, path);
     }
 
     public ArrayList<String> getUserNames() {
