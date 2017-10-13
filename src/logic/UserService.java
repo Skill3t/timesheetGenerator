@@ -8,7 +8,6 @@ package logic;
 import data.CRUDUser;
 import entity.User;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
