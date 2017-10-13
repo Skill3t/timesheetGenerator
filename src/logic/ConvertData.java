@@ -73,9 +73,7 @@ public class ConvertData {
 
             retline[3] = "" + tti.getValue().getMarkInExport();
             retline[4] = "";
-            EnumServices ES = new EnumServices();
-            HashMap<Integer, String> companyStage = ES.getKind();
-            retline[5] = companyStage.get(tti.getValue().getKindOfAction());
+            retline[5] = tti.getValue().getKindOfAction();
             retline[6] = tti.getValue().getKommand();
             allreturn.add(retline);
 
